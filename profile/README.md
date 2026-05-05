@@ -1,6 +1,6 @@
 # Xquik
 
-All-in-one X (Twitter) automation platform. 111 REST API endpoints, 2 MCP tools, 23 extraction types, HMAC webhooks. Reads from $0.00015/call (33x cheaper than the official X API).
+All-in-one X (Twitter) automation platform. 100+ REST API endpoints, 2 MCP tools, 23 extraction types, HMAC webhooks. Reads from $0.00015/call (33x cheaper than the official X API).
 
 ## Skills & Plugins
 
