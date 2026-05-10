@@ -1,0 +1,13 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "Xquik GitHub Profile",
+  "description": "Public Xquik org profile with SDK, docs, skill, MCP, and package discovery links.",
+  "branch": "main",
+  "folders": ["profile"],
+  "excludeFiles": ["LICENSE", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md"],
+  "rules": [
+    "Use profile/README.md as the public index for Xquik SDK, skill, docs, and MCP links.",
+    "Verify API behavior against xquik source, OpenAPI, generated SDK maps, or public registry metadata before changing claims.",
+    "Do not include API keys, private routing details, credentials, or unsupported package-health claims."
+  ]
+}
