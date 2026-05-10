@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - ".github/workflows/context7-refresh.yml"
+      - "SECURITY.md"
+      - "SUPPORT.md"
       - "context7.json"
       - "profile/README.md"
   workflow_dispatch:
