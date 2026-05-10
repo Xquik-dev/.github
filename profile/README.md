@@ -1,6 +1,7 @@
 # Xquik
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg?url=https%3A%2F%2Fgithub.com%2FXquik-dev%2F.github)](https://deepwiki.com/Xquik-dev/.github)
+[![Skills.sh x-twitter-scraper Skill](https://skills.sh/b/xquik-dev/x-twitter-scraper)](https://skills.sh/xquik-dev/x-twitter-scraper)
 
 All-in-one X (Twitter) automation platform. 100+ REST API endpoints, 2 MCP tools, 23 extraction types, HMAC webhooks. Reads from $0.00015/call (33x cheaper than the official X API).
 
