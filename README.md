@@ -9,5 +9,6 @@ Public GitHub profile and community defaults for Xquik SDKs, docs, and agent int
 - Docs: [docs.xquik.com](https://docs.xquik.com)
 - Security reports: [SECURITY.md](SECURITY.md)
 - Support issues: [SUPPORT.md](SUPPORT.md)
+- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 For SDK repositories, start from the org profile or the language-specific repositories listed there.
