@@ -1,0 +1,50 @@
+name: Public SDK, Docs, Or Package Issue
+description: Report a public SDK, docs, skill, plugin, package, or example issue.
+title: "[public-surface] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for public SDKs, docs, skills, plugins, examples, and package metadata. Do not include API keys, credentials, cookies, private account data, webhook signing values, screenshots with private data, or private routing details. For suspected vulnerabilities, use the security report path instead.
+  - type: input
+    id: surface
+    attributes:
+      label: Public Surface
+      description: Repository, package, docs page, skill, plugin, or example.
+      placeholder: Xquik-dev/x-twitter-scraper-python, docs.xquik.com/sdks/python, npm x-twitter-scraper
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version Or Reference
+      description: Package version, commit SHA, docs URL, or registry page.
+      placeholder: 0.4.1, main, https://docs.xquik.com/sdks/python
+    validations:
+      required: false
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the public issue and where it appears.
+      placeholder: The install example fails because...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal public steps, command, request shape, or code snippet.
+      placeholder: |
+        1. Install package version ...
+        2. Run ...
+        3. See ...
+    validations:
+      required: false
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Result
+      description: What should happen instead?
+    validations:
+      required: false
