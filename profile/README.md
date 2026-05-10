@@ -8,7 +8,6 @@ All-in-one X (Twitter) automation platform. 100+ REST API endpoints, 2 MCP tools
 
 - [x-twitter-scraper](https://github.com/Xquik-dev/x-twitter-scraper) - X (Twitter) data platform skill for AI coding agents. Works with Claude Code, Cursor, Codex, Copilot, Windsurf & 40+ agents.
 - [tweetclaw](https://github.com/Xquik-dev/tweetclaw) - Post tweets, reply, like, retweet, follow, DM & more from OpenClaw.
-- [hermes-tweet](https://github.com/Xquik-dev/hermes-tweet) - Native Hermes Agent plugin for X automation through Xquik.
 
 ## SDKs
 
