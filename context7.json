@@ -7,6 +7,7 @@
   "excludeFiles": ["LICENSE", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md"],
   "rules": [
     "Use profile/README.md as the public index for Xquik SDK, skill, docs, and MCP links.",
+    "Use SECURITY.md and SUPPORT.md for public vulnerability and support reporting guidance.",
     "Verify API behavior against xquik source, OpenAPI, generated SDK maps, or public registry metadata before changing claims.",
     "Do not include API keys, private routing details, credentials, or unsupported package-health claims."
   ]
