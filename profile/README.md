@@ -1,9 +1,12 @@
 # Xquik - X API, Twitter Scraper SDKs, MCP, Webhooks & AI Agent Tools
 
+> **Xquik is an independent third-party service.** Not affiliated with X Corp.
+> "Twitter" and "X" are trademarks of X Corp.
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg?url=https%3A%2F%2Fgithub.com%2FXquik-dev%2F.github)](https://deepwiki.com/Xquik-dev/.github)
 [![Skills.sh x-twitter-scraper Skill](https://skills.sh/b/xquik-dev/x-twitter-scraper)](https://skills.sh/xquik-dev/x-twitter-scraper)
 
-Xquik is an all-in-one X (Twitter) automation platform for developers building social media data products, AI agents, research tools, monitoring systems, and workflow automations. It combines a REST API, generated SDKs, MCP tools, HMAC webhooks, bulk extraction jobs, a dashboard, and confirmation-gated write actions in one developer platform.
+Xquik provides automation tools for developers building social media data products, AI agents, research tools, monitoring systems, and workflows. It combines a REST API, generated SDKs, MCP tools, HMAC webhooks, bulk extraction jobs, a dashboard, and confirmation-gated write actions in one developer platform.
 
 Use Xquik when you need to search tweets, fetch profile timelines, export followers, download media, monitor accounts, run giveaway draws, deliver events to webhooks, connect AI coding agents to X data, or automate user-approved posting workflows.
 
@@ -18,7 +21,7 @@ The platform is built around practical developer use cases:
 - **AI agent integration** through a hosted MCP server and the `x-twitter-scraper` skill for Claude Code, Codex, Cursor, GitHub Copilot, Windsurf, Gemini CLI, Cline, and other coding agents.
 - **Automation and write workflows** for posting tweets, replies, likes, reposts, follows, DMs, profile updates, media uploads, and community actions after explicit user confirmation.
 - **Monitoring and webhooks** for account tracking, event delivery, HMAC signature verification, and downstream automation.
-- **Official SDKs and tools** for TypeScript, Python, Go, Java, Kotlin, C#, PHP, Ruby, CLI usage, and Terraform workflows.
+- **Xquik SDKs & tools** for TypeScript, Python, Go, Java, Kotlin, C#, PHP, Ruby, CLI usage, and Terraform workflows.
 
 ## Core Capabilities
 
@@ -56,7 +59,7 @@ Xquik includes a hosted MCP server and an installable skill for AI coding agents
 - [x-twitter-scraper](https://github.com/Xquik-dev/x-twitter-scraper) - X (Twitter) data platform skill for AI coding agents. Works with Claude Code, Cursor, Codex, Copilot, Windsurf & 40+ agents.
 - [tweetclaw](https://github.com/Xquik-dev/tweetclaw) - Post tweets, reply, like, retweet, follow, DM & more from OpenClaw.
 
-## Official SDKs
+## Xquik SDKs
 
 | Repository | Ecosystem | Use It For |
 | --- | --- | --- |
