@@ -27,10 +27,10 @@ The platform is built around practical developer use cases:
 
 | Area | What Xquik Provides |
 | --- | --- |
-| REST API | 100+ endpoints across account, API keys, compose, credits, draws, events, extractions, monitors, radar, styles, support, trends, webhooks, and X workflows |
+| REST API | 123 operations across account, API keys, compose, credits, draws, events, extractions, monitors, radar, styles, support, trends, webhooks, and X workflows |
 | X data | Tweet search, tweet lookup, profile lookup, user tweets, user likes, user media, followers, following, favoriters, mutual followers, lists, communities, Spaces, articles, and trends |
 | Bulk extraction | 23 extraction types with estimate, run, status, result pagination, and export flows |
-| MCP server | 2 tools for schema exploration and confirmed Xquik API requests from AI agents |
+| MCP server | 118 operations through 2 tools for schema exploration and confirmed Xquik API requests |
 | AI agent skill | A public `x-twitter-scraper` skill with endpoint guidance, safety rules, pricing notes, setup docs, and examples |
 | Webhooks | HMAC-signed event delivery with verification examples for Node.js, Python, and Go |
 | Monitoring | Account and keyword tracking with explicit confirmation for persistent resources |
