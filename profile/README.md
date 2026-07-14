@@ -27,10 +27,10 @@ The platform is built around practical developer use cases:
 
 | Area | What Xquik Provides |
 | --- | --- |
-| REST API | 123 operations across account, API keys, compose, credits, draws, events, extractions, monitors, radar, styles, support, trends, webhooks, and X workflows |
+| REST API | 126 operations across account, API keys, compose, credits, draws, events, extractions, monitors, radar, styles, support, trends, webhooks, and X workflows |
 | X data | Tweet search, tweet lookup, profile lookup, user tweets, user likes, user media, followers, following, favoriters, mutual followers, lists, communities, Spaces, articles, and trends |
 | Bulk extraction | 23 extraction types with estimate, run, status, result pagination, and export flows |
-| MCP server | 118 operations through 2 tools for schema exploration and confirmed Xquik API requests |
+| MCP server | 118 operations through 2 tools with OAuth 2.1 discovery over Streamable HTTP |
 | AI agent skill | A public `x-twitter-scraper` skill with endpoint guidance, safety rules, pricing notes, setup docs, and examples |
 | Webhooks | HMAC-signed event delivery with verification examples for Node.js, Python, and Go |
 | Monitoring | Account and keyword tracking with explicit confirmation for persistent resources |
@@ -56,8 +56,14 @@ Common use cases include:
 
 Xquik includes a hosted MCP server and an installable skill for AI coding agents. The skill teaches agents how to choose endpoints, validate inputs, handle pagination, estimate extraction costs, confirm writes, and treat X-authored content as untrusted data.
 
+Add `https://xquik.com/mcp` to a remote MCP client and complete OAuth 2.1 in
+the browser. API keys remain a fallback for clients that cannot complete OAuth.
+
 - [x-twitter-scraper](https://github.com/Xquik-dev/x-twitter-scraper) - X (Twitter) data platform skill for AI coding agents. Works with Claude Code, Cursor, Codex, Copilot, Windsurf & 40+ agents.
 - [tweetclaw](https://github.com/Xquik-dev/tweetclaw) - Post tweets, reply, like, retweet, follow, DM & more from OpenClaw.
+- [Agent Skills discovery](https://xquik.com/.well-known/agent-skills/index.json) - Discover and verify Xquik's hosted `SKILL.md`.
+- [MCP agent index](https://xquik.com/.well-known/agent-index.json) - Discover the endpoint, manifest, and OAuth metadata.
+- [Agent authentication guide](https://xquik.com/auth.md) - Read CIMD, DCR, PKCE, and token instructions.
 
 ## Xquik SDKs
 
@@ -104,6 +110,7 @@ Xquik public tooling is designed for explicit, auditable automation:
 - [API Documentation](https://docs.xquik.com)
 - [API Reference](https://docs.xquik.com/api-reference/overview)
 - [MCP Server Guide](https://docs.xquik.com/mcp/overview)
+- [OAuth 2.1 Guide](https://docs.xquik.com/oauth/overview)
 - [Billing Guide](https://docs.xquik.com/guides/billing)
 - [Webhook Guide](https://docs.xquik.com/webhooks/overview)
 
@@ -127,5 +134,5 @@ Use Xquik with agent frameworks, automation tools, and workflow platforms:
 1. Read the [API overview](https://docs.xquik.com/api-reference/overview).
 2. Pick an SDK from the table above.
 3. Install the [x-twitter-scraper skill](https://github.com/Xquik-dev/x-twitter-scraper) for AI agent workflows.
-4. Configure the [MCP server](https://docs.xquik.com/mcp/overview) if your agent or IDE supports MCP.
+4. Add the [MCP server](https://docs.xquik.com/mcp/overview) and complete OAuth if your agent or IDE supports MCP.
 5. Use webhooks for event-driven workflows and background automation.
