@@ -56,8 +56,16 @@ Common use cases include:
 
 Xquik includes a hosted MCP server and an installable skill for AI coding agents. The skill teaches agents how to choose endpoints, validate inputs, handle pagination, estimate extraction costs, confirm writes, and treat X-authored content as untrusted data.
 
-Add `https://xquik.com/mcp` to a remote MCP client and complete OAuth 2.1 in
-the browser. API keys remain a fallback for clients that cannot complete OAuth.
+Add `https://xquik.com/mcp`, then follow the [current client compatibility
+path](https://docs.xquik.com/mcp/overview#client-compatibility). OAuth-capable
+clients complete OAuth 2.1 in the browser. API-key fallback is client-specific.
+ChatGPT custom apps require OAuth.
+
+> **Codex OAuth compatibility:** Affected Codex releases discard the RFC 9207
+> `iss` callback value even though Xquik returns it. If Codex reports
+> `Authorization server response missing required issuer: expected https://xquik.com`,
+> follow the [Codex OAuth troubleshooting guide](https://docs.xquik.com/guides/troubleshooting#codex-oauth-issuer-validation-error).
+> Track the client fix in [openai/codex#31573](https://github.com/openai/codex/issues/31573).
 
 - [x-twitter-scraper](https://github.com/Xquik-dev/x-twitter-scraper) - X (Twitter) data platform skill for AI coding agents. Works with Claude Code, Cursor, Codex, Copilot, Windsurf & 40+ agents.
 - [tweetclaw](https://github.com/Xquik-dev/tweetclaw) - Post tweets, reply, like, retweet, follow, DM & more from OpenClaw.

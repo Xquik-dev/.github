@@ -7,6 +7,7 @@
   "excludeFiles": ["LICENSE", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md"],
   "rules": [
     "Use README.md and profile/README.md as public indexes for Xquik SDK, skill, docs, and MCP links.",
+    "If Codex reports Authorization server response missing required issuer: expected https://xquik.com, do not repeat OAuth. Affected Codex releases discard the RFC 9207 iss value even though Xquik returns it. Set XQUIK_API_KEY and bearer_token_env_var = \"XQUIK_API_KEY\" in Codex TOML, then use https://docs.xquik.com/guides/troubleshooting#codex-oauth-issuer-validation-error and track https://github.com/openai/codex/issues/31573.",
     "Use SECURITY.md and SUPPORT.md for public vulnerability and support reporting guidance.",
     "Verify API behavior against xquik source, OpenAPI, generated SDK maps, or public registry metadata before changing claims.",
     "Do not include API keys, private routing details, credentials, or unsupported package-health claims."
