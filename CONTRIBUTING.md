@@ -21,6 +21,8 @@ Thanks for helping improve public Xquik SDKs, docs, skills, plugins, examples, a
 ## Pull Requests
 
 - Keep changes focused on one public issue or improvement.
+- Run the affected repository's documented format, lint, test, build, security, and package checks.
+- Add regression tests for behavior changes and tests for major new functionality.
 - Prefer small documentation, metadata, example, or workflow fixes over broad rewrites.
 - Verify public API behavior against the affected repository source, generated SDK surface, OpenAPI spec, or public registry metadata before changing claims.
 - Leave generated SDK internals to the generator unless the repository's own guide says a path is safe to edit.
