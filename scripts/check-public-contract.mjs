@@ -98,8 +98,8 @@ function operationCount(openApi) {
   );
 }
 
-function requireCount(description, label) {
-  const match = new RegExp(`(?<count>\\d+) ${label}`, "u").exec(description);
+function requireCount(description, label, pattern) {
+  const match = pattern.exec(description);
   if (match?.groups?.count === undefined) {
     throw new Error(`Server card is missing the ${label} count.`);
   }
@@ -207,9 +207,21 @@ const [openApi, serverCard, profile, repos] = await Promise.all([
 const reposByName = new Map(repos.map((repo) => [repo.name, repo]));
 const restCount = operationCount(openApi);
 const cardDescription = serverCard.description ?? "";
-const cardRestCount = requireCount(cardDescription, "REST operations");
-const mcpCount = requireCount(cardDescription, "MCP catalog routes");
-const textCount = requireCount(cardDescription, "JSON or text operations");
+const cardRestCount = requireCount(
+  cardDescription,
+  "REST operations",
+  /(?<count>\d+) REST operations\b/u,
+);
+const mcpCount = requireCount(
+  cardDescription,
+  "MCP routes",
+  /(?<count>\d+) MCP (?:catalog )?routes\b/u,
+);
+const textCount = requireCount(
+  cardDescription,
+  "JSON/text operations",
+  /(?<count>\d+) (?:JSON or text operations|JSON\/text ops)\b/u,
+);
 
 if (cardRestCount !== restCount) {
   throw new Error(`Server card says ${cardRestCount} REST operations; OpenAPI has ${restCount}.`);
