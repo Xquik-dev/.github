@@ -1,0 +1,29 @@
+name: Check Public Contract
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/public-contract.yml"
+      - "profile/README.md"
+      - "scripts/check-public-contract.mjs"
+  schedule:
+    - cron: "17 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - run: node scripts/check-public-contract.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
