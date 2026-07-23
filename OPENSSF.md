@@ -83,7 +83,7 @@ Passing checks prove implementation, not independent review or default-branch ad
 | `n8n-nodes-xquik` | [#11](https://github.com/Xquik-dev/n8n-nodes-xquik/pull/11) | License notices, tests, security checks, and reproducible packages |
 | `paperclip-plugin-xquik` | [#4](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/4) | License notices, tests, security checks, and reproducible packages |
 | `prefect-xquik` | [#15](https://github.com/Xquik-dev/prefect-xquik/pull/15) | License notices, tests, security checks, and reproducible packages |
-| `terraform-provider-x-twitter-scraper` | [#11](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/11) | Coverage, releases, security, documentation, and reproducible builds |
+| `terraform-provider-x-twitter-scraper` | [#11](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/11) | 93.6% statements, 82.31% branches, BSD notices, security, and reproducible releases |
 | `tweetclaw` | [#21](https://github.com/Xquik-dev/tweetclaw/pull/21) | Security boundaries, tests, coverage, and public disclosures |
 | `x-twitter-scraper` | [#19](https://github.com/Xquik-dev/x-twitter-scraper/pull/19) | Coverage, licensing, security, reproducibility, and public disclosures |
 | `x-twitter-scraper-cli` | [#13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13) | Coverage, cross-platform tests, licensing, releases, and public disclosures |
