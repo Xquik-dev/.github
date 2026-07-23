@@ -71,6 +71,50 @@ Repository-specific evidence must still prove the affected criterion.
 - Seventeen standalone projects have current Passing badges.
 - Seventeen standalone projects run required CI checks.
 
+## Current Remediation Pull Requests
+
+These pull requests implement repository-specific technical remediation.
+
+Passing checks prove implementation, not independent review or default-branch adoption.
+
+| Repository | Pull Request | Verified Scope |
+| --- | --- | --- |
+| `hermes-tweet` | [#610](https://github.com/Xquik-dev/hermes-tweet/pull/610) | License notices, tests, coverage, and package checks |
+| `n8n-nodes-xquik` | [#11](https://github.com/Xquik-dev/n8n-nodes-xquik/pull/11) | License notices, tests, security checks, and reproducible packages |
+| `paperclip-plugin-xquik` | [#4](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/4) | License notices, tests, security checks, and reproducible packages |
+| `prefect-xquik` | [#15](https://github.com/Xquik-dev/prefect-xquik/pull/15) | License notices, tests, security checks, and reproducible packages |
+| `terraform-provider-x-twitter-scraper` | [#11](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/11) | Coverage, releases, security, documentation, and reproducible builds |
+| `tweetclaw` | [#21](https://github.com/Xquik-dev/tweetclaw/pull/21) | Security boundaries, tests, coverage, and public disclosures |
+| `x-twitter-scraper` | [#19](https://github.com/Xquik-dev/x-twitter-scraper/pull/19) | Coverage, licensing, security, reproducibility, and public disclosures |
+| `x-twitter-scraper-cli` | [#13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13) | Coverage, cross-platform tests, licensing, releases, and public disclosures |
+| `x-twitter-scraper-ruby` | [#17](https://github.com/Xquik-dev/x-twitter-scraper-ruby/pull/17) | Bounded RubyGems release verification |
+| `xquik-haystack` | [#4](https://github.com/Xquik-dev/xquik-haystack/pull/4) | License notices, tests, and coverage |
+
+Each pull request requires a different human reviewer before merging.
+
+Do not count pending changes as default-branch evidence.
+
+## README & Repository Metadata
+
+All 19 public repository READMEs were audited on July 23, 2026.
+
+All default branches contain the approved independence disclosure.
+
+Fifteen default branches contain the exact unformatted footer.
+
+Four pending pull requests add that exact footer:
+
+- [Terraform provider #11](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/11)
+- [TweetClaw #21](https://github.com/Xquik-dev/tweetclaw/pull/21)
+- [Core Skill and MCP package #19](https://github.com/Xquik-dev/x-twitter-scraper/pull/19)
+- [CLI #13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13)
+
+All repository descriptions identify their supported purpose.
+
+All descriptions include the compact independence notice.
+
+Topics remain specific to supported languages, workflows, and customer tasks.
+
 ## Known Gold Gaps
 
 The organization currently has one member.
@@ -80,15 +124,18 @@ It does not yet meet these Gold requirements:
 - A bus factor of 2 or more.
 - Two unassociated significant contributors per project.
 - Verifiable independent review for 50% of released modifications.
-- Complete per-file copyright and license notices.
+- A human security review completed within the last 5 years.
+
+Open remediation pull requests cannot satisfy these human requirements.
 
 These areas still need repository-specific verification:
 
+- Per-file copyright and license notices on default branches.
 - Reproducible builds.
-- Statement and branch coverage.
+- Statement coverage of at least 90%.
+- Branch coverage when a suitable FLOSS tool exists.
 - Signed release verification.
 - Architecture, threat model, and assurance evidence.
-- Human security reviews completed within 5 years.
 - Dynamic analysis before major releases.
 
 Never mark a criterion as met without current public evidence.
