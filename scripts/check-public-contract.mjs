@@ -20,6 +20,10 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
     "GOVERNANCE.md",
     ["## Roles", "## Continuity", "does not meet this continuity target yet"],
   ],
+  [
+    "OPENSSF.md",
+    ["17 standalone software projects", "xquik-docs", "Known Gold Gaps"],
+  ],
   ["REVIEWING.md", ["person other than the author", "At least 50%"]],
   ["ROADMAP.md", ["July 2027", "OpenSSF Best Practices"]],
   [

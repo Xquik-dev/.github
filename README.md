@@ -17,6 +17,7 @@ Public GitHub profile and community defaults for Xquik SDKs, docs, and agent int
 - Governance: [GOVERNANCE.md](GOVERNANCE.md)
 - Code review: [REVIEWING.md](REVIEWING.md)
 - Public roadmap: [ROADMAP.md](ROADMAP.md)
+- OpenSSF evidence: [OPENSSF.md](OPENSSF.md)
 - Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 For SDK repositories, start from the org profile or the language-specific repositories listed there.
