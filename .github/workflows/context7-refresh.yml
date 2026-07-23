@@ -1,3 +1,6 @@
+# Copyright the Xquik contributors.
+# SPDX-License-Identifier: MIT
+
 name: Refresh Context7 Docs
 
 on:
