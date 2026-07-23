@@ -1,4 +1,4 @@
-# Xquik GitHub Profile
+# Xquik GitHub: X API SDKs, Agent Tools & OpenSSF Evidence
 
 > **Xquik is an independent third-party service.** Not affiliated with X Corp.
 > "Twitter" and "X" are trademarks of X Corp.
@@ -20,4 +20,16 @@ Public GitHub profile and community defaults for Xquik SDKs, docs, and agent int
 - OpenSSF evidence: [OPENSSF.md](OPENSSF.md)
 - Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
+## Find a Workflow
+
+| Customer Question | Start Here |
+| --- | --- |
+| How do I search tweets through an API? | [Search Tweets API](https://docs.xquik.com/api-reference/x/search-tweets) |
+| How do I export followers? | [Follower Export Guide](https://docs.xquik.com/guides/follower-export-crm) |
+| Which SDK should my application use? | [SDK directory](profile/README.md#sdks) |
+| How can an AI agent use Xquik? | [Agent integrations](profile/README.md#agent-and-workflow-integrations) |
+| Where is the OpenSSF evidence? | [OpenSSF evidence register](OPENSSF.md) |
+
 For SDK repositories, start from the org profile or the language-specific repositories listed there.
+
+Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
