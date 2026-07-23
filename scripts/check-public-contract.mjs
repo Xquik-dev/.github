@@ -1,3 +1,6 @@
+// Copyright the Xquik contributors.
+// SPDX-License-Identifier: MIT
+
 import { readFile } from "node:fs/promises";
 
 const GITHUB_API = "https://api.github.com";
@@ -7,6 +10,33 @@ const SERVER_CARD_URL = "https://xquik.com/.well-known/mcp/server-card.json";
 const HTTP_METHODS = new Set(["delete", "get", "head", "options", "patch", "post", "put", "trace"]);
 const INDEPENDENCE_NOTICE =
   'Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.';
+const COMMUNITY_POLICY_REQUIREMENTS = new Map([
+  ["CODE_OF_CONDUCT.md", ["## Enforcement", "support@xquik.com"]],
+  [
+    "CONTRIBUTING.md",
+    ["Developer Certificate of Origin", "git commit -s", "good first issue"],
+  ],
+  [
+    "GOVERNANCE.md",
+    ["## Roles", "## Continuity", "does not meet this continuity target yet"],
+  ],
+  [
+    "OPENSSF.md",
+    ["17 standalone software projects", "xquik-docs", "Known Gold Gaps"],
+  ],
+  ["REVIEWING.md", ["person other than the author", "At least 50%"]],
+  ["ROADMAP.md", ["July 2027", "OpenSSF Best Practices"]],
+  [
+    "SECURITY.md",
+    [
+      "within 3 business days",
+      "within 14 days",
+      "within 60 days",
+      "credit every reporter unless they request anonymity",
+      "TLS 1.2",
+    ],
+  ],
+]);
 const STALE_PUBLIC_COPY = [
   /\b40\+ (?:agents|integrations|tools)/iu,
   /\b47\+ (?:agents|integrations|tools)/iu,
@@ -170,6 +200,19 @@ async function checkRepoReadmes(repos) {
   );
 }
 
+async function checkCommunityPolicies() {
+  await Promise.all(
+    [...COMMUNITY_POLICY_REQUIREMENTS].map(async ([path, requirements]) => {
+      const content = await readFile(path, "utf8");
+      for (const requirement of requirements) {
+        if (!content.includes(requirement)) {
+          throw new Error(`${path} is missing required policy text: ${requirement}`);
+        }
+      }
+    }),
+  );
+}
+
 async function checkIntegrationSurfaces(openApi, reposByName) {
   await Promise.all(
     INTEGRATION_SURFACES.map(async (surface) => {
@@ -239,8 +282,11 @@ if (/126 operations|40\+ agents|118 operations through 2 tools/u.test(profile)) 
   throw new Error("profile/README.md contains a stale public count.");
 }
 
-await checkIntegrationSurfaces(openApi, reposByName);
-await checkRepoReadmes(repos);
+await Promise.all([
+  checkCommunityPolicies(),
+  checkIntegrationSurfaces(openApi, reposByName),
+  checkRepoReadmes(repos),
+]);
 
 process.stdout.write(
   `Checked ${repos.length} public repositories. Contracts match ${restCount} REST, ${mcpCount} MCP, and ${textCount} JSON/text operations.\n`,

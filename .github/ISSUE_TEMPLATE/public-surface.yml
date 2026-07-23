@@ -1,11 +1,16 @@
-name: Public SDK, Docs, Or Package Issue
+# Copyright the Xquik contributors.
+# SPDX-License-Identifier: MIT
+
+name: Public SDK, Docs, or Package Issue
 description: Report a public SDK, docs, skill, plugin, package, or example issue.
 title: "[public-surface] "
 body:
   - type: markdown
     attributes:
       value: |
-        Use this for public SDKs, docs, skills, plugins, examples, and package metadata. Do not include API keys, credentials, cookies, private account data, webhook signing values, screenshots with private data, or private routing details. For suspected vulnerabilities, use the security report path instead.
+        Use this for public SDK, docs, skill, plugin, example, and package issues.
+        Never include credentials, cookies, private data, or private routing details.
+        Use the private security report path for suspected vulnerabilities.
   - type: input
     id: surface
     attributes:

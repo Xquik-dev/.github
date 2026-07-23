@@ -1,11 +1,22 @@
+# Copyright the Xquik contributors.
+# SPDX-License-Identifier: MIT
+
 name: Check Public Contract
 
 on:
+  pull_request:
   push:
     branches:
       - main
     paths:
       - ".github/workflows/public-contract.yml"
+      - "CODE_OF_CONDUCT.md"
+      - "CONTRIBUTING.md"
+      - "GOVERNANCE.md"
+      - "OPENSSF.md"
+      - "REVIEWING.md"
+      - "ROADMAP.md"
+      - "SECURITY.md"
       - "profile/README.md"
       - "scripts/check-public-contract.mjs"
   schedule:
