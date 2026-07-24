@@ -31,6 +31,16 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
       "Pending changes do not count as default-branch evidence.",
     ],
   ],
+  [
+    "BUILD_DEBUG.md",
+    [
+      "17 standalone software projects",
+      "Do not count pending changes as default-branch evidence.",
+      "## Native Release Verification",
+      "## JVM Verification",
+      "## Source Package Verification",
+    ],
+  ],
   ["CODE_OF_CONDUCT.md", ["## Enforcement", "support@xquik.com"]],
   [
     "CONTRIBUTING.md",
@@ -68,7 +78,11 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
       "## Verify PyPI Attestations",
       "## Verify RubyGems Attestations",
       "## Verify GitHub Attestations",
+      "## Verify Project-Controlled SDK Artifacts",
       "ce55622baf95df9b6599db33a7a1627463be3735b891e93177a67f8875d3aaa8",
+      "7bef1ec1688b472424d7e92738342a446abfa6a9b1d314c4cd66fff919b5f34f",
+      "a59bd116af5ff6cc911c38b2fd515559d5f97b3eeb489d1a6148fd13fb459fb0",
+      "31fdf66d8cb1d0d8aeacbb8748189029eafc8b178b905057fd35540f5a01589b",
       "Keep `version_tags_signed` Unmet",
     ],
   ],

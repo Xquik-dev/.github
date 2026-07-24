@@ -11,6 +11,7 @@ on:
     paths:
       - ".github/workflows/public-contract.yml"
       - "ASSURANCE.md"
+      - "BUILD_DEBUG.md"
       - "CODE_OF_CONDUCT.md"
       - "CONTRIBUTING.md"
       - "GOVERNANCE.md"

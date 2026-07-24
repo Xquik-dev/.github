@@ -20,17 +20,16 @@ Assessment date: July 24, 2026.
 | `x-twitter-scraper-cli` | GitHub Releases | GitHub SLSA provenance |
 | `x-twitter-scraper-ruby` | RubyGems | Sigstore bundle bound to the published gem |
 | `x-twitter-scraper-java`, `x-twitter-scraper-kotlin` | Maven Central | OpenPGP signatures for every published Maven file |
-| `x-twitter-scraper-csharp` | NuGet | Project-controlled signature evidence remains incomplete |
-| `x-twitter-scraper-go` | Go modules | Project-controlled signature evidence remains incomplete |
-| `x-twitter-scraper-php` | Packagist | Project-controlled signature evidence remains incomplete |
+| `x-twitter-scraper-csharp` | NuGet and GitHub Releases | Repository-bound SLSA provenance for the exact `.nupkg` |
+| `x-twitter-scraper-go` | Go modules and GitHub Releases | Repository-bound SLSA provenance for the source archive |
+| `x-twitter-scraper-php` | Packagist and GitHub Releases | Repository-bound SLSA provenance for the Composer archive |
 
-The first 14 projects have verifiable signed release artifacts.
+All 17 projects have verifiable signed release artifacts.
 
-Their Silver badge answers still require default-branch documentation.
+Keep each badge answer aligned with current default-branch evidence.
 
-The remaining 3 projects must add public cryptographic release evidence.
-
-Track that work in [organization issue #4](https://github.com/Xquik-dev/.github/issues/4).
+The [consumer verification workflow](.github/workflows/release-attestations.yml)
+checks the latest C#, Go, and PHP artifacts weekly.
 
 ## Verify npm Provenance
 
@@ -175,6 +174,50 @@ Require the SLSA provenance predicate.
 Confirm the subject digest matches the downloaded artifact.
 
 For stricter policy, also require the expected signer workflow.
+
+## Verify Project-Controlled SDK Artifacts
+
+Three SDK ecosystems also publish canonical GitHub release artifacts.
+
+Download and verify each artifact:
+
+```sh
+gh release download v0.5.4 \
+  --repo Xquik-dev/x-twitter-scraper-csharp \
+  --pattern XTwitterScraper.0.5.4.nupkg
+gh attestation verify XTwitterScraper.0.5.4.nupkg \
+  --repo Xquik-dev/x-twitter-scraper-csharp \
+  --signer-workflow Xquik-dev/x-twitter-scraper-csharp/.github/workflows/publish-nuget.yml \
+  --deny-self-hosted-runners
+
+gh release download v0.7.0 \
+  --repo Xquik-dev/x-twitter-scraper-go \
+  --pattern x-twitter-scraper-go-v0.7.0.zip
+gh attestation verify x-twitter-scraper-go-v0.7.0.zip \
+  --repo Xquik-dev/x-twitter-scraper-go \
+  --signer-workflow Xquik-dev/x-twitter-scraper-go/.github/workflows/release-provenance.yml \
+  --deny-self-hosted-runners
+
+gh release download v0.6.0 \
+  --repo Xquik-dev/x-twitter-scraper-php \
+  --pattern x-twitter-scraper-php-v0.6.0.zip
+gh attestation verify x-twitter-scraper-php-v0.6.0.zip \
+  --repo Xquik-dev/x-twitter-scraper-php \
+  --signer-workflow Xquik-dev/x-twitter-scraper-php/.github/workflows/release-provenance.yml \
+  --deny-self-hosted-runners
+```
+
+The verified SHA-256 digests are:
+
+```text
+C#:  7bef1ec1688b472424d7e92738342a446abfa6a9b1d314c4cd66fff919b5f34f
+Go:  a59bd116af5ff6cc911c38b2fd515559d5f97b3eeb489d1a6148fd13fb459fb0
+PHP: 31fdf66d8cb1d0d8aeacbb8748189029eafc8b178b905057fd35540f5a01589b
+```
+
+Each certificate identifies its Xquik-dev release workflow.
+
+Each certificate also binds the artifact to its matching release tag.
 
 ## Verify Terraform Checksums
 

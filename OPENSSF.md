@@ -65,8 +65,7 @@ Use each live entry for current status and submitted evidence.
 - Each entry includes dated remediation guidance for those requirements.
 - All 17 entries mark cryptographic 2FA as Met.
 - All 17 projects expose a scoped newcomer task.
-- Fourteen projects have verified signed release artifacts.
-- Three projects need project-controlled release signature evidence.
+- All 17 projects have verified signed release artifacts.
 - All 17 software projects protect `v*` tags against destructive updates.
 - All latest public Git tags remain unsigned.
 - All 15 projects with qualifying fixes meet the six-month regression ratio.
@@ -82,6 +81,7 @@ These documents support repository-specific badge evidence:
 - [Vulnerability response process](SECURITY.md)
 - [Architecture and security assurance](ASSURANCE.md)
 - [Release integrity and verification](RELEASES.md)
+- [Debug-information preservation evidence](BUILD_DEBUG.md)
 - [Six-month regression-test evidence](REGRESSION_TESTS.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Twelve-month roadmap](ROADMAP.md)
@@ -173,6 +173,14 @@ Hermes [#612](https://github.com/Xquik-dev/hermes-tweet/pull/612)
 and Paperclip [#6](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/6)
 add reproducible-package evidence.
 
+Fifteen projects now have default-branch debug-preservation evidence.
+
+Terraform [#14](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/14)
+and CLI [#16](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/16)
+remain pending.
+
+See [debug-information evidence](BUILD_DEBUG.md) for the complete assessment.
+
 ## Other Open Pull Request Audit
 
 - Core [#9](https://github.com/Xquik-dev/x-twitter-scraper/pull/9) remains a conflicting draft.
@@ -242,9 +250,9 @@ Track human prerequisites in [organization issue #3](https://github.com/Xquik-de
 
 Track scoped human reviews in [organization issue #5](https://github.com/Xquik-dev/.github/issues/5).
 
-All listed technical remediation changes now have default-branch adoption.
+Two debug-information remediations still await default-branch adoption.
 
-Three projects still need project-controlled release signature evidence.
+All 17 projects now have project-controlled release signature evidence.
 
 Never mark a criterion as met without current public evidence.
 
