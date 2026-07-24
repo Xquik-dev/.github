@@ -18,17 +18,20 @@ on:
       - "OPENSSF.md"
       - "REGRESSION_TESTS.md"
       - "RELEASES.md"
+      - "REVIEW_EVIDENCE.md"
       - "REVIEWING.md"
       - "ROADMAP.md"
       - "SECURITY.md"
       - "profile/README.md"
       - "scripts/check-public-contract.mjs"
+      - "scripts/check-review-evidence.mjs"
   schedule:
     - cron: "17 7 * * 1"
   workflow_dispatch:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   check:
@@ -40,5 +43,8 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/check-public-contract.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: node scripts/check-review-evidence.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

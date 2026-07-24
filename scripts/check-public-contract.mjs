@@ -86,6 +86,16 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
       "Keep `version_tags_signed` Unmet",
     ],
   ],
+  [
+    "REVIEW_EVIDENCE.md",
+    [
+      "The review policy took effect on July 23, 2026.",
+      "The `.github` and `xquik-docs` repositories provide shared community and documentation surfaces.",
+      "Count direct commits as unreviewed.",
+      "Require a known author and approval from another human.",
+      "All 17 projects meet the required 50% threshold.",
+    ],
+  ],
   ["ROADMAP.md", ["July 2027", "OpenSSF Best Practices"]],
   [
     "SECURITY.md",

@@ -88,8 +88,10 @@ A different reviewer must approve the fix before public release.
 
 Maintainers must review the modification history before each major release.
 
-At least 50% of released modifications require independent author review.
+At least 50% of released modifications require non-author human review.
 
-The organization does not claim this threshold without verifiable pull request evidence.
+The [two-person review ledger](REVIEW_EVIDENCE.md) records current evidence.
+
+The weekly verifier counts direct commits as unreviewed.
 
 Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.

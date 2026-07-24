@@ -70,6 +70,7 @@ Use each live entry for current status and submitted evidence.
 - All latest public Git tags remain unsigned.
 - All 15 projects with qualifying fixes meet the six-month regression ratio.
 - Two projects have no qualifying fixes and use `N/A`.
+- All 17 projects meet the current 50% two-person-review threshold.
 
 ## Shared Evidence
 
@@ -83,6 +84,7 @@ These documents support repository-specific badge evidence:
 - [Release integrity and verification](RELEASES.md)
 - [Debug-information preservation evidence](BUILD_DEBUG.md)
 - [Six-month regression-test evidence](REGRESSION_TESTS.md)
+- [Two-person review evidence](REVIEW_EVIDENCE.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Twelve-month roadmap](ROADMAP.md)
 
@@ -241,7 +243,6 @@ They do not yet meet these human Gold requirements:
 
 - A bus factor of 2 or more.
 - Two unassociated significant contributors per project.
-- Verifiable independent review for 50% of released modifications.
 - A human security review completed within the last 5 years.
 
 Open remediation pull requests cannot satisfy these human requirements.
