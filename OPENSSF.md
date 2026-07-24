@@ -180,8 +180,10 @@ Generated-code coverage applicability remains an explicit assessment gap.
 - Do not update, merge, tag, or publish either draft.
 - Haystack [#6](https://github.com/Xquik-dev/xquik-haystack/pull/6) is an independent contribution for issue #5.
 - Its added file passes Ruff, and all 18 unit tests pass locally.
+- Contributor commit `faf5d270` lacks the required DCO sign-off.
+- The contributor must amend and re-push it before this PR qualifies as evidence.
 - Required remote checks pass with zero unresolved review threads.
-- GitHub still requires a post-push approval from another person.
+- A new independent approval will be required after the contributor's push.
 
 ## README & Repository Metadata
 
