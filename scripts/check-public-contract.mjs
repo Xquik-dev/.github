@@ -41,6 +41,15 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
     ],
   ],
   ["REVIEWING.md", ["person other than the author", "At least 50%"]],
+  [
+    "RELEASES.md",
+    [
+      "## Verify npm Provenance",
+      "## Verify PyPI Attestations",
+      "## Verify GitHub Attestations",
+      "Keep `version_tags_signed` Unmet",
+    ],
+  ],
   ["ROADMAP.md", ["July 2027", "OpenSSF Best Practices"]],
   [
     "SECURITY.md",
