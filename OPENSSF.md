@@ -73,7 +73,7 @@ Repository-specific evidence must still prove the affected criterion.
 
 ## Current Remediation Pull Requests
 
-These pull requests implement repository-specific technical remediation.
+These pull requests implement project-specific and shared-site technical remediation.
 
 Passing checks prove implementation, not independent review or default-branch adoption.
 
@@ -96,6 +96,7 @@ Passing checks prove implementation, not independent review or default-branch ad
 | `x-twitter-scraper-ruby` | [#17](https://github.com/Xquik-dev/x-twitter-scraper-ruby/pull/17) | Bounded RubyGems release verification |
 | `x-twitter-scraper-typescript` | [#15](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/15) | Coverage, licensing, security checks, and reproducible packages |
 | `xquik-haystack` | [#4](https://github.com/Xquik-dev/xquik-haystack/pull/4) | License notices, tests, and coverage |
+| `xquik-docs` | [#17](https://github.com/Xquik-dev/xquik-docs/pull/17) | Shared-site classification, 282 tests, dependency integrity, licensing, security, and static validation |
 
 Each pull request requires a different human reviewer before merging.
 
