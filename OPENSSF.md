@@ -65,12 +65,12 @@ Use each live entry for current status and submitted evidence.
 - All 17 entries mark 4 verified human requirements as Unmet.
 - Each entry includes dated remediation guidance for those requirements.
 - All 17 projects expose a scoped newcomer task.
-- Twelve projects have verified signed release artifacts.
-- Five projects need project-controlled release signature evidence.
+- Fourteen projects have verified signed release artifacts.
+- Three projects need project-controlled release signature evidence.
 - All latest public Git tags remain unsigned.
 - Latest required checks pass on every ready remediation pull request.
 - All 19 ready remediation pull requests are mergeable.
-- All 21 open pull requests have zero unresolved review threads.
+- All 22 open pull requests have zero unresolved review threads.
 
 ## Shared Evidence
 
@@ -146,8 +146,8 @@ Passing checks prove implementation, not independent review or default-branch ad
 | `x-twitter-scraper-cli` | [#13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13) | 91.2% statements, 80.09% branches, BSD notices, portability, and reproducible releases |
 | `x-twitter-scraper-csharp` | [#19](https://github.com/Xquik-dev/x-twitter-scraper-csharp/pull/19) | 94.28% lines, 89.20% branches, security fixes, licensing, and reproducible packages |
 | `x-twitter-scraper-go` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-go/pull/14) | Coverage, race and fuzz tests, licensing, security, and reproducibility |
-| `x-twitter-scraper-java` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/14) | 90.52% maintained lines, 80.77% branches, fuzzing, security, licensing, and reproducibility |
-| `x-twitter-scraper-kotlin` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/pull/14) | 91.06% maintained lines, 80.56% branches, fuzzing, security, licensing, and reproducibility |
+| `x-twitter-scraper-java` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/14) | 90.52% maintained lines, 80.77% branches, fuzzing, security, licensing, reproducibility, and signed Maven releases |
+| `x-twitter-scraper-kotlin` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/pull/14) | 91.06% maintained lines, 80.56% branches, fuzzing, security, licensing, reproducibility, and signed Maven releases |
 | `x-twitter-scraper-php` | [#12](https://github.com/Xquik-dev/x-twitter-scraper-php/pull/12) | 99.18% executable lines, 83.07% branches, security fixes, licensing, and reproducible packages |
 | `x-twitter-scraper-python` | [#18](https://github.com/Xquik-dev/x-twitter-scraper-python/pull/18) | 94.19% statements, 80.89% branches, licensing, security, and reproducible packages |
 | `x-twitter-scraper-ruby` | [#17](https://github.com/Xquik-dev/x-twitter-scraper-ruby/pull/17) | Bounded RubyGems release verification |
@@ -167,12 +167,16 @@ Kotlin reports 39.19% lines and 20.54% branches.
 
 Generated-code coverage applicability remains an explicit assessment gap.
 
-## Pre-Existing Pull Request Audit
+## Other Open Pull Request Audit
 
 - Core [#9](https://github.com/Xquik-dev/x-twitter-scraper/pull/9) remains a conflicting draft.
 - Core [#10](https://github.com/Xquik-dev/x-twitter-scraper/pull/10) remains a behind-base draft.
 - Both drafts contain explicit release blocks.
 - Do not update, merge, tag, or publish either draft.
+- Haystack [#6](https://github.com/Xquik-dev/xquik-haystack/pull/6) is an independent contribution for issue #5.
+- Its added file passes Ruff, and all 18 unit tests pass locally.
+- Required remote checks pass with zero unresolved review threads.
+- GitHub still requires a post-push approval from another person.
 
 ## README & Repository Metadata
 

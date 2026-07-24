@@ -19,16 +19,16 @@ Assessment date: July 24, 2026.
 | `terraform-provider-x-twitter-scraper` | GitHub Releases and Terraform Registry | GitHub SLSA provenance and signed checksums |
 | `x-twitter-scraper-cli` | GitHub Releases | GitHub SLSA provenance |
 | `x-twitter-scraper-ruby` | RubyGems | Sigstore bundle bound to the published gem |
+| `x-twitter-scraper-java`, `x-twitter-scraper-kotlin` | Maven Central | OpenPGP signatures for every published Maven file |
 | `x-twitter-scraper-csharp` | NuGet | Project-controlled signature evidence remains incomplete |
 | `x-twitter-scraper-go` | Go modules | Project-controlled signature evidence remains incomplete |
-| `x-twitter-scraper-java`, `x-twitter-scraper-kotlin` | Maven Central | Current public artifact and signature evidence remains incomplete |
 | `x-twitter-scraper-php` | Packagist | Project-controlled signature evidence remains incomplete |
 
-The first 12 projects have verifiable signed release artifacts.
+The first 14 projects have verifiable signed release artifacts.
 
 Their Silver badge answers still require default-branch documentation.
 
-The remaining 5 projects must add public cryptographic release evidence.
+The remaining 3 projects must add public cryptographic release evidence.
 
 Track that work in [organization issue #4](https://github.com/Xquik-dev/.github/issues/4).
 
@@ -110,6 +110,51 @@ The verified SHA-256 digest is:
 ```text
 ce55622baf95df9b6599db33a7a1627463be3735b891e93177a67f8875d3aaa8
 ```
+
+## Verify Maven Central Signatures
+
+Maven Central publishes detached OpenPGP signatures for Java and Kotlin.
+
+Download an artifact and its signature:
+
+```sh
+project=java
+artifact="x-twitter-scraper-$project-0.5.2.jar"
+base="https://repo.maven.apache.org/maven2/com/xquik/api/x-twitter-scraper-$project/0.5.2"
+
+curl --fail --location --remote-name "$base/$artifact"
+curl --fail --location --remote-name "$base/$artifact.asc"
+```
+
+Import the public key and verify the artifact:
+
+```sh
+gpg --keyserver hkps://keyserver.ubuntu.com \
+  --recv-keys 0xD2037E4157E62A59
+gpg --verify "$artifact.asc" "$artifact"
+```
+
+Set `project=kotlin` to verify the Kotlin SDK.
+
+Confirm this full fingerprint before trusting the key:
+
+```text
+6965 E561 C0AC EE32 060A B961 D203 7E41 57E6 2A59
+```
+
+The verified root JAR SHA-256 digests are:
+
+```text
+Java:   87a9b770f16b32d016fac4220a5ec626d32871e692d9b7bc8d261be8e0a58e89
+Kotlin: 912278aac18d6e78b0f56e790eb3cdb387d1bf30e7b188086bc86095b9201734
+```
+
+The audit verified 30 files across 6 Maven components.
+
+Consumer CI independently verified both root artifacts:
+
+- [Java release verification](https://github.com/Xquik-dev/x-twitter-scraper-java/actions/runs/30076440647)
+- [Kotlin release verification](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/actions/runs/30076440671)
 
 ## Verify GitHub Attestations
 
