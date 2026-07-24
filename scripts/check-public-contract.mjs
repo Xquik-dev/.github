@@ -10,6 +10,16 @@ const SERVER_CARD_URL = "https://xquik.com/.well-known/mcp/server-card.json";
 const HTTP_METHODS = new Set(["delete", "get", "head", "options", "patch", "post", "put", "trace"]);
 const INDEPENDENCE_NOTICE =
   'Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.';
+const REPOSITORY_DESCRIPTION_NOTICE = "Not affiliated with X Corp.";
+const DISCOVERY_TOPICS = new Set([
+  "tweet-search",
+  "twitter-api",
+  "twitter-scraper",
+  "x-api",
+  "x-automation",
+]);
+const VAGUE_LINK_TEXT = /\[(?:click here|here|link|read more)\]\(/iu;
+const EMPTY_IMAGE_ALT = /!\[\s*\]\(/u;
 const COMMUNITY_POLICY_REQUIREMENTS = new Map([
   [
     "ASSURANCE.md",
@@ -193,6 +203,24 @@ function visibleMarkdown(markdown) {
   return markdown.replace(/[*_`>#]/gu, "").replace(/\s+/gu, " ").trim();
 }
 
+function markdownHeadings(markdown) {
+  const headings = [];
+  let fence = null;
+  for (const line of markdown.split(/\r?\n/u)) {
+    const fenceMatch = /^ {0,3}(`{3,}|~{3,})/u.exec(line);
+    if (fenceMatch) {
+      const marker = fenceMatch[1][0];
+      if (fence === null) fence = marker;
+      else if (fence === marker) fence = null;
+      continue;
+    }
+    if (fence !== null) continue;
+    const heading = /^ {0,3}(#{1,6})[ \t]+(.+?)[ \t]*#*[ \t]*$/u.exec(line);
+    if (heading) headings.push({ level: heading[1].length, text: heading[2].trim() });
+  }
+  return headings;
+}
+
 function resolveParameter(openApi, parameter) {
   if (!parameter?.$ref) return parameter;
   const name = parameter.$ref.split("/").at(-1);
@@ -218,6 +246,37 @@ async function checkRepoReadmes(repos) {
       const path = repo.name === ".github" ? "profile/README.md" : "README.md";
       const readme = await loadRepoFile(repo, path);
       const visible = visibleMarkdown(readme);
+      const headings = markdownHeadings(readme);
+      const titleHeadings = headings.filter(({ level }) => level === 1);
+      const sectionHeadings = headings.filter(({ level }) => level === 2);
+      if (titleHeadings.length !== 1) {
+        throw new Error(`${repo.name}/${path} must contain exactly one top-level heading.`);
+      }
+      const title = titleHeadings[0].text;
+      if (title.length < 10 || title.length > 110) {
+        throw new Error(`${repo.name}/${path} has an unclear title length: ${title.length}.`);
+      }
+      if (sectionHeadings.length < 3) {
+        throw new Error(`${repo.name}/${path} needs at least 3 descriptive sections.`);
+      }
+      if (
+        !sectionHeadings.some(({ text }) =>
+          /\b(?:choose|command|operation|question|search|start|task|tool|use|workflow)s?\b/iu.test(
+            text,
+          ),
+        )
+      ) {
+        throw new Error(`${repo.name}/${path} needs a task-oriented section heading.`);
+      }
+      if (repo.name !== ".github" && !/^ {0,3}(?:`{3,}|~{3,})/mu.test(readme)) {
+        throw new Error(`${repo.name}/${path} needs a runnable or copyable example.`);
+      }
+      if (VAGUE_LINK_TEXT.test(readme)) {
+        throw new Error(`${repo.name}/${path} contains vague link text.`);
+      }
+      if (EMPTY_IMAGE_ALT.test(readme)) {
+        throw new Error(`${repo.name}/${path} contains an image without alternative text.`);
+      }
       if (!visible.includes(INDEPENDENCE_NOTICE)) {
         throw new Error(`${repo.name}/${path} is missing the approved independence notice.`);
       }
@@ -225,6 +284,31 @@ async function checkRepoReadmes(repos) {
       if (stale) throw new Error(`${repo.name}/${path} contains stale public copy: ${stale}.`);
     }),
   );
+}
+
+function checkRepoDiscovery(repos) {
+  for (const repo of repos) {
+    const description = repo.description?.trim() ?? "";
+    const topics = repo.topics ?? [];
+    if (description.length < 70 || description.length > 200) {
+      throw new Error(`${repo.name} has an unclear repository description length.`);
+    }
+    if (!description.endsWith(REPOSITORY_DESCRIPTION_NOTICE)) {
+      throw new Error(`${repo.name} is missing the compact independence notice.`);
+    }
+    if (!repo.homepage?.startsWith("https://")) {
+      throw new Error(`${repo.name} needs an HTTPS homepage.`);
+    }
+    if (topics.length < 5 || topics.length > 20) {
+      throw new Error(`${repo.name} must use 5-20 accurate discovery topics.`);
+    }
+    if (!topics.includes("xquik")) {
+      throw new Error(`${repo.name} is missing the xquik discovery topic.`);
+    }
+    if (!topics.some((topic) => DISCOVERY_TOPICS.has(topic))) {
+      throw new Error(`${repo.name} is missing an accurate customer-intent topic.`);
+    }
+  }
 }
 
 async function checkCommunityPolicies() {
@@ -292,6 +376,8 @@ const textCount = requireCount(
   "JSON/text operations",
   /(?<count>\d+) (?:JSON or text operations|JSON\/text ops)\b/u,
 );
+
+checkRepoDiscovery(repos);
 
 if (cardRestCount !== restCount) {
   throw new Error(`Server card says ${cardRestCount} REST operations; OpenAPI has ${restCount}.`);
