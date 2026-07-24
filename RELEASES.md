@@ -10,7 +10,7 @@ Verify the signer identity, repository, artifact digest, and expected workflow.
 
 ## Evidence Status
 
-Assessment date: July 24, 2026.
+Assessment date: July 25, 2026.
 
 | Projects | Distribution | Current Public Evidence |
 | --- | --- | --- |
@@ -134,7 +134,7 @@ gpg --keyserver hkps://keyserver.ubuntu.com \
 gpg --verify "$artifact.asc" "$artifact"
 ```
 
-Set `project=kotlin` and `version=0.5.2` to verify Kotlin.
+Set `project=kotlin` and `version=0.5.3` to verify Kotlin.
 
 Confirm this full fingerprint before trusting the key:
 
@@ -146,7 +146,7 @@ The verified root JAR SHA-256 digests are:
 
 ```text
 Java:   17aaf5366ab6ad65869e5fb4f92acb2351bb08e0a12a0d4fcab6de8875193916
-Kotlin: 912278aac18d6e78b0f56e790eb3cdb387d1bf30e7b188086bc86095b9201734
+Kotlin: 6e083f62f50231bbce09b99c6c6fe5b8f5ade1babaefac8220d80897df93cdf1
 ```
 
 The audit verified 15 Java artifacts and their signatures.
@@ -157,10 +157,10 @@ It also verified 15 Kotlin artifacts and their signatures.
 
 They span 3 Maven components.
 
-Consumer CI independently verified both root artifacts:
+Public workflows verified both root artifacts after registry publication:
 
 - [Java release verification](https://github.com/Xquik-dev/x-twitter-scraper-java/actions/runs/30110262525)
-- [Kotlin release verification](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/actions/runs/30076440671)
+- [Kotlin release verification](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/actions/runs/30125831619)
 
 ## Verify GitHub Attestations
 
