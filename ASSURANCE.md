@@ -69,6 +69,21 @@ Each public project must preserve these claims:
 | Supply-chain integrity | Dependencies and workflows remain reviewable, pinned, and scanned |
 | Release integrity | Published artifacts remain reproducible and cryptographically verifiable |
 
+### Repository Access Assurance
+
+GitHub requires 2FA for all organization members.
+
+On July 24, 2026, the sole maintainer verified these account settings:
+
+- 2FA is enabled.
+- A passkey is configured and preferred.
+- An authenticator app is configured.
+- SMS is not configured.
+
+These controls satisfy `require_2FA` and `secure_2FA`.
+
+Reverify them after any organization membership or authentication change.
+
 ## Threat Model
 
 ### Protected Assets

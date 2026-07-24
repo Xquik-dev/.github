@@ -64,6 +64,7 @@ Use each live entry for current status and submitted evidence.
 - Every required Silver explanation and evidence URL is present.
 - All 17 entries mark 4 verified human requirements as Unmet.
 - Each entry includes dated remediation guidance for those requirements.
+- All 17 entries mark cryptographic 2FA as Met.
 - All 17 projects expose a scoped newcomer task.
 - Fourteen projects have verified signed release artifacts.
 - Three projects need project-controlled release signature evidence.
@@ -118,6 +119,9 @@ These tasks satisfy the Gold `small_tasks` evidence requirement.
 ## Verified Organization Controls
 
 - GitHub requires two-factor authentication for organization members.
+- The sole maintainer prefers a configured passkey for GitHub 2FA.
+- An authenticator app provides an additional cryptographic 2FA method.
+- SMS is not configured as a GitHub 2FA method.
 - Every public repository supports private vulnerability reporting.
 - Every default branch requires 1 current approval.
 - The last pusher cannot provide that approval.
