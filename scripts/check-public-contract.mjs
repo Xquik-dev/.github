@@ -330,6 +330,14 @@ function checkRepoDiscovery(repos) {
     if (!description.endsWith(REPOSITORY_DESCRIPTION_NOTICE)) {
       throw new Error(`${repo.name} is missing the compact independence notice.`);
     }
+    const purpose = description
+      .slice(0, -REPOSITORY_DESCRIPTION_NOTICE.length)
+      .replace(/\.\s*$/u, "")
+      .trim();
+    const purposeWords = purpose.split(/\s+/u).length;
+    if (purposeWords < 7 || purposeWords > 14) {
+      throw new Error(`${repo.name} must use 7-14 words before its independence notice.`);
+    }
     if (!repo.homepage?.startsWith("https://")) {
       throw new Error(`${repo.name} needs an HTTPS homepage.`);
     }

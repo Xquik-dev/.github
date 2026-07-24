@@ -212,7 +212,9 @@ Topics remain specific to supported languages, workflows, and customer tasks.
 
 Every public repository now includes the `xquik` discovery topic.
 
-Descriptions contain 94 to 185 characters.
+Descriptions contain 94 to 140 characters.
+
+Each opening sentence contains 9 to 14 words.
 
 Each repository uses 14 to 20 accurate topics.
 
