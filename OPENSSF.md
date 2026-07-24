@@ -87,6 +87,7 @@ Passing checks prove implementation, not independent review or default-branch ad
 | `tweetclaw` | [#21](https://github.com/Xquik-dev/tweetclaw/pull/21) | Security boundaries, tests, coverage, and public disclosures |
 | `x-twitter-scraper` | [#19](https://github.com/Xquik-dev/x-twitter-scraper/pull/19) | Coverage, licensing, security, reproducibility, and public disclosures |
 | `x-twitter-scraper-cli` | [#13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13) | 91.2% statements, 80.09% branches, BSD notices, portability, and reproducible releases |
+| `x-twitter-scraper-csharp` | [#19](https://github.com/Xquik-dev/x-twitter-scraper-csharp/pull/19) | 94.28% lines, 89.20% branches, security fixes, licensing, and reproducible packages |
 | `x-twitter-scraper-go` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-go/pull/14) | Coverage, race and fuzz tests, licensing, security, and reproducibility |
 | `x-twitter-scraper-php` | [#12](https://github.com/Xquik-dev/x-twitter-scraper-php/pull/12) | 99.18% executable lines, 89.25% branches, security fixes, licensing, and reproducible packages |
 | `x-twitter-scraper-python` | [#18](https://github.com/Xquik-dev/x-twitter-scraper-python/pull/18) | 94.19% statements, 80.89% branches, licensing, security, and reproducible packages |
