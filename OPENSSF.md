@@ -69,9 +69,8 @@ Use each live entry for current status and submitted evidence.
 - Three projects need project-controlled release signature evidence.
 - All 17 software projects protect `v*` tags against destructive updates.
 - All latest public Git tags remain unsigned.
-- Thirteen projects meet the six-month regression ratio on default branches.
+- All 15 projects with qualifying fixes meet the six-month regression ratio.
 - Two projects have no qualifying fixes and use `N/A`.
-- TypeScript and Haystack regression evidence remains pending.
 
 ## Shared Evidence
 
@@ -150,30 +149,29 @@ These pull requests establish project-specific and shared technical controls.
 | `x-twitter-scraper-csharp` | [#19](https://github.com/Xquik-dev/x-twitter-scraper-csharp/pull/19) | Merged | Coverage, security fixes, licensing, and reproducible packages |
 | `x-twitter-scraper-go` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-go/pull/14) | Merged | Coverage, race tests, fuzzing, licensing, security, and reproducibility |
 | `x-twitter-scraper-java` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/14) | Merged | Maintained coverage, fuzzing, security, licensing, and reproducibility |
-| `x-twitter-scraper-kotlin` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/pull/14) | Open | Generated-inclusive coverage, fuzzing, security, licensing, and reproducibility |
+| `x-twitter-scraper-kotlin` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/pull/14) | Merged | Generated-inclusive coverage, fuzzing, security, licensing, and reproducibility |
 | `x-twitter-scraper-php` | [#12](https://github.com/Xquik-dev/x-twitter-scraper-php/pull/12) | Merged | Coverage, security fixes, licensing, and reproducible packages |
 | `x-twitter-scraper-python` | [#18](https://github.com/Xquik-dev/x-twitter-scraper-python/pull/18) | Merged | Coverage, licensing, security, and reproducible packages |
 | `x-twitter-scraper-ruby` | [#17](https://github.com/Xquik-dev/x-twitter-scraper-ruby/pull/17) | Merged | Coverage, licensing, reproducibility, and release verification |
 | `x-twitter-scraper-typescript` | [#15](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/15) | Merged | Coverage, licensing, security, and reproducible packages |
-| `xquik-haystack` | [#4](https://github.com/Xquik-dev/xquik-haystack/pull/4) | Open | License notices, regression tests, coverage, and reproducibility |
+| `xquik-haystack` | [#4](https://github.com/Xquik-dev/xquik-haystack/pull/4) | Merged | License notices, regression tests, coverage, and reproducibility |
 | `xquik-docs` | [#17](https://github.com/Xquik-dev/xquik-docs/pull/17) | Merged | Shared-site assurance, tests, integrity, licensing, and security |
 
-Seventeen baseline pull requests have merged.
-Kotlin #14 and Haystack #4 still need independent review.
+All 19 baseline pull requests have merged.
 
 Do not count pending changes as default-branch evidence.
 
 Java [#17](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/17)
-raises generated-inclusive coverage to 94.05% lines and 92.81% branches.
+records 94.05% generated-inclusive line coverage and 92.81% branch coverage.
 
-Kotlin #14 raises generated-inclusive coverage to 92.70% lines and 91.87% branches.
+Kotlin #14 records 92.70% generated-inclusive line coverage and 91.87% branch coverage.
 
 TypeScript [#18](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/18)
-adds 2 pending regression guards.
+adds 2 regression guards.
 
 Hermes [#612](https://github.com/Xquik-dev/hermes-tweet/pull/612)
 and Paperclip [#6](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/6)
-add pending reproducible-package evidence.
+add reproducible-package evidence.
 
 ## Other Open Pull Request Audit
 
@@ -244,14 +242,7 @@ Track human prerequisites in [organization issue #3](https://github.com/Xquik-de
 
 Track scoped human reviews in [organization issue #5](https://github.com/Xquik-dev/.github/issues/5).
 
-These technical changes still need default-branch adoption:
-
-- Kotlin [#14](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/pull/14).
-- Haystack [#4](https://github.com/Xquik-dev/xquik-haystack/pull/4).
-- Java generated coverage [#17](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/17).
-- TypeScript regression tests [#18](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/18).
-- Hermes reproducibility [#612](https://github.com/Xquik-dev/hermes-tweet/pull/612).
-- Paperclip reproducibility [#6](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/6).
+All listed technical remediation changes now have default-branch adoption.
 
 Three projects still need project-controlled release signature evidence.
 

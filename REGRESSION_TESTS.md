@@ -42,8 +42,8 @@ Do not count pending pull-request evidence until merge.
 | `x-twitter-scraper-php` | 4 | 4 | 100% | Met |
 | `x-twitter-scraper-python` | 2 | 2 | 100% | Met |
 | `x-twitter-scraper-ruby` | 5 | 4 | 80% | Met |
-| `x-twitter-scraper-typescript` | 3 | 1 | 33.3% | Unmet pending #18 |
-| `xquik-haystack` | 1 | 0 | 0% | Unmet pending #4 |
+| `x-twitter-scraper-typescript` | 3 | 3 | 100% | Met |
+| `xquik-haystack` | 1 | 1 | 100% | Met |
 
 ## Project Evidence
 
@@ -299,20 +299,16 @@ The [TypeScript changelog](https://github.com/Xquik-dev/x-twitter-scraper-typesc
 [Client authentication tests](https://github.com/Xquik-dev/x-twitter-scraper-typescript/blob/main/tests/index.test.ts) protect the first defect.
 
 [PR #18](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/18) protects the other 2 defects.
-Its evidence remains pending until independent review and merge.
 
-The default-branch ratio is 1 of 3.
-The post-merge ratio will be 3 of 3.
+The ratio is 3 of 3.
 
 ### Haystack Integration
 
 Count the [installed Twine invocation fix](https://github.com/Xquik-dev/xquik-haystack/commit/1b49376f0d7b62b4feffe4c64a1f5cefe4959f0f).
 
 [PR #4](https://github.com/Xquik-dev/xquik-haystack/pull/4) adds its regression assertion.
-Its evidence remains pending until independent review and merge.
 
-The default-branch ratio is 0 of 1.
-The post-merge ratio will be 1 of 1.
+The ratio is 1 of 1.
 
 ## Shared Project Sites
 
