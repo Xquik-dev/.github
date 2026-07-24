@@ -208,6 +208,36 @@ Keep `version_tags_signed` Unmet until important tags are verifiable.
 
 Artifact attestations do not make an unsigned Git tag signed.
 
+## Future Signed Tags
+
+Sign every future major, minor, and vulnerability-fix tag.
+
+Use a GitHub-verified signing key.
+
+Never replace or force-push a published tag.
+
+Follow GitHub's [tag signing guide](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-tags).
+
+Configure each isolated release worktree:
+
+```sh
+git config gpg.format ssh
+git config user.signingkey /secure/path/to/signing-key
+git config gpg.ssh.allowedSignersFile /secure/path/to/allowed-signers
+git config tag.gpgSign true
+```
+
+Create and verify the tag before pushing:
+
+```sh
+git tag -s "$version" -m "Release $version"
+git tag -v "$version"
+```
+
+Never commit a private signing key.
+
+Keep `version_tags_signed` Unmet until important public tags pass verification.
+
 ## Release Requirements
 
 Before publishing:
