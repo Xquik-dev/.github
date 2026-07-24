@@ -65,8 +65,8 @@ Use each live entry for current status and submitted evidence.
 - All 17 entries mark 4 verified human requirements as Unmet.
 - Each entry includes dated remediation guidance for those requirements.
 - All 17 projects expose a scoped newcomer task.
-- Eleven projects have verified signed release artifacts.
-- Six projects need project-controlled release signature evidence.
+- Twelve projects have verified signed release artifacts.
+- Five projects need project-controlled release signature evidence.
 - All latest public Git tags remain unsigned.
 - Latest required checks pass on every ready remediation pull request.
 - All 19 ready remediation pull requests are mergeable.

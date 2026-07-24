@@ -10,10 +10,12 @@ on:
       - main
     paths:
       - ".github/workflows/public-contract.yml"
+      - "ASSURANCE.md"
       - "CODE_OF_CONDUCT.md"
       - "CONTRIBUTING.md"
       - "GOVERNANCE.md"
       - "OPENSSF.md"
+      - "RELEASES.md"
       - "REVIEWING.md"
       - "ROADMAP.md"
       - "SECURITY.md"

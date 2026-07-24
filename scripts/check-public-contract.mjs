@@ -46,7 +46,9 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
     [
       "## Verify npm Provenance",
       "## Verify PyPI Attestations",
+      "## Verify RubyGems Attestations",
       "## Verify GitHub Attestations",
+      "ce55622baf95df9b6599db33a7a1627463be3735b891e93177a67f8875d3aaa8",
       "Keep `version_tags_signed` Unmet",
     ],
   ],
