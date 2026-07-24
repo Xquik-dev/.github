@@ -204,6 +204,25 @@ All descriptions include the compact independence notice.
 
 Topics remain specific to supported languages, workflows, and customer tasks.
 
+Every public repository now includes the `xquik` discovery topic.
+
+Descriptions contain 94 to 185 characters.
+
+Each repository uses 14 to 20 accurate topics.
+
+The public contract check now preserves these discovery requirements:
+
+- One clear README title and at least 3 descriptive sections.
+- A task-oriented section and copyable example for each project repository.
+- Descriptive link text and alternative text for images.
+- An HTTPS homepage and a concise repository description.
+- The `xquik` topic and at least one supported customer-intent topic.
+- No more than 20 repository topics.
+
+These checks favor useful structure and accurate terms.
+
+They do not require keyword lists or duplicate questions.
+
 ## Known Gold Gaps
 
 The organization currently has one member.
