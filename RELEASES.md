@@ -81,14 +81,14 @@ RubyGems publishes a Sigstore bundle for the current gem.
 Download the gem and its bundle:
 
 ```sh
-gem_file=x-twitter-scraper-0.5.4.gem
+gem_file=x-twitter-scraper-0.5.5.gem
 bundle_file="$gem_file.sigstore.json"
 
 curl --fail --location --output "$gem_file" \
   "https://rubygems.org/downloads/$gem_file"
 
 curl --fail --location \
-  https://rubygems.org/api/v1/attestations/x-twitter-scraper-0.5.4.json \
+  https://rubygems.org/api/v1/attestations/x-twitter-scraper-0.5.5.json \
   | jq '.[0]' > "$bundle_file"
 ```
 
@@ -97,7 +97,7 @@ Verify the exact workflow identity:
 ```sh
 gem exec sigstore-cli:0.2.3 verify \
   --bundle="$bundle_file" \
-  --certificate-identity=https://github.com/Xquik-dev/x-twitter-scraper-ruby/.github/workflows/publish-gem.yml@refs/tags/v0.5.4 \
+  --certificate-identity=https://github.com/Xquik-dev/x-twitter-scraper-ruby/.github/workflows/publish-gem.yml@refs/tags/v0.5.5 \
   --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
   "$gem_file"
 ```
@@ -107,7 +107,7 @@ Require an `OK` result for the downloaded artifact.
 The verified SHA-256 digest is:
 
 ```text
-ce55622baf95df9b6599db33a7a1627463be3735b891e93177a67f8875d3aaa8
+6dfdcabd408a330d80ef87f4e650aca0004ba8a0eb8b49cb92e06a97a7cf5502
 ```
 
 ## Verify Maven Central Signatures
@@ -118,8 +118,9 @@ Download an artifact and its signature:
 
 ```sh
 project=java
-artifact="x-twitter-scraper-$project-0.5.2.jar"
-base="https://repo.maven.apache.org/maven2/com/xquik/api/x-twitter-scraper-$project/0.5.2"
+version=0.6.0
+artifact="x-twitter-scraper-$project-$version.jar"
+base="https://repo.maven.apache.org/maven2/com/xquik/api/x-twitter-scraper-$project/$version"
 
 curl --fail --location --remote-name "$base/$artifact"
 curl --fail --location --remote-name "$base/$artifact.asc"
@@ -133,7 +134,7 @@ gpg --keyserver hkps://keyserver.ubuntu.com \
 gpg --verify "$artifact.asc" "$artifact"
 ```
 
-Set `project=kotlin` to verify the Kotlin SDK.
+Set `project=kotlin` and `version=0.5.2` to verify Kotlin.
 
 Confirm this full fingerprint before trusting the key:
 
@@ -144,15 +145,21 @@ Confirm this full fingerprint before trusting the key:
 The verified root JAR SHA-256 digests are:
 
 ```text
-Java:   87a9b770f16b32d016fac4220a5ec626d32871e692d9b7bc8d261be8e0a58e89
+Java:   17aaf5366ab6ad65869e5fb4f92acb2351bb08e0a12a0d4fcab6de8875193916
 Kotlin: 912278aac18d6e78b0f56e790eb3cdb387d1bf30e7b188086bc86095b9201734
 ```
 
-The audit verified 30 files across 6 Maven components.
+The audit verified 15 Java artifacts and their signatures.
+
+They span 3 Maven components.
+
+It also verified 15 Kotlin artifacts and their signatures.
+
+They span 3 Maven components.
 
 Consumer CI independently verified both root artifacts:
 
-- [Java release verification](https://github.com/Xquik-dev/x-twitter-scraper-java/actions/runs/30076440647)
+- [Java release verification](https://github.com/Xquik-dev/x-twitter-scraper-java/actions/runs/30110262525)
 - [Kotlin release verification](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/actions/runs/30076440671)
 
 ## Verify GitHub Attestations
@@ -249,7 +256,7 @@ Every standalone repository has an active ruleset for `v*` tags.
 
 All 17 rulesets block deletion and non-fast-forward updates.
 
-The Terraform provider also restricts creation to its approved release actor.
+The rulesets currently allow tag creation.
 
 These rules preserve published tag identity.
 

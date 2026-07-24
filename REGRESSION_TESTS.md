@@ -2,7 +2,7 @@
 
 This register supports the OpenSSF Gold `regression_tests_added50` criterion.
 
-The snapshot date is July 24, 2026.
+The snapshot date is July 25, 2026.
 The review window starts January 24, 2026.
 
 ## Counting Rules

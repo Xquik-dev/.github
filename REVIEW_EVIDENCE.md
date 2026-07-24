@@ -29,29 +29,29 @@ It uses these conservative rules:
 
 See the [code review policy](REVIEWING.md).
 
-## July 24, 2026 Result
+## July 25, 2026 Result
 
 All 17 projects meet the required 50% threshold.
 
 | Repository | Reviewed Commits | Total Commits | Ratio |
 | --- | ---: | ---: | ---: |
-| `hermes-tweet` | 4 | 6 | 66.7% |
-| `n8n-nodes-xquik` | 3 | 4 | 75.0% |
+| `hermes-tweet` | 5 | 7 | 71.4% |
+| `n8n-nodes-xquik` | 4 | 5 | 80.0% |
 | `paperclip-plugin-xquik` | 3 | 4 | 75.0% |
 | `prefect-xquik` | 4 | 5 | 80.0% |
-| `terraform-provider-x-twitter-scraper` | 10 | 11 | 90.9% |
-| `tweetclaw` | 1 | 2 | 50.0% |
-| `x-twitter-scraper` | 3 | 4 | 75.0% |
-| `x-twitter-scraper-cli` | 10 | 11 | 90.9% |
-| `x-twitter-scraper-csharp` | 8 | 10 | 80.0% |
-| `x-twitter-scraper-go` | 7 | 8 | 87.5% |
-| `x-twitter-scraper-java` | 13 | 14 | 92.9% |
-| `x-twitter-scraper-kotlin` | 2 | 3 | 66.7% |
-| `x-twitter-scraper-php` | 11 | 12 | 91.7% |
-| `x-twitter-scraper-python` | 5 | 6 | 83.3% |
-| `x-twitter-scraper-ruby` | 6 | 7 | 85.7% |
-| `x-twitter-scraper-typescript` | 6 | 9 | 66.7% |
-| `xquik-haystack` | 1 | 2 | 50.0% |
+| `terraform-provider-x-twitter-scraper` | 11 | 12 | 91.7% |
+| `tweetclaw` | 2 | 3 | 66.7% |
+| `x-twitter-scraper` | 4 | 5 | 80.0% |
+| `x-twitter-scraper-cli` | 11 | 12 | 91.7% |
+| `x-twitter-scraper-csharp` | 9 | 11 | 81.8% |
+| `x-twitter-scraper-go` | 8 | 9 | 88.9% |
+| `x-twitter-scraper-java` | 14 | 15 | 93.3% |
+| `x-twitter-scraper-kotlin` | 3 | 4 | 75.0% |
+| `x-twitter-scraper-php` | 12 | 13 | 92.3% |
+| `x-twitter-scraper-python` | 6 | 7 | 85.7% |
+| `x-twitter-scraper-ruby` | 7 | 8 | 87.5% |
+| `x-twitter-scraper-typescript` | 7 | 10 | 70.0% |
+| `xquik-haystack` | 3 | 4 | 75.0% |
 
 The audit intentionally retains unreviewed commits in every denominator.
 

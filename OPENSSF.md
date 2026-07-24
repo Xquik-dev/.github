@@ -51,13 +51,13 @@ Use each live entry for current status and submitted evidence.
 | `x-twitter-scraper-typescript` | [OpenSSF project 13740](https://www.bestpractices.dev/projects/13740) |
 | `xquik-haystack` | [OpenSSF project 13741](https://www.bestpractices.dev/projects/13741) |
 
-## July 24, 2026 Audit Snapshot
+## July 25, 2026 Audit Snapshot
 
 - Xquik-dev has 19 public repositories.
 - Seventeen repositories are standalone software projects.
 - All 17 live entries report Passing at 100%.
-- Silver completion ranges from 89% to 96%.
-- Gold completion ranges from 35% to 74%.
+- Silver completion is 98% for every project.
+- Gold completion ranges from 65% to 78%.
 - All 55 Silver and 23 Gold fields have explicit classifications.
 - No Silver or Gold field remains unknown.
 - Every required Silver explanation and evidence URL is present.
@@ -175,11 +175,11 @@ Hermes [#612](https://github.com/Xquik-dev/hermes-tweet/pull/612)
 and Paperclip [#6](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/6)
 add reproducible-package evidence.
 
-Fifteen projects now have default-branch debug-preservation evidence.
+All 17 projects now have default-branch debug-preservation evidence.
 
 Terraform [#14](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/14)
 and CLI [#16](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/16)
-remain pending.
+merged independently reviewed verification.
 
 See [debug-information evidence](BUILD_DEBUG.md) for the complete assessment.
 
@@ -254,8 +254,6 @@ Track human prerequisites in [organization issue #3](https://github.com/Xquik-de
 Track the maintainer nomination in [organization issue #8](https://github.com/Xquik-dev/.github/issues/8).
 
 Track scoped human reviews in [organization issue #5](https://github.com/Xquik-dev/.github/issues/5).
-
-Two debug-information remediations still await default-branch adoption.
 
 All 17 projects now have project-controlled release signature evidence.
 

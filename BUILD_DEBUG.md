@@ -2,7 +2,7 @@
 
 This register supports the OpenSSF Gold `build_preserve_debug` criterion.
 
-The snapshot date is July 24, 2026.
+The snapshot date is July 25, 2026.
 
 This register covers all 17 standalone software projects.
 
@@ -20,10 +20,10 @@ Do not count pending changes as default-branch evidence.
 | `n8n-nodes-xquik` | Met | [TypeScript build configuration](https://github.com/Xquik-dev/n8n-nodes-xquik/blob/main/tsconfig.json) | TypeScript emits source maps into the published `dist` directory. |
 | `paperclip-plugin-xquik` | Met | [esbuild configuration](https://github.com/Xquik-dev/paperclip-plugin-xquik/blob/main/esbuild.config.mjs) | esbuild emits source maps with both published bundles. |
 | `prefect-xquik` | Met | [Python package configuration](https://github.com/Xquik-dev/prefect-xquik/blob/main/pyproject.toml) | The wheel preserves Python sources. No stripping step exists. |
-| `terraform-provider-x-twitter-scraper` | Pending | [Debug-preservation PR #14](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/14) | The PR removes stripping and verifies DWARF sections. |
+| `terraform-provider-x-twitter-scraper` | Met | [Release configuration](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/blob/main/.goreleaser.yml) and [debug check](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/blob/main/bin/check-release-debug-info) | GoReleaser retains DWARF data. Required CI verifies the release binary. |
 | `tweetclaw` | Met | [TypeScript build configuration](https://github.com/Xquik-dev/tweetclaw/blob/master/tsconfig.json) | TypeScript emits source maps into the published `dist` directory. |
 | `x-twitter-scraper` | Met | [Published package configuration](https://github.com/Xquik-dev/x-twitter-scraper/blob/master/package.json) | npm installs source assets directly. No stripping step exists. |
-| `x-twitter-scraper-cli` | Pending | [Debug-preservation PR #16](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/16) | The PR removes stripping and verifies DWARF sections. |
+| `x-twitter-scraper-cli` | Met | [Release configuration](https://github.com/Xquik-dev/x-twitter-scraper-cli/blob/main/.goreleaser.yml) and [debug check](https://github.com/Xquik-dev/x-twitter-scraper-cli/blob/main/bin/check-release-debug-info) | GoReleaser retains DWARF data. Required CI verifies the release binary. |
 | `x-twitter-scraper-csharp` | Met | [.NET build properties](https://github.com/Xquik-dev/x-twitter-scraper-csharp/blob/main/src/Directory.Build.props) | Release packages include symbols with embedded debug information. |
 | `x-twitter-scraper-go` | Met | [Go build check](https://github.com/Xquik-dev/x-twitter-scraper-go/blob/main/scripts/lint) | `go build` honors `GOFLAGS` and does not strip output. |
 | `x-twitter-scraper-java` | Met | [JVM build configuration](https://github.com/Xquik-dev/x-twitter-scraper-java/blob/main/buildSrc/src/main/kotlin/x-twitter-scraper.java.gradle.kts) | Gradle preserves source and line tables in JVM classes. |
