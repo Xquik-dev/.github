@@ -89,7 +89,7 @@ Passing checks prove implementation, not independent review or default-branch ad
 | `x-twitter-scraper-cli` | [#13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13) | 91.2% statements, 80.09% branches, BSD notices, portability, and reproducible releases |
 | `x-twitter-scraper-csharp` | [#19](https://github.com/Xquik-dev/x-twitter-scraper-csharp/pull/19) | 94.28% lines, 89.20% branches, security fixes, licensing, and reproducible packages |
 | `x-twitter-scraper-go` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-go/pull/14) | Coverage, race and fuzz tests, licensing, security, and reproducibility |
-| `x-twitter-scraper-php` | [#12](https://github.com/Xquik-dev/x-twitter-scraper-php/pull/12) | 99.18% executable lines, 89.25% branches, security fixes, licensing, and reproducible packages |
+| `x-twitter-scraper-php` | [#12](https://github.com/Xquik-dev/x-twitter-scraper-php/pull/12) | 99.18% executable lines, 88.05% branches, security fixes, licensing, and reproducible packages |
 | `x-twitter-scraper-python` | [#18](https://github.com/Xquik-dev/x-twitter-scraper-python/pull/18) | 94.19% statements, 80.89% branches, licensing, security, and reproducible packages |
 | `x-twitter-scraper-ruby` | [#17](https://github.com/Xquik-dev/x-twitter-scraper-ruby/pull/17) | Bounded RubyGems release verification |
 | `x-twitter-scraper-typescript` | [#15](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/15) | Coverage, licensing, security checks, and reproducible packages |
