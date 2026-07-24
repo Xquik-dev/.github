@@ -242,6 +242,8 @@ Open remediation pull requests cannot satisfy these human requirements.
 
 Track human prerequisites in [organization issue #3](https://github.com/Xquik-dev/.github/issues/3).
 
+Track scoped human reviews in [organization issue #5](https://github.com/Xquik-dev/.github/issues/5).
+
 These Silver and Gold areas still need default-branch evidence:
 
 - Repository-specific architecture and assurance cases.
