@@ -37,6 +37,16 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
     ["Developer Certificate of Origin", "git commit -s", "good first issue"],
   ],
   [
+    "DISCOVERY.md",
+    [
+      "## Repository Metadata",
+      "## README Structure",
+      "## Answer-Engine & Agent Readiness",
+      "Do not repeat keyword variants without adding useful information.",
+      "Do not treat `llms.txt` as a Google ranking signal.",
+    ],
+  ],
+  [
     "GOVERNANCE.md",
     ["## Roles", "## Continuity", "does not meet this continuity target yet"],
   ],
