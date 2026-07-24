@@ -78,6 +78,11 @@ Repository-specific evidence must still prove the affected criterion.
 
 - GitHub requires two-factor authentication for organization members.
 - Every public repository supports private vulnerability reporting.
+- Every default branch requires 1 current approval.
+- The last pusher cannot provide that approval.
+- Administrators cannot bypass required checks or reviews.
+- Every default branch dismisses stale reviews and requires resolved conversations.
+- Every default branch blocks force pushes and deletion.
 - Seventeen standalone projects have current Passing badges.
 - Seventeen standalone projects run required CI checks.
 
