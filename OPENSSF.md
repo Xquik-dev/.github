@@ -56,9 +56,12 @@ Use each live entry for current status and submitted evidence.
 - Xquik-dev has 19 public repositories.
 - Seventeen repositories are standalone software projects.
 - All 17 live entries report Passing at 100%.
-- All 17 entries report Silver completion at 9%.
-- Fifteen entries report Gold completion at 13%.
-- `n8n-nodes-xquik` and `x-twitter-scraper` report Gold completion at 26%.
+- All 17 entries report Silver completion at 84%.
+- Fifteen entries report Gold completion at 30%.
+- `n8n-nodes-xquik` and `x-twitter-scraper` report Gold completion at 43%.
+- All 55 Silver and 23 Gold fields have explicit classifications.
+- No Silver or Gold field remains unknown.
+- Every required Silver explanation and evidence URL is present.
 - All 17 entries mark 4 verified human requirements as Unmet.
 - Each entry includes dated remediation guidance for those requirements.
 - Latest required checks pass on every ready remediation pull request.
@@ -162,7 +165,11 @@ Topics remain specific to supported languages, workflows, and customer tasks.
 
 The organization currently has one member.
 
-It does not yet meet these Gold requirements:
+It does not yet meet this required Silver prerequisite:
+
+- Access continuity after the loss of the sole organization member.
+
+It does not yet meet these human Gold requirements:
 
 - A bus factor of 2 or more.
 - Two unassociated significant contributors per project.
@@ -171,15 +178,18 @@ It does not yet meet these Gold requirements:
 
 Open remediation pull requests cannot satisfy these human requirements.
 
-These areas still need repository-specific verification:
+These Silver and Gold areas still need default-branch evidence:
 
+- Repository-specific architecture and assurance cases.
+- Repeatable and reproducible builds.
+- A 6-month regression-test ratio.
+- Statement coverage of at least 80% and 90%.
+- Secure-design and input-validation evidence.
+- Signed releases and public verification instructions.
 - Per-file copyright and license notices on default branches.
-- Reproducible builds.
-- Statement coverage of at least 90%.
 - Branch coverage when a suitable FLOSS tool exists.
-- Signed release verification.
-- Architecture, threat model, and assurance evidence.
 - Dynamic analysis before major releases.
+- Requested debug-information preservation where applicable.
 
 Never mark a criterion as met without current public evidence.
 
