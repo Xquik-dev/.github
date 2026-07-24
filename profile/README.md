@@ -89,5 +89,6 @@ Use Xquik for X data, monitoring, exports, webhooks, and approved account action
 - [Code Review](https://github.com/Xquik-dev/.github/blob/main/REVIEWING.md)
 - [Public Roadmap](https://github.com/Xquik-dev/.github/blob/main/ROADMAP.md)
 - [OpenSSF Evidence](https://github.com/Xquik-dev/.github/blob/main/OPENSSF.md)
+- [Discovery & README Policy](https://github.com/Xquik-dev/.github/blob/main/DISCOVERY.md)
 
 Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
