@@ -76,6 +76,7 @@ These documents support repository-specific badge evidence:
 - [Governance and public roles](GOVERNANCE.md)
 - [Code review requirements](REVIEWING.md)
 - [Vulnerability response process](SECURITY.md)
+- [Architecture and security assurance](ASSURANCE.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Twelve-month roadmap](ROADMAP.md)
 
