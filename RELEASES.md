@@ -30,6 +30,8 @@ Their Silver badge answers still require default-branch documentation.
 
 The remaining 6 projects must add public cryptographic release evidence.
 
+Track that work in [organization issue #4](https://github.com/Xquik-dev/.github/issues/4).
+
 ## Verify npm Provenance
 
 The npm registry signs packages and publishes SLSA provenance.
