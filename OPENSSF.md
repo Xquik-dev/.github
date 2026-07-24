@@ -57,13 +57,14 @@ Use each live entry for current status and submitted evidence.
 - Seventeen repositories are standalone software projects.
 - All 17 live entries report Passing at 100%.
 - All 17 entries report Silver completion at 84%.
-- Fifteen entries report Gold completion at 30%.
-- `n8n-nodes-xquik` and `x-twitter-scraper` report Gold completion at 43%.
+- Fifteen entries report Gold completion at 35%.
+- `n8n-nodes-xquik` and `x-twitter-scraper` report Gold completion at 48%.
 - All 55 Silver and 23 Gold fields have explicit classifications.
 - No Silver or Gold field remains unknown.
 - Every required Silver explanation and evidence URL is present.
 - All 17 entries mark 4 verified human requirements as Unmet.
 - Each entry includes dated remediation guidance for those requirements.
+- All 17 projects expose a scoped newcomer task.
 - Latest required checks pass on every ready remediation pull request.
 - All 19 ready remediation pull requests are mergeable.
 - All 21 open pull requests have zero unresolved review threads.
@@ -81,6 +82,34 @@ These documents support repository-specific badge evidence:
 - [Twelve-month roadmap](ROADMAP.md)
 
 Repository-specific evidence must still prove the affected criterion.
+
+## Newcomer Tasks
+
+Each standalone project exposes one open, scoped task.
+
+Every task has `good first issue` and `help wanted` labels.
+
+| Repository | Task |
+| --- | --- |
+| `hermes-tweet` | [#611](https://github.com/Xquik-dev/hermes-tweet/issues/611) |
+| `n8n-nodes-xquik` | [#12](https://github.com/Xquik-dev/n8n-nodes-xquik/issues/12) |
+| `paperclip-plugin-xquik` | [#5](https://github.com/Xquik-dev/paperclip-plugin-xquik/issues/5) |
+| `prefect-xquik` | [#16](https://github.com/Xquik-dev/prefect-xquik/issues/16) |
+| `terraform-provider-x-twitter-scraper` | [#12](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/issues/12) |
+| `tweetclaw` | [#27](https://github.com/Xquik-dev/tweetclaw/issues/27) |
+| `x-twitter-scraper` | [#20](https://github.com/Xquik-dev/x-twitter-scraper/issues/20) |
+| `x-twitter-scraper-cli` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-cli/issues/14) |
+| `x-twitter-scraper-csharp` | [#20](https://github.com/Xquik-dev/x-twitter-scraper-csharp/issues/20) |
+| `x-twitter-scraper-go` | [#15](https://github.com/Xquik-dev/x-twitter-scraper-go/issues/15) |
+| `x-twitter-scraper-java` | [#15](https://github.com/Xquik-dev/x-twitter-scraper-java/issues/15) |
+| `x-twitter-scraper-kotlin` | [#15](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/issues/15) |
+| `x-twitter-scraper-php` | [#13](https://github.com/Xquik-dev/x-twitter-scraper-php/issues/13) |
+| `x-twitter-scraper-python` | [#19](https://github.com/Xquik-dev/x-twitter-scraper-python/issues/19) |
+| `x-twitter-scraper-ruby` | [#18](https://github.com/Xquik-dev/x-twitter-scraper-ruby/issues/18) |
+| `x-twitter-scraper-typescript` | [#16](https://github.com/Xquik-dev/x-twitter-scraper-typescript/issues/16) |
+| `xquik-haystack` | [#5](https://github.com/Xquik-dev/xquik-haystack/issues/5) |
+
+These tasks satisfy the Gold `small_tasks` evidence requirement.
 
 ## Verified Organization Controls
 

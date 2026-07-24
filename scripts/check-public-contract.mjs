@@ -32,7 +32,13 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
   ],
   [
     "OPENSSF.md",
-    ["17 standalone software projects", "xquik-docs", "Known Gold Gaps"],
+    [
+      "17 standalone software projects",
+      "xquik-docs",
+      "## Newcomer Tasks",
+      "These tasks satisfy the Gold `small_tasks` evidence requirement.",
+      "Known Gold Gaps",
+    ],
   ],
   ["REVIEWING.md", ["person other than the author", "At least 50%"]],
   ["ROADMAP.md", ["July 2027", "OpenSSF Best Practices"]],
