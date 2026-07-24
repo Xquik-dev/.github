@@ -56,9 +56,11 @@ Use each live entry for current status and submitted evidence.
 - Xquik-dev has 19 public repositories.
 - Seventeen repositories are standalone software projects.
 - All 17 live entries report Passing at 100%.
-- All 17 entries report Silver completion at 7%.
-- Fifteen entries report Gold completion at 9%.
-- `n8n-nodes-xquik` and `x-twitter-scraper` report Gold completion at 22%.
+- All 17 entries report Silver completion at 9%.
+- Fifteen entries report Gold completion at 13%.
+- `n8n-nodes-xquik` and `x-twitter-scraper` report Gold completion at 26%.
+- All 17 entries mark 4 verified human requirements as Unmet.
+- Each entry includes dated remediation guidance for those requirements.
 - Latest required checks pass on every ready remediation pull request.
 
 ## Shared Evidence
