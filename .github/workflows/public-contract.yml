@@ -14,6 +14,7 @@ on:
       - "BUILD_DEBUG.md"
       - "CODE_OF_CONDUCT.md"
       - "CONTRIBUTING.md"
+      - "DISCOVERY.md"
       - "GOVERNANCE.md"
       - "OPENSSF.md"
       - "REGRESSION_TESTS.md"

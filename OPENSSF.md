@@ -251,6 +251,8 @@ Open remediation pull requests cannot satisfy these human requirements.
 
 Track human prerequisites in [organization issue #3](https://github.com/Xquik-dev/.github/issues/3).
 
+Track the maintainer nomination in [organization issue #8](https://github.com/Xquik-dev/.github/issues/8).
+
 Track scoped human reviews in [organization issue #5](https://github.com/Xquik-dev/.github/issues/5).
 
 Two debug-information remediations still await default-branch adoption.

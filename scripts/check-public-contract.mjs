@@ -331,7 +331,7 @@ function checkRepoDiscovery(repos) {
   for (const repo of repos) {
     const description = repo.description?.trim() ?? "";
     const topics = repo.topics ?? [];
-    if (description.length < 70 || description.length > 200) {
+    if (description.length < 94 || description.length > 140) {
       throw new Error(`${repo.name} has an unclear repository description length.`);
     }
     if (!description.endsWith(REPOSITORY_DESCRIPTION_NOTICE)) {
@@ -342,8 +342,8 @@ function checkRepoDiscovery(repos) {
       .replace(/\.\s*$/u, "")
       .trim();
     const purposeWords = purpose.split(/\s+/u).length;
-    if (purposeWords < 7 || purposeWords > 14) {
-      throw new Error(`${repo.name} must use 7-14 words before its independence notice.`);
+    if (purposeWords < 9 || purposeWords > 14) {
+      throw new Error(`${repo.name} must use 9-14 words before its independence notice.`);
     }
     if (!repo.homepage?.startsWith("https://")) {
       throw new Error(`${repo.name} needs an HTTPS homepage.`);
