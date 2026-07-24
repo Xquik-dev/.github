@@ -18,17 +18,17 @@ Assessment date: July 24, 2026.
 | `hermes-tweet`, `prefect-xquik`, `x-twitter-scraper-python`, `xquik-haystack` | PyPI | PEP 740 publish attestations |
 | `terraform-provider-x-twitter-scraper` | GitHub Releases and Terraform Registry | GitHub SLSA provenance and signed checksums |
 | `x-twitter-scraper-cli` | GitHub Releases | GitHub SLSA provenance |
+| `x-twitter-scraper-ruby` | RubyGems | Sigstore bundle bound to the published gem |
 | `x-twitter-scraper-csharp` | NuGet | Project-controlled signature evidence remains incomplete |
 | `x-twitter-scraper-go` | Go modules | Project-controlled signature evidence remains incomplete |
 | `x-twitter-scraper-java`, `x-twitter-scraper-kotlin` | Maven Central | Current public artifact and signature evidence remains incomplete |
 | `x-twitter-scraper-php` | Packagist | Project-controlled signature evidence remains incomplete |
-| `x-twitter-scraper-ruby` | RubyGems | Published gem certificate evidence remains incomplete |
 
-The first 11 projects have verifiable signed release artifacts.
+The first 12 projects have verifiable signed release artifacts.
 
 Their Silver badge answers still require default-branch documentation.
 
-The remaining 6 projects must add public cryptographic release evidence.
+The remaining 5 projects must add public cryptographic release evidence.
 
 Track that work in [organization issue #4](https://github.com/Xquik-dev/.github/issues/4).
 
@@ -75,6 +75,42 @@ Replace `WHEEL_URL` with the selected PyPI wheel URL.
 
 The verifier checks the artifact digest and trusted publisher identity.
 
+## Verify RubyGems Attestations
+
+RubyGems publishes a Sigstore bundle for the current gem.
+
+Download the gem and its bundle:
+
+```sh
+gem_file=x-twitter-scraper-0.5.4.gem
+bundle_file="$gem_file.sigstore.json"
+
+curl --fail --location --output "$gem_file" \
+  "https://rubygems.org/downloads/$gem_file"
+
+curl --fail --location \
+  https://rubygems.org/api/v1/attestations/x-twitter-scraper-0.5.4.json \
+  | jq '.[0]' > "$bundle_file"
+```
+
+Verify the exact workflow identity:
+
+```sh
+gem exec sigstore-cli:0.2.3 verify \
+  --bundle="$bundle_file" \
+  --certificate-identity=https://github.com/Xquik-dev/x-twitter-scraper-ruby/.github/workflows/publish-gem.yml@refs/tags/v0.5.4 \
+  --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+  "$gem_file"
+```
+
+Require an `OK` result for the downloaded artifact.
+
+The verified SHA-256 digest is:
+
+```text
+ce55622baf95df9b6599db33a7a1627463be3735b891e93177a67f8875d3aaa8
+```
+
 ## Verify GitHub Attestations
 
 Download the selected release artifact.
@@ -111,7 +147,7 @@ Also verify the archive's GitHub attestation.
 
 ## Keyless Signing
 
-npm, PyPI, and GitHub attestations use identity-bound signing.
+npm, PyPI, RubyGems, and GitHub attestations use identity-bound signing.
 
 Their signing certificates use short-lived keys and public trust roots.
 
