@@ -68,6 +68,7 @@ Use each live entry for current status and submitted evidence.
 - All 17 projects expose a scoped newcomer task.
 - Fourteen projects have verified signed release artifacts.
 - Three projects need project-controlled release signature evidence.
+- All 17 software projects protect `v*` tags against destructive updates.
 - All latest public Git tags remain unsigned.
 - Latest required checks pass on every ready remediation pull request.
 - All 19 ready remediation pull requests are mergeable.

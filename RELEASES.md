@@ -200,6 +200,18 @@ Verification checks the repository identity and transparency-log timestamp.
 
 No long-lived project private signing key is required.
 
+## Protected Release Tags
+
+Every standalone repository has an active ruleset for `v*` tags.
+
+All 17 rulesets block deletion and non-fast-forward updates.
+
+The Terraform provider also restricts creation to its approved release actor.
+
+These rules preserve published tag identity.
+
+They do not make an unsigned tag signed.
+
 ## Unsigned Tags
 
 The latest public Git tags lacked verified Git signatures during this audit.
