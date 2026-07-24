@@ -1,31 +1,16 @@
 // Copyright the Xquik contributors.
 // SPDX-License-Identifier: MIT
 
+import {
+  GITHUB_ORG,
+  OPENSSF_PROJECT_NAMES,
+  SHARED_REPOSITORY_NAMES,
+} from "./public-projects.mjs";
+
 const GITHUB_GRAPHQL = "https://api.github.com/graphql";
 const GITHUB_REST = "https://api.github.com";
-const GITHUB_ORG = "Xquik-dev";
 const REVIEW_START = "2026-07-23T00:00:00Z";
 const REQUIRED_RATIO = 0.5;
-const NON_PROJECT_REPOSITORIES = [".github", "xquik-docs"];
-const PROJECTS = [
-  "hermes-tweet",
-  "n8n-nodes-xquik",
-  "paperclip-plugin-xquik",
-  "prefect-xquik",
-  "terraform-provider-x-twitter-scraper",
-  "tweetclaw",
-  "x-twitter-scraper",
-  "x-twitter-scraper-cli",
-  "x-twitter-scraper-csharp",
-  "x-twitter-scraper-go",
-  "x-twitter-scraper-java",
-  "x-twitter-scraper-kotlin",
-  "x-twitter-scraper-php",
-  "x-twitter-scraper-python",
-  "x-twitter-scraper-ruby",
-  "x-twitter-scraper-typescript",
-  "xquik-haystack",
-];
 const REVIEW_QUERY = `
   query ReviewEvidence(
     $owner: String!
@@ -130,7 +115,7 @@ async function loadPublicRepoNames() {
 }
 
 async function verifyPublicInventory() {
-  const expected = new Set([...NON_PROJECT_REPOSITORIES, ...PROJECTS]);
+  const expected = new Set([...SHARED_REPOSITORY_NAMES, ...OPENSSF_PROJECT_NAMES]);
   const actual = new Set(await loadPublicRepoNames());
   const unexpected = [...actual].filter((name) => !expected.has(name));
   const missing = [...expected].filter((name) => !actual.has(name));
@@ -191,7 +176,7 @@ async function auditProject(project) {
 
 await verifyPublicInventory();
 
-const results = await Promise.all(PROJECTS.map(auditProject));
+const results = await Promise.all(OPENSSF_PROJECT_NAMES.map(auditProject));
 const failures = results.filter(({ ratio }) => ratio < REQUIRED_RATIO);
 
 for (const { project, ratio, reviewed, total } of results) {

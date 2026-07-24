@@ -25,6 +25,7 @@ on:
       - "profile/README.md"
       - "scripts/check-public-contract.mjs"
       - "scripts/check-review-evidence.mjs"
+      - "scripts/public-projects.mjs"
   schedule:
     - cron: "17 7 * * 1"
   workflow_dispatch:

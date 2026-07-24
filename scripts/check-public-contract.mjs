@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 import { readFile } from "node:fs/promises";
+import { GITHUB_ORG, OPENSSF_PROJECT_IDS } from "./public-projects.mjs";
 
 const GITHUB_API = "https://api.github.com";
-const GITHUB_ORG = "Xquik-dev";
 const OPENAPI_URL = "https://xquik.com/openapi.json";
 const SERVER_CARD_URL = "https://xquik.com/.well-known/mcp/server-card.json";
 const HTTP_METHODS = new Set(["delete", "get", "head", "options", "patch", "post", "put", "trace"]);
@@ -314,6 +314,13 @@ async function checkRepoReadmes(repos) {
       if (!visible.includes(INDEPENDENCE_NOTICE)) {
         throw new Error(`${repo.name}/${path} is missing the approved independence notice.`);
       }
+      const projectId = OPENSSF_PROJECT_IDS.get(repo.name);
+      if (projectId !== undefined) {
+        const badgeUrl = `https://www.bestpractices.dev/projects/${projectId}/badge`;
+        if (!readme.includes(badgeUrl)) {
+          throw new Error(`${repo.name}/${path} is missing OpenSSF badge ${projectId}.`);
+        }
+      }
       const stale = STALE_PUBLIC_COPY.find((pattern) => pattern.test(visible));
       if (stale) throw new Error(`${repo.name}/${path} contains stale public copy: ${stale}.`);
     }),
@@ -364,6 +371,18 @@ async function checkCommunityPolicies() {
       }
     }),
   );
+}
+
+async function checkOpenSsfInventory() {
+  const evidence = await readFile("OPENSSF.md", "utf8");
+  for (const [repo, projectId] of OPENSSF_PROJECT_IDS) {
+    const entry =
+      `| \`${repo}\` | [OpenSSF project ${projectId}]` +
+      `(https://www.bestpractices.dev/projects/${projectId}) |`;
+    if (!evidence.includes(entry)) {
+      throw new Error(`OPENSSF.md is missing ${repo} project ${projectId}.`);
+    }
+  }
 }
 
 async function checkIntegrationSurfaces(openApi, reposByName) {
@@ -439,6 +458,7 @@ if (/126 operations|40\+ agents|118 operations through 2 tools/u.test(profile)) 
 
 await Promise.all([
   checkCommunityPolicies(),
+  checkOpenSsfInventory(),
   checkIntegrationSurfaces(openApi, reposByName),
   checkRepoReadmes(repos),
 ]);
