@@ -56,9 +56,8 @@ Use each live entry for current status and submitted evidence.
 - Xquik-dev has 19 public repositories.
 - Seventeen repositories are standalone software projects.
 - All 17 live entries report Passing at 100%.
-- All 17 entries report Silver completion at 84%.
-- Fifteen entries report Gold completion at 35%.
-- `n8n-nodes-xquik` and `x-twitter-scraper` report Gold completion at 48%.
+- Silver completion ranges from 89% to 96%.
+- Gold completion ranges from 35% to 74%.
 - All 55 Silver and 23 Gold fields have explicit classifications.
 - No Silver or Gold field remains unknown.
 - Every required Silver explanation and evidence URL is present.
@@ -70,9 +69,9 @@ Use each live entry for current status and submitted evidence.
 - Three projects need project-controlled release signature evidence.
 - All 17 software projects protect `v*` tags against destructive updates.
 - All latest public Git tags remain unsigned.
-- Latest required checks pass on every ready remediation pull request.
-- All 19 ready remediation pull requests are mergeable.
-- All 22 open pull requests have zero unresolved review threads.
+- Thirteen projects meet the six-month regression ratio on default branches.
+- Two projects have no qualifying fixes and use `N/A`.
+- TypeScript and Haystack regression evidence remains pending.
 
 ## Shared Evidence
 
@@ -84,6 +83,7 @@ These documents support repository-specific badge evidence:
 - [Vulnerability response process](SECURITY.md)
 - [Architecture and security assurance](ASSURANCE.md)
 - [Release integrity and verification](RELEASES.md)
+- [Six-month regression-test evidence](REGRESSION_TESTS.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Twelve-month roadmap](ROADMAP.md)
 
@@ -120,7 +120,7 @@ These tasks satisfy the Gold `small_tasks` evidence requirement.
 ## Verified Organization Controls
 
 - GitHub requires two-factor authentication for organization members.
-- The sole maintainer prefers a configured passkey for GitHub 2FA.
+- The organization owner prefers a configured passkey for GitHub 2FA.
 - An authenticator app provides an additional cryptographic 2FA method.
 - SMS is not configured as a GitHub 2FA method.
 - Every public repository supports private vulnerability reporting.
@@ -132,45 +132,48 @@ These tasks satisfy the Gold `small_tasks` evidence requirement.
 - Seventeen standalone projects have current Passing badges.
 - Seventeen standalone projects run required CI checks.
 
-## Current Remediation Pull Requests
+## Technical Baseline Adoption
 
-These pull requests implement project-specific and shared-site technical remediation.
+These pull requests establish project-specific and shared technical controls.
 
-Passing checks prove implementation, not independent review or default-branch adoption.
+| Repository | Pull Request | Status | Verified Scope |
+| --- | --- | --- | --- |
+| `.github` | [#2](https://github.com/Xquik-dev/.github/pull/2) | Merged | Shared governance, badge inventory, and public contract verification |
+| `hermes-tweet` | [#610](https://github.com/Xquik-dev/hermes-tweet/pull/610) | Merged | License notices, tests, coverage, and package checks |
+| `n8n-nodes-xquik` | [#11](https://github.com/Xquik-dev/n8n-nodes-xquik/pull/11) | Merged | License notices, tests, security checks, and reproducible packages |
+| `paperclip-plugin-xquik` | [#4](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/4) | Merged | License notices, tests, security checks, and reproducible packages |
+| `prefect-xquik` | [#15](https://github.com/Xquik-dev/prefect-xquik/pull/15) | Merged | License notices, tests, security checks, and reproducible packages |
+| `terraform-provider-x-twitter-scraper` | [#11](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/11) | Merged | Coverage, race safety, notices, security, and reproducible releases |
+| `tweetclaw` | [#21](https://github.com/Xquik-dev/tweetclaw/pull/21) | Merged | Security boundaries, tests, coverage, and public disclosures |
+| `x-twitter-scraper` | [#19](https://github.com/Xquik-dev/x-twitter-scraper/pull/19) | Merged | Coverage, licensing, security, reproducibility, and disclosures |
+| `x-twitter-scraper-cli` | [#13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13) | Merged | Coverage, notices, portability, and reproducible releases |
+| `x-twitter-scraper-csharp` | [#19](https://github.com/Xquik-dev/x-twitter-scraper-csharp/pull/19) | Merged | Coverage, security fixes, licensing, and reproducible packages |
+| `x-twitter-scraper-go` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-go/pull/14) | Merged | Coverage, race tests, fuzzing, licensing, security, and reproducibility |
+| `x-twitter-scraper-java` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/14) | Merged | Maintained coverage, fuzzing, security, licensing, and reproducibility |
+| `x-twitter-scraper-kotlin` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/pull/14) | Open | Generated-inclusive coverage, fuzzing, security, licensing, and reproducibility |
+| `x-twitter-scraper-php` | [#12](https://github.com/Xquik-dev/x-twitter-scraper-php/pull/12) | Merged | Coverage, security fixes, licensing, and reproducible packages |
+| `x-twitter-scraper-python` | [#18](https://github.com/Xquik-dev/x-twitter-scraper-python/pull/18) | Merged | Coverage, licensing, security, and reproducible packages |
+| `x-twitter-scraper-ruby` | [#17](https://github.com/Xquik-dev/x-twitter-scraper-ruby/pull/17) | Merged | Coverage, licensing, reproducibility, and release verification |
+| `x-twitter-scraper-typescript` | [#15](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/15) | Merged | Coverage, licensing, security, and reproducible packages |
+| `xquik-haystack` | [#4](https://github.com/Xquik-dev/xquik-haystack/pull/4) | Open | License notices, regression tests, coverage, and reproducibility |
+| `xquik-docs` | [#17](https://github.com/Xquik-dev/xquik-docs/pull/17) | Merged | Shared-site assurance, tests, integrity, licensing, and security |
 
-| Repository | Pull Request | Verified Scope |
-| --- | --- | --- |
-| `.github` | [#2](https://github.com/Xquik-dev/.github/pull/2) | Shared governance, badge inventory, and public contract verification |
-| `hermes-tweet` | [#610](https://github.com/Xquik-dev/hermes-tweet/pull/610) | License notices, tests, coverage, and package checks |
-| `n8n-nodes-xquik` | [#11](https://github.com/Xquik-dev/n8n-nodes-xquik/pull/11) | License notices, tests, security checks, and reproducible packages |
-| `paperclip-plugin-xquik` | [#4](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/4) | License notices, tests, security checks, and reproducible packages |
-| `prefect-xquik` | [#15](https://github.com/Xquik-dev/prefect-xquik/pull/15) | License notices, tests, security checks, and reproducible packages |
-| `terraform-provider-x-twitter-scraper` | [#11](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/11) | 93.6% statements, 82.45% branches, race-safe JSON encoding, BSD notices, security, and reproducible releases |
-| `tweetclaw` | [#21](https://github.com/Xquik-dev/tweetclaw/pull/21) | Security boundaries, tests, coverage, and public disclosures |
-| `x-twitter-scraper` | [#19](https://github.com/Xquik-dev/x-twitter-scraper/pull/19) | Coverage, licensing, security, reproducibility, and public disclosures |
-| `x-twitter-scraper-cli` | [#13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13) | 91.2% statements, 80.09% branches, BSD notices, portability, and reproducible releases |
-| `x-twitter-scraper-csharp` | [#19](https://github.com/Xquik-dev/x-twitter-scraper-csharp/pull/19) | 94.28% lines, 89.20% branches, security fixes, licensing, and reproducible packages |
-| `x-twitter-scraper-go` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-go/pull/14) | Coverage, race and fuzz tests, licensing, security, and reproducibility |
-| `x-twitter-scraper-java` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/14) | 90.52% maintained lines, 80.77% branches, fuzzing, security, licensing, reproducibility, and signed Maven releases |
-| `x-twitter-scraper-kotlin` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/pull/14) | 91.06% maintained lines, 80.56% branches, fuzzing, security, licensing, reproducibility, and signed Maven releases |
-| `x-twitter-scraper-php` | [#12](https://github.com/Xquik-dev/x-twitter-scraper-php/pull/12) | 99.18% executable lines, 83.07% branches, security fixes, licensing, and reproducible packages |
-| `x-twitter-scraper-python` | [#18](https://github.com/Xquik-dev/x-twitter-scraper-python/pull/18) | 94.19% statements, 80.89% branches, licensing, security, and reproducible packages |
-| `x-twitter-scraper-ruby` | [#17](https://github.com/Xquik-dev/x-twitter-scraper-ruby/pull/17) | Bounded RubyGems release verification |
-| `x-twitter-scraper-typescript` | [#15](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/15) | Coverage, licensing, security checks, and reproducible packages |
-| `xquik-haystack` | [#4](https://github.com/Xquik-dev/xquik-haystack/pull/4) | License notices, tests, and coverage |
-| `xquik-docs` | [#17](https://github.com/Xquik-dev/xquik-docs/pull/17) | Shared-site classification, 282 tests, dependency integrity, licensing, security, and static validation |
-
-Each pull request requires a different human reviewer before merging.
+Seventeen baseline pull requests have merged.
+Kotlin #14 and Haystack #4 still need independent review.
 
 Do not count pending changes as default-branch evidence.
 
-The Java and Kotlin SDKs publish generated-inclusive coverage.
+Java [#17](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/17)
+raises generated-inclusive coverage to 94.05% lines and 92.81% branches.
 
-Java reports 41.31% lines and 21.79% branches.
+Kotlin #14 raises generated-inclusive coverage to 92.70% lines and 91.87% branches.
 
-Kotlin reports 39.19% lines and 20.54% branches.
+TypeScript [#18](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/18)
+adds 2 pending regression guards.
 
-Generated-code coverage applicability remains an explicit assessment gap.
+Hermes [#612](https://github.com/Xquik-dev/hermes-tweet/pull/612)
+and Paperclip [#6](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/6)
+add pending reproducible-package evidence.
 
 ## Other Open Pull Request Audit
 
@@ -191,14 +194,7 @@ All 19 public repository READMEs were audited on July 24, 2026.
 
 All default branches contain the approved independence disclosure.
 
-Fifteen default branches contain the exact unformatted footer.
-
-Four pending pull requests add that exact footer:
-
-- [Terraform provider #11](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/pull/11)
-- [TweetClaw #21](https://github.com/Xquik-dev/tweetclaw/pull/21)
-- [Core Skill and MCP package #19](https://github.com/Xquik-dev/x-twitter-scraper/pull/19)
-- [CLI #13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13)
+All 19 default branches contain the exact unformatted footer.
 
 All repository descriptions identify their supported purpose.
 
@@ -227,13 +223,15 @@ They do not require keyword lists or duplicate questions.
 
 ## Known Gold Gaps
 
-The organization currently has one member.
+A second reviewer has repository write access.
 
-It does not yet meet this required Silver prerequisite:
+Public evidence still does not prove full release and legal continuity.
 
-- Access continuity after the loss of the sole organization member.
+The projects do not yet meet this required Silver prerequisite:
 
-It does not yet meet these human Gold requirements:
+- Continuity after the loss of any one project member.
+
+They do not yet meet these human Gold requirements:
 
 - A bus factor of 2 or more.
 - Two unassociated significant contributors per project.
@@ -246,18 +244,16 @@ Track human prerequisites in [organization issue #3](https://github.com/Xquik-de
 
 Track scoped human reviews in [organization issue #5](https://github.com/Xquik-dev/.github/issues/5).
 
-These Silver and Gold areas still need default-branch evidence:
+These technical changes still need default-branch adoption:
 
-- Repository-specific architecture and assurance cases.
-- Repeatable and reproducible builds.
-- A 6-month regression-test ratio.
-- Statement coverage of at least 80% and 90%.
-- Secure-design and input-validation evidence.
-- Signed releases and public verification instructions.
-- Per-file copyright and license notices on default branches.
-- Branch coverage when a suitable FLOSS tool exists.
-- Dynamic analysis before major releases.
-- Requested debug-information preservation where applicable.
+- Kotlin [#14](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/pull/14).
+- Haystack [#4](https://github.com/Xquik-dev/xquik-haystack/pull/4).
+- Java generated coverage [#17](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/17).
+- TypeScript regression tests [#18](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/18).
+- Hermes reproducibility [#612](https://github.com/Xquik-dev/hermes-tweet/pull/612).
+- Paperclip reproducibility [#6](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/6).
+
+Three projects still need project-controlled release signature evidence.
 
 Never mark a criterion as met without current public evidence.
 
