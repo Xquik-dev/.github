@@ -65,6 +65,9 @@ Use each live entry for current status and submitted evidence.
 - All 17 entries mark 4 verified human requirements as Unmet.
 - Each entry includes dated remediation guidance for those requirements.
 - All 17 projects expose a scoped newcomer task.
+- Eleven projects have verified signed release artifacts.
+- Six projects need project-controlled release signature evidence.
+- All latest public Git tags remain unsigned.
 - Latest required checks pass on every ready remediation pull request.
 - All 19 ready remediation pull requests are mergeable.
 - All 21 open pull requests have zero unresolved review threads.
@@ -78,6 +81,7 @@ These documents support repository-specific badge evidence:
 - [Code review requirements](REVIEWING.md)
 - [Vulnerability response process](SECURITY.md)
 - [Architecture and security assurance](ASSURANCE.md)
+- [Release integrity and verification](RELEASES.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Twelve-month roadmap](ROADMAP.md)
 
