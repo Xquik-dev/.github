@@ -11,6 +11,16 @@ const HTTP_METHODS = new Set(["delete", "get", "head", "options", "patch", "post
 const INDEPENDENCE_NOTICE =
   'Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.';
 const COMMUNITY_POLICY_REQUIREMENTS = new Map([
+  [
+    "ASSURANCE.md",
+    [
+      "## Project Architecture",
+      "## Threat Model",
+      "## Secure Design Argument",
+      "## Common Weakness Countermeasures",
+      "Pending changes do not count as default-branch evidence.",
+    ],
+  ],
   ["CODE_OF_CONDUCT.md", ["## Enforcement", "support@xquik.com"]],
   [
     "CONTRIBUTING.md",
