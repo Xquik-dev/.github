@@ -51,6 +51,16 @@ Use each live entry for current status and submitted evidence.
 | `x-twitter-scraper-typescript` | [OpenSSF project 13740](https://www.bestpractices.dev/projects/13740) |
 | `xquik-haystack` | [OpenSSF project 13741](https://www.bestpractices.dev/projects/13741) |
 
+## July 24, 2026 Audit Snapshot
+
+- Xquik-dev has 19 public repositories.
+- Seventeen repositories are standalone software projects.
+- All 17 live entries report Passing at 100%.
+- All 17 entries report Silver completion at 7%.
+- Fifteen entries report Gold completion at 9%.
+- `n8n-nodes-xquik` and `x-twitter-scraper` report Gold completion at 22%.
+- Latest required checks pass on every ready remediation pull request.
+
 ## Shared Evidence
 
 These documents support repository-specific badge evidence:
@@ -79,6 +89,7 @@ Passing checks prove implementation, not independent review or default-branch ad
 
 | Repository | Pull Request | Verified Scope |
 | --- | --- | --- |
+| `.github` | [#2](https://github.com/Xquik-dev/.github/pull/2) | Shared governance, badge inventory, and public contract verification |
 | `hermes-tweet` | [#610](https://github.com/Xquik-dev/hermes-tweet/pull/610) | License notices, tests, coverage, and package checks |
 | `n8n-nodes-xquik` | [#11](https://github.com/Xquik-dev/n8n-nodes-xquik/pull/11) | License notices, tests, security checks, and reproducible packages |
 | `paperclip-plugin-xquik` | [#4](https://github.com/Xquik-dev/paperclip-plugin-xquik/pull/4) | License notices, tests, security checks, and reproducible packages |
@@ -91,7 +102,7 @@ Passing checks prove implementation, not independent review or default-branch ad
 | `x-twitter-scraper-go` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-go/pull/14) | Coverage, race and fuzz tests, licensing, security, and reproducibility |
 | `x-twitter-scraper-java` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-java/pull/14) | 90.52% maintained lines, 80.77% branches, fuzzing, security, licensing, and reproducibility |
 | `x-twitter-scraper-kotlin` | [#14](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/pull/14) | 91.06% maintained lines, 80.56% branches, fuzzing, security, licensing, and reproducibility |
-| `x-twitter-scraper-php` | [#12](https://github.com/Xquik-dev/x-twitter-scraper-php/pull/12) | 99.18% executable lines, 88.05% branches, security fixes, licensing, and reproducible packages |
+| `x-twitter-scraper-php` | [#12](https://github.com/Xquik-dev/x-twitter-scraper-php/pull/12) | 99.18% executable lines, 83.07% branches, security fixes, licensing, and reproducible packages |
 | `x-twitter-scraper-python` | [#18](https://github.com/Xquik-dev/x-twitter-scraper-python/pull/18) | 94.19% statements, 80.89% branches, licensing, security, and reproducible packages |
 | `x-twitter-scraper-ruby` | [#17](https://github.com/Xquik-dev/x-twitter-scraper-ruby/pull/17) | Bounded RubyGems release verification |
 | `x-twitter-scraper-typescript` | [#15](https://github.com/Xquik-dev/x-twitter-scraper-typescript/pull/15) | Coverage, licensing, security checks, and reproducible packages |
@@ -110,9 +121,16 @@ Kotlin reports 39.19% lines and 20.54% branches.
 
 Generated-code coverage applicability remains an explicit assessment gap.
 
+## Pre-Existing Pull Request Audit
+
+- Core [#9](https://github.com/Xquik-dev/x-twitter-scraper/pull/9) remains a conflicting draft.
+- Core [#10](https://github.com/Xquik-dev/x-twitter-scraper/pull/10) remains a behind-base draft.
+- Both drafts contain explicit release blocks.
+- Do not update, merge, tag, or publish either draft.
+
 ## README & Repository Metadata
 
-All 19 public repository READMEs were audited on July 23, 2026.
+All 19 public repository READMEs were audited on July 24, 2026.
 
 All default branches contain the approved independence disclosure.
 
