@@ -1,0 +1,85 @@
+# Copyright the Xquik contributors.
+# SPDX-License-Identifier: MIT
+
+name: Verify Release Attestations
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/release-attestations.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/release-attestations.yml"
+  schedule:
+    - cron: "43 7 * * 1"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: release-attestations-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify ${{ matrix.project }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      attestations: read
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: "C# SDK"
+            repository: Xquik-dev/x-twitter-scraper-csharp
+            artifact_template: XTwitterScraper.__VERSION__.nupkg
+            bare_version: "true"
+            signer_workflow: Xquik-dev/x-twitter-scraper-csharp/.github/workflows/publish-nuget.yml
+          - project: Go SDK
+            repository: Xquik-dev/x-twitter-scraper-go
+            artifact_template: x-twitter-scraper-go-__VERSION__.zip
+            bare_version: "false"
+            signer_workflow: Xquik-dev/x-twitter-scraper-go/.github/workflows/release-provenance.yml
+          - project: PHP SDK
+            repository: Xquik-dev/x-twitter-scraper-php
+            artifact_template: x-twitter-scraper-php-__VERSION__.zip
+            bare_version: "false"
+            signer_workflow: Xquik-dev/x-twitter-scraper-php/.github/workflows/release-provenance.yml
+    steps:
+      - name: Download Latest Release Artifact
+        env:
+          ARTIFACT_TEMPLATE: ${{ matrix.artifact_template }}
+          BARE_VERSION: ${{ matrix.bare_version }}
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ matrix.repository }}
+        run: |
+          set -euo pipefail
+          release_tag="$(gh release view --repo "$REPOSITORY" --json tagName --jq .tagName)"
+          artifact_version="$release_tag"
+          if [[ "$BARE_VERSION" == "true" ]]; then
+            artifact_version="${release_tag#v}"
+          fi
+          artifact_name="${ARTIFACT_TEMPLATE/__VERSION__/$artifact_version}"
+          mkdir artifact
+          gh release download "$release_tag" \
+            --repo "$REPOSITORY" \
+            --pattern "$artifact_name" \
+            --dir artifact
+          test -f "artifact/$artifact_name"
+          echo "ARTIFACT=artifact/$artifact_name" >> "$GITHUB_ENV"
+
+      - name: Verify Repository-Bound Provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ matrix.repository }}
+          SIGNER_WORKFLOW: ${{ matrix.signer_workflow }}
+        run: |
+          set -euo pipefail
+          gh attestation verify "$ARTIFACT" \
+            --repo "$REPOSITORY" \
+            --signer-workflow "$SIGNER_WORKFLOW" \
+            --deny-self-hosted-runners

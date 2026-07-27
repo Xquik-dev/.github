@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 import { readFile } from "node:fs/promises";
+import { GITHUB_ORG, OPENSSF_PROJECT_IDS } from "./public-projects.mjs";
 
 const GITHUB_API = "https://api.github.com";
-const GITHUB_ORG = "Xquik-dev";
 const OPENAPI_URL = "https://xquik.com/openapi.json";
 const SERVER_CARD_URL = "https://xquik.com/.well-known/mcp/server-card.json";
 const HTTP_METHODS = new Set(["delete", "get", "head", "options", "patch", "post", "put", "trace"]);
@@ -29,6 +29,16 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
       "## Secure Design Argument",
       "## Common Weakness Countermeasures",
       "Pending changes do not count as default-branch evidence.",
+    ],
+  ],
+  [
+    "BUILD_DEBUG.md",
+    [
+      "17 standalone software projects",
+      "Do not count pending changes as default-branch evidence.",
+      "## Native Release Verification",
+      "## JVM Verification",
+      "## Source Package Verification",
     ],
   ],
   ["CODE_OF_CONDUCT.md", ["## Enforcement", "support@xquik.com"]],
@@ -68,8 +78,23 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
       "## Verify PyPI Attestations",
       "## Verify RubyGems Attestations",
       "## Verify GitHub Attestations",
-      "ce55622baf95df9b6599db33a7a1627463be3735b891e93177a67f8875d3aaa8",
+      "## Verify Project-Controlled SDK Artifacts",
+      "6dfdcabd408a330d80ef87f4e650aca0004ba8a0eb8b49cb92e06a97a7cf5502",
+      "17aaf5366ab6ad65869e5fb4f92acb2351bb08e0a12a0d4fcab6de8875193916",
+      "7bef1ec1688b472424d7e92738342a446abfa6a9b1d314c4cd66fff919b5f34f",
+      "a59bd116af5ff6cc911c38b2fd515559d5f97b3eeb489d1a6148fd13fb459fb0",
+      "31fdf66d8cb1d0d8aeacbb8748189029eafc8b178b905057fd35540f5a01589b",
       "Keep `version_tags_signed` Unmet",
+    ],
+  ],
+  [
+    "REVIEW_EVIDENCE.md",
+    [
+      "The review policy took effect on July 23, 2026.",
+      "The `.github` and `xquik-docs` repositories provide shared community and documentation surfaces.",
+      "Count direct commits as unreviewed.",
+      "Require a known author and approval from another human.",
+      "All 17 projects meet the required 50% threshold.",
     ],
   ],
   ["ROADMAP.md", ["July 2027", "OpenSSF Best Practices"]],
@@ -290,6 +315,13 @@ async function checkRepoReadmes(repos) {
       if (!visible.includes(INDEPENDENCE_NOTICE)) {
         throw new Error(`${repo.name}/${path} is missing the approved independence notice.`);
       }
+      const projectId = OPENSSF_PROJECT_IDS.get(repo.name);
+      if (projectId !== undefined) {
+        const badgeUrl = `https://www.bestpractices.dev/projects/${projectId}/badge`;
+        if (!readme.includes(badgeUrl)) {
+          throw new Error(`${repo.name}/${path} is missing OpenSSF badge ${projectId}.`);
+        }
+      }
       const stale = STALE_PUBLIC_COPY.find((pattern) => pattern.test(visible));
       if (stale) throw new Error(`${repo.name}/${path} contains stale public copy: ${stale}.`);
     }),
@@ -300,11 +332,19 @@ function checkRepoDiscovery(repos) {
   for (const repo of repos) {
     const description = repo.description?.trim() ?? "";
     const topics = repo.topics ?? [];
-    if (description.length < 70 || description.length > 200) {
+    if (description.length < 94 || description.length > 140) {
       throw new Error(`${repo.name} has an unclear repository description length.`);
     }
     if (!description.endsWith(REPOSITORY_DESCRIPTION_NOTICE)) {
       throw new Error(`${repo.name} is missing the compact independence notice.`);
+    }
+    const purpose = description
+      .slice(0, -REPOSITORY_DESCRIPTION_NOTICE.length)
+      .replace(/\.\s*$/u, "")
+      .trim();
+    const purposeWords = purpose.split(/\s+/u).length;
+    if (purposeWords < 9 || purposeWords > 14) {
+      throw new Error(`${repo.name} must use 9-14 words before its independence notice.`);
     }
     if (!repo.homepage?.startsWith("https://")) {
       throw new Error(`${repo.name} needs an HTTPS homepage.`);
@@ -332,6 +372,18 @@ async function checkCommunityPolicies() {
       }
     }),
   );
+}
+
+async function checkOpenSsfInventory() {
+  const evidence = await readFile("OPENSSF.md", "utf8");
+  for (const [repo, projectId] of OPENSSF_PROJECT_IDS) {
+    const entry =
+      `| \`${repo}\` | [OpenSSF project ${projectId}]` +
+      `(https://www.bestpractices.dev/projects/${projectId}) |`;
+    if (!evidence.includes(entry)) {
+      throw new Error(`OPENSSF.md is missing ${repo} project ${projectId}.`);
+    }
+  }
 }
 
 async function checkIntegrationSurfaces(openApi, reposByName) {
@@ -407,6 +459,7 @@ if (/126 operations|40\+ agents|118 operations through 2 tools/u.test(profile)) 
 
 await Promise.all([
   checkCommunityPolicies(),
+  checkOpenSsfInventory(),
   checkIntegrationSurfaces(openApi, reposByName),
   checkRepoReadmes(repos),
 ]);

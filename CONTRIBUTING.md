@@ -8,6 +8,18 @@ Thanks for helping improve public Xquik SDKs, docs, skills, plugins, examples, a
 - Browse issues labeled `help wanted` for broader contributions.
 - Ask for clarification before starting unclear or overlapping work.
 
+## Grow With a Project
+
+Small tasks are a starting point.
+
+Read the selected repository's roadmap before proposing sustained work.
+
+Build useful contributions across focused, reviewed pull requests.
+
+Never split work or inflate metrics to qualify for recognition.
+
+Link merged work in the [OpenSSF human evidence tracker](https://github.com/Xquik-dev/.github/issues/3).
+
 ## Before Opening an Issue or PR
 
 - Use the affected repository when possible.

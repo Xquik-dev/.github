@@ -18,6 +18,9 @@ Public GitHub profile and community defaults for Xquik SDKs, docs, and agent int
 - Code review: [REVIEWING.md](REVIEWING.md)
 - Public roadmap: [ROADMAP.md](ROADMAP.md)
 - OpenSSF evidence: [OPENSSF.md](OPENSSF.md)
+- Debug-information evidence: [BUILD_DEBUG.md](BUILD_DEBUG.md)
+- Six-month regression evidence: [REGRESSION_TESTS.md](REGRESSION_TESTS.md)
+- Two-person review evidence: [REVIEW_EVIDENCE.md](REVIEW_EVIDENCE.md)
 - Discovery and README policy: [DISCOVERY.md](DISCOVERY.md)
 - Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
