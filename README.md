@@ -36,4 +36,21 @@ Public GitHub profile and community defaults for Xquik SDKs, docs, and agent int
 
 For SDK repositories, start from the org profile or the language-specific repositories listed there.
 
+## Validate Public Contracts
+
+Run the default-branch audit:
+
+```sh
+GITHUB_TOKEN="$(gh auth token)" node scripts/check-public-contract.mjs
+```
+
+Use exact branch refs for coordinated pull requests:
+
+```sh
+XQUIK_PUBLIC_REPO_REFS='{"x-twitter-scraper":"BRANCH","xquik-docs":"BRANCH"}' \
+  GITHUB_TOKEN="$(gh auth token)" node scripts/check-public-contract.mjs
+```
+
+Unspecified repositories still use their default branches.
+
 Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.

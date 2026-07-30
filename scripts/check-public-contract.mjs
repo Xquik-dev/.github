@@ -113,10 +113,11 @@ const STALE_PUBLIC_COPY = [
   /\b40\+ (?:agents|integrations|tools)/iu,
   /\b47\+ (?:agents|integrations|tools)/iu,
   /\b126 (?:API |OpenAPI |REST )?operations/iu,
-  /\b127 endpoints/iu,
-  /\b120 (?:catalog )?routes/iu,
+  /\b127 (?:API |OpenAPI(?:-backed|-documented)? |REST )?(?:endpoints|operations)/iu,
+  /\b119 (?:catalog )?routes/iu,
   /\b118 (?:catalog )?routes/iu,
-  /\b118 operations through 2 tools/iu,
+  /\b118 (?:JSON or text )?operations(?: are supported| through 2 tools)?/iu,
+  /\b2\.5\.6\b/u,
   /\b2\.5\.4\b/u,
 ];
 const INTEGRATION_SURFACES = [
@@ -170,6 +171,31 @@ const INTEGRATION_SURFACES = [
     ],
   },
 ];
+const PUBLIC_REPO_REFS = loadPublicRepoRefs();
+
+function loadPublicRepoRefs() {
+  const raw = process.env.XQUIK_PUBLIC_REPO_REFS;
+  if (raw === undefined || raw === "") return new Map();
+
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    throw new Error("XQUIK_PUBLIC_REPO_REFS must contain valid JSON.");
+  }
+  if (parsed === null || Array.isArray(parsed) || typeof parsed !== "object") {
+    throw new Error("XQUIK_PUBLIC_REPO_REFS must be a JSON object.");
+  }
+
+  return new Map(
+    Object.entries(parsed).map(([repo, ref]) => {
+      if (repo === "" || typeof ref !== "string" || ref.trim() === "") {
+        throw new Error("XQUIK_PUBLIC_REPO_REFS needs non-empty repository refs.");
+      }
+      return [repo, ref.trim()];
+    }),
+  );
+}
 
 function requestHeaders(accept) {
   const headers = { accept, "user-agent": "xquik-public-contract-check" };
@@ -227,7 +253,8 @@ async function listPublicRepos() {
 
 function contentUrl(repo, path) {
   const encodedPath = path.split("/").map(encodeURIComponent).join("/");
-  return `${GITHUB_API}/repos/${GITHUB_ORG}/${repo.name}/contents/${encodedPath}?ref=${encodeURIComponent(repo.default_branch)}`;
+  const ref = PUBLIC_REPO_REFS.get(repo.name) ?? repo.default_branch;
+  return `${GITHUB_API}/repos/${GITHUB_ORG}/${repo.name}/contents/${encodedPath}?ref=${encodeURIComponent(ref)}`;
 }
 
 async function loadRepoFile(repo, path) {
@@ -236,6 +263,11 @@ async function loadRepoFile(repo, path) {
 
 function visibleMarkdown(markdown) {
   return markdown.replace(/[*_`>#]/gu, "").replace(/\s+/gu, " ").trim();
+}
+
+function findStalePublicCopy(markdown) {
+  const visible = visibleMarkdown(markdown);
+  return STALE_PUBLIC_COPY.find((pattern) => pattern.test(visible));
 }
 
 function markdownHeadings(markdown) {
@@ -275,11 +307,12 @@ function operationQueryParameters(openApi, path, method) {
   );
 }
 
-async function checkRepoReadmes(repos) {
+async function checkRepoReadmes(repos, localProfile) {
   await Promise.all(
     repos.map(async (repo) => {
       const path = repo.name === ".github" ? "profile/README.md" : "README.md";
-      const readme = await loadRepoFile(repo, path);
+      const readme =
+        repo.name === ".github" ? localProfile : await loadRepoFile(repo, path);
       const visible = visibleMarkdown(readme);
       const headings = markdownHeadings(readme);
       const titleHeadings = headings.filter(({ level }) => level === 1);
@@ -322,7 +355,7 @@ async function checkRepoReadmes(repos) {
           throw new Error(`${repo.name}/${path} is missing OpenSSF badge ${projectId}.`);
         }
       }
-      const stale = STALE_PUBLIC_COPY.find((pattern) => pattern.test(visible));
+      const stale = findStalePublicCopy(readme);
       if (stale) throw new Error(`${repo.name}/${path} contains stale public copy: ${stale}.`);
     }),
   );
@@ -448,20 +481,20 @@ for (const expected of [
   `| REST API | ${restCount} OpenAPI-backed operations |`,
   `${mcpCount} catalog routes through 2 tools`,
   `${textCount} JSON or text operations are supported`,
+  "| MCP protocol | `2026-07-28` through `server/discover`, plus stateless 2025-era compatibility |",
 ]) {
   if (!profile.includes(expected)) {
     throw new Error(`profile/README.md is missing: ${expected}`);
   }
 }
-if (/126 operations|40\+ agents|118 operations through 2 tools/u.test(profile)) {
-  throw new Error("profile/README.md contains a stale public count.");
-}
+const staleProfile = findStalePublicCopy(profile);
+if (staleProfile) throw new Error(`profile/README.md contains stale public copy: ${staleProfile}.`);
 
 await Promise.all([
   checkCommunityPolicies(),
   checkOpenSsfInventory(),
   checkIntegrationSurfaces(openApi, reposByName),
-  checkRepoReadmes(repos),
+  checkRepoReadmes(repos, profile),
 ]);
 
 process.stdout.write(

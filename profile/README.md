@@ -8,10 +8,11 @@ Use Xquik for X data, monitoring, exports, webhooks, and approved account action
 
 | Surface | Contract |
 | --- | --- |
-| REST API | 127 OpenAPI-backed operations |
+| REST API | 128 OpenAPI-backed operations |
 | OpenAPI | 3.1.0 schema at [xquik.com/openapi.json](https://xquik.com/openapi.json) |
-| MCP | 119 catalog routes through 2 tools |
-| MCP responses | 118 JSON or text operations are supported. Binary support downloads use REST |
+| MCP | 120 catalog routes through 2 tools |
+| MCP protocol | `2026-07-28` through `server/discover`, plus stateless 2025-era compatibility |
+| MCP responses | 119 JSON or text operations are supported. Binary support downloads use REST |
 | Authentication | API keys or OAuth 2.1, depending on the client |
 | Webhooks | HMAC-SHA256 signed deliveries |
 
