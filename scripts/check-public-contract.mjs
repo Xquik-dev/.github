@@ -114,7 +114,7 @@ const STALE_PUBLIC_COPY = [
   /\b47\+ (?:agents|integrations|tools)/iu,
   /\b126 (?:API |OpenAPI |REST )?operations/iu,
   /\b127 endpoints/iu,
-  /\b120 (?:catalog )?routes/iu,
+  /\b119 catalog routes/iu,
   /\b118 (?:catalog )?routes/iu,
   /\b118 operations through 2 tools/iu,
   /\b2\.5\.4\b/u,
@@ -231,6 +231,7 @@ function contentUrl(repo, path) {
 }
 
 async function loadRepoFile(repo, path) {
+  if (repo.name === ".github") return readFile(path, "utf8");
   return fetchText(contentUrl(repo, path), "application/vnd.github.raw+json");
 }
 
