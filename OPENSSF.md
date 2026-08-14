@@ -255,6 +255,10 @@ Track the maintainer nomination in [organization issue #8](https://github.com/Xq
 
 Track scoped human reviews in [organization issue #5](https://github.com/Xquik-dev/.github/issues/5).
 
+`x-twitter-scraper` currently has 41.7% two-person review coverage.
+
+Restore its 50% threshold before the next major release.
+
 All 17 projects now have project-controlled release signature evidence.
 
 Never mark a criterion as met without current public evidence.
