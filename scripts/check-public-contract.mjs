@@ -7,6 +7,7 @@ import { GITHUB_ORG, OPENSSF_PROJECT_IDS } from "./public-projects.mjs";
 const GITHUB_API = "https://api.github.com";
 const OPENAPI_URL = "https://xquik.com/openapi.json";
 const SERVER_CARD_URL = "https://xquik.com/.well-known/mcp/server-card.json";
+const BROWSER_ONLY_OPERATION_COUNT = 1;
 const HTTP_METHODS = new Set(["delete", "get", "head", "options", "patch", "post", "put", "trace"]);
 const INDEPENDENCE_NOTICE =
   'Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.';
@@ -442,11 +443,13 @@ const textCount = requireCount(
 
 checkRepoDiscovery(repos);
 
-if (cardRestCount !== restCount) {
-  throw new Error(`Server card says ${cardRestCount} REST operations; OpenAPI has ${restCount}.`);
+if (cardRestCount !== restCount + BROWSER_ONLY_OPERATION_COUNT) {
+  throw new Error(
+    `Server card says ${cardRestCount} REST operations; public OpenAPI has ${restCount} plus ${BROWSER_ONLY_OPERATION_COUNT} browser-only operation.`,
+  );
 }
 for (const expected of [
-  `| REST API | ${restCount} OpenAPI-backed operations |`,
+  `| REST API | ${cardRestCount} operations; ${restCount} in public OpenAPI discovery |`,
   `${mcpCount} catalog routes through 2 tools`,
   `${textCount} JSON or text operations are supported`,
 ]) {
@@ -466,5 +469,5 @@ await Promise.all([
 ]);
 
 process.stdout.write(
-  `Checked ${repos.length} public repositories. Contracts match ${restCount} REST, ${mcpCount} MCP, and ${textCount} JSON/text operations.\n`,
+  `Checked ${repos.length} public repositories. Contracts match ${cardRestCount} REST (${restCount} public OpenAPI), ${mcpCount} MCP, and ${textCount} JSON/text operations.\n`,
 );

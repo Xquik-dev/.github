@@ -8,7 +8,7 @@ Use Xquik for X data, monitoring, exports, webhooks, and approved account action
 
 | Surface | Contract |
 | --- | --- |
-| REST API | 128 OpenAPI-backed operations |
+| REST API | 128 operations; 127 in public OpenAPI discovery |
 | OpenAPI | 3.1.0 schema at [xquik.com/openapi.json](https://xquik.com/openapi.json) |
 | MCP | 120 catalog routes through 2 tools |
 | MCP responses | 119 JSON or text operations are supported. Binary support downloads use REST |

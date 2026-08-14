@@ -94,4 +94,8 @@ The [two-person review ledger](REVIEW_EVIDENCE.md) records current evidence.
 
 The weekly verifier counts direct commits as unreviewed.
 
+It reports historical gaps without blocking unrelated pull requests.
+
+Restore the threshold before each major release.
+
 Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
