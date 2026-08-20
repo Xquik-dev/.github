@@ -10,7 +10,7 @@ Link the issue, defect, or documented requirement.
 
 List every command and manual check you ran.
 
-## Review Checklist
+## Review checklist
 
 - [ ] I used the affected repository's documented checks.
 - [ ] I added tests for new behavior and fixed defects.

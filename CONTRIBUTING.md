@@ -2,13 +2,13 @@
 
 Thanks for helping improve public Xquik SDKs, docs, skills, plugins, examples, and package metadata.
 
-## Find Work
+## Find work
 
 - Browse issues labeled `good first issue` for small tasks.
 - Browse issues labeled `help wanted` for broader contributions.
 - Ask for clarification before starting unclear or overlapping work.
 
-## Grow With a Project
+## Grow with a project
 
 Small tasks are a starting point.
 
@@ -20,7 +20,7 @@ Never split work or inflate metrics to qualify for recognition.
 
 Link merged work in the [OpenSSF human evidence tracker](https://github.com/Xquik-dev/.github/issues/3).
 
-## Before Opening an Issue or PR
+## Before opening an issue or PR
 
 - Use the affected repository when possible.
 - Search existing issues and PRs for the same request.
@@ -29,7 +29,7 @@ Link merged work in the [OpenSSF human evidence tracker](https://github.com/Xqui
 - Remove private account data from screenshots before posting.
 - For suspected vulnerabilities, follow [SECURITY.md](SECURITY.md).
 
-## Useful Issue Details
+## Useful issue details
 
 - Repository or package name
 - Version, language, and install command
@@ -37,7 +37,7 @@ Link merged work in the [OpenSSF human evidence tracker](https://github.com/Xqui
 - Expected and actual behavior
 - Links to public docs, registry pages, or examples involved
 
-## Pull Requests
+## Pull requests
 
 - Keep changes focused on one public issue or improvement.
 - Create a branch and open a pull request.
@@ -63,7 +63,7 @@ The sign-off certifies your right to submit the contribution.
 
 Use your real name and a reachable email address.
 
-## Acceptance Requirements
+## Acceptance requirements
 
 - Follow the affected repository's language and formatting rules.
 - Keep compiler, type, lint, and security warnings at zero.
@@ -76,7 +76,7 @@ Use your real name and a reachable email address.
 
 Automated changes require an accountable human author and reviewer.
 
-## Public Discoverability
+## Public discoverability
 
 Write for users first.
 

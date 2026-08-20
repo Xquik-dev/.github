@@ -153,7 +153,7 @@ async function loadCommits(project) {
       after,
     });
     const history = data.repository?.defaultBranchRef?.target?.history;
-    if (!history) throw new Error(`${project} has no readable default-branch history.`);
+    if (!history) throw new Error(`GitHub returned no default-branch history for ${project}.`);
     commits.push(...history.nodes);
     after = history.pageInfo.hasNextPage ? history.pageInfo.endCursor : null;
   } while (after !== null);

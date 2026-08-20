@@ -1,6 +1,6 @@
-# Security Policy
+# Security policy
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
 Report vulnerabilities through the affected repository's private reporting option.
 
@@ -34,7 +34,7 @@ This policy covers public Xquik-dev repositories, SDKs, skills, docs, plugins, e
 
 Use normal GitHub issues for public, non-security defects.
 
-## Response Process
+## Response process
 
 Maintainers will acknowledge reports within 3 business days.
 
@@ -48,11 +48,11 @@ Maintainers will coordinate disclosure timing with the reporter.
 
 Maintainers will publish advisories and fixed versions when appropriate.
 
-## Reporter Credit
+## Reporter credit
 
 Public advisories will credit every reporter unless they request anonymity.
 
-## Shared Security Requirements
+## Shared security requirements
 
 Public projects must follow these requirements:
 

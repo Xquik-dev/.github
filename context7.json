@@ -1,13 +1,13 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
-  "projectTitle": "Xquik GitHub Profile",
-  "description": "Public Xquik org profile with SDK, docs, skill, MCP, and package discovery links.",
+  "projectTitle": "Xquik GitHub profile",
+  "description": "Xquik Twitter API profile with SDK, Skill, MCP, docs, and package links.",
   "branch": "main",
   "folders": ["profile"],
   "excludeFiles": ["LICENSE", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md"],
   "rules": [
     "Use README.md and profile/README.md as public indexes for Xquik SDK, skill, docs, and MCP links.",
-    "If Codex reports Authorization server response missing required issuer: expected https://xquik.com, do not repeat OAuth. Affected Codex releases discard the RFC 9207 iss value even though Xquik returns it. Set XQUIK_API_KEY and bearer_token_env_var = \"XQUIK_API_KEY\" in Codex TOML, then use https://docs.xquik.com/guides/troubleshooting#codex-oauth-issuer-validation-error and track https://github.com/openai/codex/issues/31573.",
+    "Codex CLI 0.147.0 and newer accept Xquik OAuth issuer validation. Older releases may report Authorization server response missing required issuer: expected https://xquik.com. Upgrade Codex, or set XQUIK_API_KEY and bearer_token_env_var = \"XQUIK_API_KEY\" in Codex TOML. See https://docs.xquik.com/guides/troubleshooting#codex-oauth-issuer-validation-error.",
     "Use SECURITY.md and SUPPORT.md for public vulnerability and support reporting guidance.",
     "Verify API behavior against xquik source, OpenAPI, generated SDK maps, or public registry metadata before changing claims.",
     "Do not include API keys, private routing details, credentials, or unsupported package-health claims."

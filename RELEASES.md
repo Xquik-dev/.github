@@ -1,4 +1,4 @@
-# Release Integrity & Verification
+# Release integrity & verification
 
 This guide covers cryptographic verification for public Xquik-dev releases.
 
@@ -8,11 +8,11 @@ Never trust a package because a signature merely exists.
 
 Verify the signer identity, repository, artifact digest, and expected workflow.
 
-## Evidence Status
+## Evidence status
 
 Assessment date: July 25, 2026.
 
-| Projects | Distribution | Current Public Evidence |
+| Projects | Distribution | Current public evidence |
 | --- | --- | --- |
 | `n8n-nodes-xquik`, `paperclip-plugin-xquik`, `tweetclaw`, `x-twitter-scraper`, `x-twitter-scraper-typescript` | npm | Registry signature and SLSA provenance |
 | `hermes-tweet`, `prefect-xquik`, `x-twitter-scraper-python`, `xquik-haystack` | PyPI | PEP 740 publish attestations |
@@ -31,7 +31,7 @@ Keep each badge answer aligned with current default-branch evidence.
 The [consumer verification workflow](.github/workflows/release-attestations.yml)
 checks the latest C#, Go, and PHP artifacts weekly.
 
-## Verify npm Provenance
+## Verify npm provenance
 
 The npm registry signs packages and publishes SLSA provenance.
 
@@ -53,7 +53,7 @@ The supported public package names are:
 - `x-developer`
 - `x-twitter-scraper`
 
-## Verify PyPI Attestations
+## Verify PyPI attestations
 
 PyPI publishes PEP 740 attestations for trusted releases.
 
@@ -74,7 +74,7 @@ Replace `WHEEL_URL` with the selected PyPI wheel URL.
 
 The verifier checks the artifact digest and trusted publisher identity.
 
-## Verify RubyGems Attestations
+## Verify RubyGems attestations
 
 RubyGems publishes a Sigstore bundle for the current gem.
 
@@ -110,7 +110,7 @@ The verified SHA-256 digest is:
 6dfdcabd408a330d80ef87f4e650aca0004ba8a0eb8b49cb92e06a97a7cf5502
 ```
 
-## Verify Maven Central Signatures
+## Verify Maven Central signatures
 
 Maven Central publishes detached OpenPGP signatures for Java and Kotlin.
 
@@ -162,7 +162,7 @@ Public workflows verified both root artifacts after registry publication:
 - [Java release verification](https://github.com/Xquik-dev/x-twitter-scraper-java/actions/runs/30110262525)
 - [Kotlin release verification](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/actions/runs/30125831619)
 
-## Verify GitHub Attestations
+## Verify GitHub attestations
 
 Download the selected release artifact.
 
@@ -182,7 +182,7 @@ Confirm the subject digest matches the downloaded artifact.
 
 For stricter policy, also require the expected signer workflow.
 
-## Verify Project-Controlled SDK Artifacts
+## Verify project-controlled SDK artifacts
 
 Three SDK ecosystems also publish canonical GitHub release artifacts.
 
@@ -226,7 +226,7 @@ Each certificate identifies its Xquik-dev release workflow.
 
 Each certificate also binds the artifact to its matching release tag.
 
-## Verify Terraform Checksums
+## Verify Terraform checksums
 
 Download the checksum file, its signature, and the selected archive.
 
@@ -240,7 +240,7 @@ sha256sum --check terraform-provider-x-twitter-scraper_*_SHA256SUMS
 
 Also verify the archive's GitHub attestation.
 
-## Keyless Signing
+## Keyless signing
 
 npm, PyPI, RubyGems, and GitHub attestations use identity-bound signing.
 
@@ -250,7 +250,7 @@ Verification checks the repository identity and transparency-log timestamp.
 
 No long-lived project private signing key is required.
 
-## Protected Release Tags
+## Protected release tags
 
 Every standalone repository has an active ruleset for `v*` tags.
 
@@ -262,7 +262,7 @@ These rules preserve published tag identity.
 
 They do not make an unsigned tag signed.
 
-## Unsigned Tags
+## Unsigned tags
 
 The latest public Git tags lacked verified Git signatures during this audit.
 
@@ -270,7 +270,7 @@ Keep `version_tags_signed` Unmet until important tags are verifiable.
 
 Artifact attestations do not make an unsigned Git tag signed.
 
-## Future Signed Tags
+## Future signed tags
 
 Sign every future major, minor, and vulnerability-fix tag.
 
@@ -300,7 +300,7 @@ Never commit a private signing key.
 
 Keep `version_tags_signed` Unmet until important public tags pass verification.
 
-## Release Requirements
+## Release requirements
 
 Before publishing:
 

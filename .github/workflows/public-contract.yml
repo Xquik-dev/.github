@@ -1,7 +1,7 @@
 # Copyright the Xquik contributors.
 # SPDX-License-Identifier: MIT
 
-name: Check Public Contract
+name: Check public contract
 
 on:
   pull_request:

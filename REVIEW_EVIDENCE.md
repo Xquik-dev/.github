@@ -1,16 +1,16 @@
-# Two-Person Review Evidence
+# Two-person review evidence
 
 This ledger records OpenSSF Gold `two_person_review` evidence.
 
 It covers every standalone Xquik-dev project.
 
-The `.github` and `xquik-docs` repositories provide shared community and documentation surfaces.
+The `.github` and `xquik-docs` repositories provide shared policies and documentation.
 
 They do not publish standalone software releases.
 
 The project criterion does not apply to them separately.
 
-## Audit Window
+## Audit window
 
 The review policy took effect on July 23, 2026.
 
@@ -29,11 +29,11 @@ It uses these conservative rules:
 
 See the [code review policy](REVIEWING.md).
 
-## July 25, 2026 Result
+## July 25, 2026 result
 
 All 17 projects meet the required 50% threshold.
 
-| Repository | Reviewed Commits | Total Commits | Ratio |
+| Repository | Reviewed commits | Total commits | Ratio |
 | --- | ---: | ---: | ---: |
 | `hermes-tweet` | 5 | 7 | 71.4% |
 | `n8n-nodes-xquik` | 4 | 5 | 80.0% |
@@ -55,7 +55,7 @@ All 17 projects meet the required 50% threshold.
 
 The audit intentionally retains unreviewed commits in every denominator.
 
-## August 14, 2026 Current Result
+## August 14, 2026 result
 
 Sixteen projects meet the required 50% threshold.
 
@@ -65,7 +65,7 @@ The verifier reports this gap without blocking unrelated changes.
 
 Future non-author reviews must restore the threshold before the next major release.
 
-## Reproduce the Audit
+## Reproduce the audit
 
 Run the verifier with a GitHub token that can read public pull requests:
 
