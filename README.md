@@ -1,4 +1,4 @@
-# Xquik APIs, SDKs, agent tools & OpenSSF evidence
+# Xquik APIs, SDKs & Agent Tools
 
 > **Xquik is an independent third-party service.** Not affiliated with X Corp.
 > "Twitter" and "X" are trademarks of X Corp.
@@ -24,14 +24,14 @@ Public GitHub profile and community defaults for Xquik SDKs, docs, and agent int
 - Discovery and README policy: [DISCOVERY.md](DISCOVERY.md)
 - Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
-## Find a workflow
+## Find a Workflow
 
-| Customer question | Start here |
+| Task | Start here |
 | --- | --- |
-| How do I search tweets through an API? | [Search Tweets API](https://docs.xquik.com/api-reference/x/search-tweets) |
-| How do I export followers? | [Follower Export Guide](https://docs.xquik.com/guides/follower-export-crm) |
-| Which SDK should my application use? | [SDK directory](profile/README.md#sdks) |
-| How can an AI agent use Xquik? | [Agent integrations](profile/README.md#agent-and-workflow-integrations) |
-| Where is the OpenSSF evidence? | [OpenSSF evidence register](OPENSSF.md) |
+| Search tweets through an API | [Search Tweets API](https://docs.xquik.com/api-reference/x/search-tweets) |
+| Export followers | [Follower Export Guide](https://docs.xquik.com/guides/follower-export-crm) |
+| Choose an SDK | [SDK directory](profile/README.md#sdks) |
+| Connect an AI agent | [Agent integrations](profile/README.md#agent-and-workflow-integrations) |
+| Review OpenSSF evidence | [OpenSSF evidence register](OPENSSF.md) |
 
 Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.

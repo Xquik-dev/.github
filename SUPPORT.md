@@ -1,6 +1,6 @@
 # Support
 
-Use the affected repository's issue tracker for public SDK, docs, skill, plugin, package, and example problems.
+Use the affected repository's issue tracker for public support.
 
 Include:
 
