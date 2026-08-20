@@ -10,15 +10,10 @@ Thanks for helping improve public Xquik SDKs, docs, skills, plugins, examples, a
 
 ## Grow with a project
 
-Small tasks are a starting point.
-
-Read the selected repository's roadmap before proposing sustained work.
-
-Build useful contributions across focused, reviewed pull requests.
-
-Never split work or inflate metrics to qualify for recognition.
-
-Link merged work in the [OpenSSF human evidence tracker](https://github.com/Xquik-dev/.github/issues/3).
+- Start with a small task and read the repository's roadmap.
+- Build useful contributions through focused, reviewed pull requests.
+- Never split work or inflate metrics to qualify for recognition.
+- Link merged work in the [OpenSSF human evidence tracker](https://github.com/Xquik-dev/.github/issues/3).
 
 ## Before opening an issue or PR
 
@@ -53,15 +48,11 @@ Link merged work in the [OpenSSF human evidence tracker](https://github.com/Xqui
 
 ## Developer Certificate of Origin
 
-Every non-trivial contribution requires a DCO 1.1 sign-off.
+Every non-trivial contribution requires a [DCO 1.1](https://developercertificate.org/) sign-off.
 
-Read the [Developer Certificate of Origin](https://developercertificate.org/).
+Run `git commit -s` with your real name and a reachable email address.
 
-Add a sign-off using `git commit -s`.
-
-The sign-off certifies your right to submit the contribution.
-
-Use your real name and a reachable email address.
+The sign-off certifies your right to submit the work.
 
 ## Acceptance requirements
 
@@ -77,8 +68,6 @@ Use your real name and a reachable email address.
 Automated changes require an accountable human author and reviewer.
 
 ## Public discoverability
-
-Write for users first.
 
 - Use descriptive headings that match supported tasks.
 - Answer concrete questions with tested examples.

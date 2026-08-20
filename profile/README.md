@@ -1,4 +1,4 @@
-# Xquik Twitter API developer tools
+# Xquik Twitter API Tools
 
 [![Skills.sh Xquik Skill](https://skills.sh/b/xquik-dev/x-twitter-scraper)](https://skills.sh/xquik-dev/x-twitter-scraper)
 
@@ -22,21 +22,21 @@ Search tweets, export followers, monitor X, and run approved account actions wit
 3. Pick an SDK or integration below.
 4. Use the [MCP guide](https://docs.xquik.com/mcp/overview) for agents.
 
-## Choose by task
+## Choose a Task
 
-| Question | Start here |
+| Task | Start here |
 | --- | --- |
-| How can I search tweets through an API? | [Search Tweets API](https://docs.xquik.com/api-reference/x/search-tweets) |
-| How can I export tweet search results? | [Tweet Search Export Guide](https://docs.xquik.com/guides/tweet-search-export) |
-| How can I retrieve an X or Twitter user timeline? | [User Timeline API](https://docs.xquik.com/api-reference/x/user-tweets) |
-| How can I export public follower lists? | [Follower Export Guide](https://docs.xquik.com/guides/follower-export-crm) |
-| How can I list accounts that a user follows? | [Following API](https://docs.xquik.com/api-reference/x/following) |
-| How can I read my X home timeline? | [Home Timeline API](https://docs.xquik.com/api-reference/x/timeline) |
-| How can I monitor accounts or keywords? | [Brand Monitoring Guide](https://docs.xquik.com/guides/brand-monitoring-workflow) |
-| How can I receive signed monitor events? | [Webhook Guide](https://docs.xquik.com/webhooks/overview) |
-| How can I post or reply from an account? | [Create Tweet API](https://docs.xquik.com/api-reference/x-write/create-tweet) |
-| How does Xquik compare with the X API? | [X API Alternative Guide](https://docs.xquik.com/alternatives/x-api) |
-| How can an AI agent use these operations safely? | [Xquik Agent Skill](https://github.com/Xquik-dev/x-twitter-scraper) |
+| Search tweets through an API | [Search Tweets API](https://docs.xquik.com/api-reference/x/search-tweets) |
+| Export tweet search results | [Tweet Search Export Guide](https://docs.xquik.com/guides/tweet-search-export) |
+| Retrieve an X or Twitter user timeline | [User Timeline API](https://docs.xquik.com/api-reference/x/user-tweets) |
+| Export public follower lists | [Follower Export Guide](https://docs.xquik.com/guides/follower-export-crm) |
+| List accounts that a user follows | [Following API](https://docs.xquik.com/api-reference/x/following) |
+| Read your X home timeline | [Home Timeline API](https://docs.xquik.com/api-reference/x/timeline) |
+| Monitor accounts or keywords | [Brand Monitoring Guide](https://docs.xquik.com/guides/brand-monitoring-workflow) |
+| Receive signed monitor events | [Webhook Guide](https://docs.xquik.com/webhooks/overview) |
+| Post or reply from an account | [Create Tweet API](https://docs.xquik.com/api-reference/x-write/create-tweet) |
+| Compare Xquik with the X API | [X API Alternative Guide](https://docs.xquik.com/alternatives/x-api) |
+| Connect an AI agent safely | [Xquik Agent Skill](https://github.com/Xquik-dev/x-twitter-scraper) |
 
 ## SDKs
 
