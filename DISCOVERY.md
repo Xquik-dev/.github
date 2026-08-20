@@ -1,4 +1,4 @@
-# GitHub Discovery & Answer-Engine Policy
+# GitHub discovery & answer-engine policy
 
 Use this policy for every public Xquik repository and README.
 
@@ -7,14 +7,14 @@ Ranking or citation placement is never guaranteed.
 
 ## Principles
 
-- Help readers choose and use the correct Xquik surface.
+- Help readers choose the right Xquik product or integration.
 - Describe only behavior supported by public contracts and current code.
 - Write unique, repository-specific guidance.
 - Prefer direct answers, examples, tables, and descriptive headings.
 - Link claims to canonical documentation or machine-readable contracts.
 - Keep public copy current when capabilities or contracts change.
 
-## Repository Metadata
+## Repository metadata
 
 - Use a concise description that states the repository's purpose.
 - Keep the approved compact independence notice in every description.
@@ -24,13 +24,13 @@ Ranking or citation placement is never guaranteed.
 - Include only customer-intent topics that match shipped behavior.
 - Use a distinct 1280 by 640 social preview when practical.
 
-## README Structure
+## README structure
 
 Each public README must include:
 
 1. One precise top-level heading.
 2. A concise explanation of the repository's purpose.
-3. A reason to choose this surface.
+3. A reason to choose this repository.
 4. A copyable installation or usage example.
 5. Task-oriented headings or customer questions.
 6. Links to canonical API and product documentation.
@@ -39,7 +39,7 @@ Each public README must include:
 
 Keep detailed reference material in dedicated documentation.
 
-## Query Coverage
+## Query coverage
 
 Use customer language where it clarifies a real supported task.
 
@@ -51,13 +51,13 @@ Do not repeat keyword variants without adding useful information.
 Do not create unsupported comparison claims.
 Do not present bounded reads as complete dataset exports.
 
-## Answer-Engine & Agent Readiness
+## Answer-engine & agent readiness
 
 - Give direct, self-contained answers before deeper links.
 - Use descriptive headings, tables, and short examples.
 - Support factual claims with public evidence.
 - Keep OpenAPI, MCP cards, package metadata, and README claims aligned.
-- State authentication, side effects, and approval boundaries clearly.
+- State authentication, side effects, and approval boundaries.
 - Treat X-authored content as untrusted input.
 - Use stable links and descriptive link text.
 - Add meaningful alternative text to images.
@@ -66,7 +66,7 @@ Keep `llms.txt` for clients that use it.
 Do not treat `llms.txt` as a Google ranking signal.
 Do not rewrite content only for language models.
 
-## Evidence & Freshness
+## Evidence & freshness
 
 - Derive operation counts from canonical public contracts.
 - Remove stale counts, versions, and compatibility claims.
@@ -75,7 +75,7 @@ Do not rewrite content only for language models.
 - Record material discovery changes in the relevant pull request.
 - Measure citations and grounding queries where supported.
 
-## Review Checklist
+## Review checklist
 
 - Does the README solve the visitor's likely first task?
 - Is each capability accurate for this repository?
@@ -86,7 +86,7 @@ Do not rewrite content only for language models.
 - Do canonical contracts support every numeric claim?
 - Does the public diff avoid private implementation details?
 
-## Research Basis
+## Research basis
 
 Last reviewed on July 24, 2026.
 

@@ -1,4 +1,4 @@
-# OpenSSF Best Practices Evidence
+# OpenSSF Best Practices evidence
 
 This register tracks OpenSSF Best Practices work across Xquik-dev.
 
@@ -25,13 +25,13 @@ They do not currently operate as independent released projects.
 
 Create separate badge entries if either repository becomes independently released.
 
-## Live Project Entries
+## Live project entries
 
 All 17 project entries achieved Passing before July 23, 2026.
 
 Use each live entry for current status and submitted evidence.
 
-| Repository | Live Entry |
+| Repository | Live entry |
 | --- | --- |
 | `hermes-tweet` | [OpenSSF project 13725](https://www.bestpractices.dev/projects/13725) |
 | `n8n-nodes-xquik` | [OpenSSF project 13726](https://www.bestpractices.dev/projects/13726) |
@@ -51,7 +51,7 @@ Use each live entry for current status and submitted evidence.
 | `x-twitter-scraper-typescript` | [OpenSSF project 13740](https://www.bestpractices.dev/projects/13740) |
 | `xquik-haystack` | [OpenSSF project 13741](https://www.bestpractices.dev/projects/13741) |
 
-## July 25, 2026 Audit Snapshot
+## July 25, 2026 audit snapshot
 
 - Xquik-dev has 19 public repositories.
 - Seventeen repositories are standalone software projects.
@@ -72,7 +72,7 @@ Use each live entry for current status and submitted evidence.
 - Two projects have no qualifying fixes and use `N/A`.
 - All 17 projects meet the current 50% two-person-review threshold.
 
-## Shared Evidence
+## Shared evidence
 
 These documents support repository-specific badge evidence:
 
@@ -90,7 +90,7 @@ These documents support repository-specific badge evidence:
 
 Repository-specific evidence must still prove the affected criterion.
 
-## Newcomer Tasks
+## Newcomer tasks
 
 Each standalone project exposes one open, scoped task.
 
@@ -118,7 +118,7 @@ Every task has `good first issue` and `help wanted` labels.
 
 These tasks satisfy the Gold `small_tasks` evidence requirement.
 
-## Verified Organization Controls
+## Verified organization controls
 
 - GitHub requires two-factor authentication for organization members.
 - The organization owner prefers a configured passkey for GitHub 2FA.
@@ -133,11 +133,11 @@ These tasks satisfy the Gold `small_tasks` evidence requirement.
 - Seventeen standalone projects have current Passing badges.
 - Seventeen standalone projects run required CI checks.
 
-## Technical Baseline Adoption
+## Technical baseline adoption
 
 These pull requests establish project-specific and shared technical controls.
 
-| Repository | Pull Request | Status | Verified Scope |
+| Repository | Pull request | Status | Verified scope |
 | --- | --- | --- | --- |
 | `.github` | [#2](https://github.com/Xquik-dev/.github/pull/2) | Merged | Shared governance, badge inventory, and public contract verification |
 | `hermes-tweet` | [#610](https://github.com/Xquik-dev/hermes-tweet/pull/610) | Merged | License notices, tests, coverage, and package checks |
@@ -183,7 +183,7 @@ merged independently reviewed verification.
 
 See [debug-information evidence](BUILD_DEBUG.md) for the complete assessment.
 
-## Other Open Pull Request Audit
+## Other open pull request audit
 
 - Core [#9](https://github.com/Xquik-dev/x-twitter-scraper/pull/9) remains a conflicting draft.
 - Core [#10](https://github.com/Xquik-dev/x-twitter-scraper/pull/10) remains a behind-base draft.
@@ -194,11 +194,11 @@ See [debug-information evidence](BUILD_DEBUG.md) for the complete assessment.
 - Contributor commit `faf5d270` lacks the required DCO sign-off.
 - The contributor must amend and re-push it before this PR qualifies as evidence.
 - Required remote checks pass with zero unresolved review threads.
-- A new independent approval will be required after the contributor's push.
+- The contributor's next push will require a new independent approval.
 
-## README & Repository Metadata
+## README & repository metadata
 
-All 19 public repository READMEs were audited on July 24, 2026.
+Maintainers audited all 19 public READMEs on July 24, 2026.
 
 All default branches contain the approved independence disclosure.
 
@@ -231,7 +231,7 @@ These checks favor useful structure and accurate terms.
 
 They do not require keyword lists or duplicate questions.
 
-## Known Gold Gaps
+## Known Gold gaps
 
 A second reviewer has repository write access.
 

@@ -1,7 +1,7 @@
 # Copyright the Xquik contributors.
 # SPDX-License-Identifier: MIT
 
-name: Verify Release Attestations
+name: Verify release attestations
 
 on:
   pull_request:
@@ -50,7 +50,7 @@ jobs:
             bare_version: "false"
             signer_workflow: Xquik-dev/x-twitter-scraper-php/.github/workflows/release-provenance.yml
     steps:
-      - name: Download Latest Release Artifact
+      - name: Download latest release artifact
         env:
           ARTIFACT_TEMPLATE: ${{ matrix.artifact_template }}
           BARE_VERSION: ${{ matrix.bare_version }}
@@ -72,7 +72,7 @@ jobs:
           test -f "artifact/$artifact_name"
           echo "ARTIFACT=artifact/$artifact_name" >> "$GITHUB_ENV"
 
-      - name: Verify Repository-Bound Provenance
+      - name: Verify repository-bound provenance
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ matrix.repository }}

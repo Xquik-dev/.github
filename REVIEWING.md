@@ -1,8 +1,8 @@
-# Code Review Policy
+# Code review policy
 
 This policy applies to every public Xquik-dev repository.
 
-## Required Review
+## Required review
 
 Submit non-trivial changes through pull requests.
 
@@ -12,7 +12,7 @@ Review generated changes at their source and generated output.
 
 Direct pushes count as unreviewed modifications.
 
-## Review Checklist
+## Review checklist
 
 Reviewers must check these areas:
 
@@ -27,7 +27,7 @@ Reviewers must check these areas:
 - The change preserves backward compatibility or documents migration.
 - Metadata stays descriptive, unique, accurate, and free from keyword stuffing.
 
-## Discoverability & Agent Readability
+## Discoverability & agent readability
 
 Write for customers first.
 
@@ -35,7 +35,7 @@ Make public facts easy for search engines and agents to retrieve.
 
 - Give each README one specific H1.
 - Explain the repository's purpose in the opening paragraph.
-- Identify the intended user and supported integration surface.
+- Identify the intended user and supported integration.
 - Provide a tested quick start for the repository's primary task.
 - Map authentic customer tasks to supported public operations.
 - Use natural task language in relevant headings and examples.
@@ -56,7 +56,7 @@ Do not create `llms.txt` solely for Google Search visibility.
 
 Never publish private implementation details to improve discoverability.
 
-## Primary Discoverability Sources
+## Primary discoverability sources
 
 Review these sources before changing this policy:
 
@@ -76,7 +76,7 @@ Do not approve your own change.
 
 Record approval through the repository's pull request review.
 
-## Urgent Security Changes
+## Urgent security changes
 
 Keep exploit details inside GitHub's private vulnerability process.
 
@@ -84,7 +84,7 @@ Maintainers may prepare fixes privately before coordinated disclosure.
 
 A different reviewer must approve the fix before public release.
 
-## Review Measurement
+## Review measurement
 
 Maintainers must review the modification history before each major release.
 

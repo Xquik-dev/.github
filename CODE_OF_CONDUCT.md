@@ -1,12 +1,12 @@
-# Code of Conduct
+# Code of conduct
 
-## Our Pledge
+## Our pledge
 
 We welcome contributors from every background, identity, and experience level.
 
 We commit to an open, respectful, inclusive, and harassment-free community.
 
-## Expected Behavior
+## Expected behavior
 
 - Show empathy and kindness.
 - Respect different viewpoints and experiences.
@@ -14,7 +14,7 @@ We commit to an open, respectful, inclusive, and harassment-free community.
 - Accept responsibility and correct mistakes.
 - Focus on the community's long-term health.
 
-## Unacceptable Behavior
+## Unacceptable behavior
 
 - Harassment, threats, intimidation, or stalking.
 - Sexualized language, imagery, or unwanted attention.

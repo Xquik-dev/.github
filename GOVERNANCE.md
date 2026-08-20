@@ -11,7 +11,7 @@ This governance model covers every public Xquik-dev repository.
 
 ## Roles
 
-### Project Lead
+### Project lead
 
 The project lead maintains the organization roadmap and governance model.
 
@@ -89,7 +89,7 @@ Conflicted maintainers must avoid final approval when another maintainer is avai
 
 Escalate unresolved conflicts to the project lead.
 
-## Governance Changes
+## Governance changes
 
 Propose governance changes through a pull request.
 

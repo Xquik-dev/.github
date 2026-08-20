@@ -1,4 +1,4 @@
-# Debug-Information Preservation Evidence
+# Debug-information preservation evidence
 
 This register supports the OpenSSF Gold `build_preserve_debug` criterion.
 
@@ -12,9 +12,9 @@ See the official [Gold criterion](https://www.bestpractices.dev/en/criteria?deta
 
 Do not count pending changes as default-branch evidence.
 
-## Current Assessment
+## Current assessment
 
-| Project | Result | Public Evidence | Preserved Debug Context |
+| Project | Result | Public evidence | Preserved debug context |
 | --- | --- | --- | --- |
 | `hermes-tweet` | Met | [Python package configuration](https://github.com/Xquik-dev/hermes-tweet/blob/master/pyproject.toml) | The wheel preserves Python sources. No stripping step exists. |
 | `n8n-nodes-xquik` | Met | [TypeScript build configuration](https://github.com/Xquik-dev/n8n-nodes-xquik/blob/main/tsconfig.json) | TypeScript emits source maps into the published `dist` directory. |
@@ -34,7 +34,7 @@ Do not count pending changes as default-branch evidence.
 | `x-twitter-scraper-typescript` | Met | [TypeScript build configuration](https://github.com/Xquik-dev/x-twitter-scraper-typescript/blob/main/tsconfig.build.json) | TypeScript emits source maps beside published JavaScript. |
 | `xquik-haystack` | Met | [Python package configuration](https://github.com/Xquik-dev/xquik-haystack/blob/main/pyproject.toml) | The wheel preserves Python sources. No stripping step exists. |
 
-## Native Release Verification
+## Native release verification
 
 The Terraform provider and CLI publish native Go binaries.
 
@@ -52,7 +52,7 @@ Each remediation now performs these checks:
 
 The checks keep `-trimpath` for reproducibility.
 
-## JVM Verification
+## JVM verification
 
 Java and Kotlin release JARs retain JVM debugging attributes.
 
@@ -67,7 +67,7 @@ The output must contain `LineNumberTable`.
 
 The class metadata also retains its source filename.
 
-## Source Package Verification
+## Source package verification
 
 Python, PHP, and Ruby releases distribute language source files.
 

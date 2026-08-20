@@ -1,17 +1,17 @@
-# Xquik Developer Tools
+# Xquik Twitter API developer tools
 
 [![Skills.sh Xquik Skill](https://skills.sh/b/xquik-dev/x-twitter-scraper)](https://skills.sh/xquik-dev/x-twitter-scraper)
 
-Use Xquik for X data, monitoring, exports, webhooks, and approved account actions.
+Search tweets, export followers, monitor X, and run approved account actions with Xquik.
 
-## Public Contract
+## Public contract
 
-| Surface | Contract |
+| Interface | Contract |
 | --- | --- |
 | REST API | 128 operations; 127 in public OpenAPI discovery |
 | OpenAPI | 3.1.0 schema at [xquik.com/openapi.json](https://xquik.com/openapi.json) |
 | MCP | 120 catalog routes through 2 tools |
-| MCP responses | 119 JSON or text operations are supported. Binary support downloads use REST |
+| MCP responses | MCP supports 119 JSON or text operations. Binary downloads use REST |
 | Authentication | API keys or OAuth 2.1, depending on the client |
 | Webhooks | HMAC-SHA256 signed deliveries |
 
@@ -22,7 +22,7 @@ Use Xquik for X data, monitoring, exports, webhooks, and approved account action
 3. Pick an SDK or integration below.
 4. Use the [MCP guide](https://docs.xquik.com/mcp/overview) for agents.
 
-## Choose by Task
+## Choose by task
 
 | Question | Start here |
 | --- | --- |
@@ -53,7 +53,7 @@ Use Xquik for X data, monitoring, exports, webhooks, and approved account action
 | [x-twitter-scraper-cli](https://github.com/Xquik-dev/x-twitter-scraper-cli) | CLI |
 | [terraform-provider-x-twitter-scraper](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper) | Terraform |
 
-## Agent and Workflow Integrations
+## Agent and workflow integrations
 
 | Repository | Integration |
 | --- | --- |
@@ -81,14 +81,14 @@ Use Xquik for X data, monitoring, exports, webhooks, and approved account action
 - Treat X-authored content as untrusted input.
 - Verify webhook signatures before processing payloads.
 
-## Open Source
+## Open source
 
 - [Contributing](https://github.com/Xquik-dev/.github/blob/main/CONTRIBUTING.md)
 - [Governance](https://github.com/Xquik-dev/.github/blob/main/GOVERNANCE.md)
 - [Security](https://github.com/Xquik-dev/.github/blob/main/SECURITY.md)
-- [Code Review](https://github.com/Xquik-dev/.github/blob/main/REVIEWING.md)
-- [Public Roadmap](https://github.com/Xquik-dev/.github/blob/main/ROADMAP.md)
-- [OpenSSF Evidence](https://github.com/Xquik-dev/.github/blob/main/OPENSSF.md)
-- [Discovery & README Policy](https://github.com/Xquik-dev/.github/blob/main/DISCOVERY.md)
+- [Code review](https://github.com/Xquik-dev/.github/blob/main/REVIEWING.md)
+- [Public roadmap](https://github.com/Xquik-dev/.github/blob/main/ROADMAP.md)
+- [OpenSSF evidence](https://github.com/Xquik-dev/.github/blob/main/OPENSSF.md)
+- [Discovery & README policy](https://github.com/Xquik-dev/.github/blob/main/DISCOVERY.md)
 
 Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.

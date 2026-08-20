@@ -1,4 +1,4 @@
-# Public Project Architecture & Security Assurance
+# Public project architecture & security assurance
 
 This assurance case covers every standalone public Xquik-dev project.
 
@@ -6,7 +6,7 @@ It documents shared architecture, trust boundaries, threats, controls, and resid
 
 Repository evidence must still prove each project-specific claim.
 
-## Project Architecture
+## Project architecture
 
 Public projects use this common request flow:
 
@@ -20,9 +20,9 @@ The hosted Xquik service has a separate operational boundary.
 
 Public repositories exclude its private implementation and infrastructure.
 
-### Project Families
+### Project families
 
-| Projects | Released Components | Primary Boundary |
+| Projects | Released components | Primary boundary |
 | --- | --- | --- |
 | `hermes-tweet`, `n8n-nodes-xquik`, `paperclip-plugin-xquik`, `prefect-xquik`, `tweetclaw`, `xquik-haystack` | Host adapter, configuration mapping, client call, and response mapping | Host runtime to the public Xquik API |
 | `terraform-provider-x-twitter-scraper` | Provider configuration, resources, data sources, API client, and state mapping | Terraform configuration and state to the public Xquik API |
@@ -38,9 +38,9 @@ Package managers own dependency resolution and installation.
 
 GitHub Actions owns public build, test, analysis, and release automation.
 
-### Trust Boundaries
+### Trust boundaries
 
-| Boundary | Untrusted Input | Required Handling |
+| Boundary | Untrusted input | Required handling |
 | --- | --- | --- |
 | Caller to project | Arguments, identifiers, URLs, files, and output options | Apply available type, schema, range, and format checks |
 | Project to network | Base URL, headers, credentials, and request bodies | Default to HTTPS and verify TLS certificates |
@@ -52,13 +52,13 @@ Applications remain responsible for their own authorization and data retention.
 
 Callers must protect exported data and credentials.
 
-## Security Requirements
+## Security requirements
 
 The shared [security policy](SECURITY.md) defines response and disclosure requirements.
 
 Each public project must preserve these claims:
 
-| Claim | Required Property |
+| Claim | Required property |
 | --- | --- |
 | Credential confidentiality | Credentials stay outside source, URLs, outputs, and ordinary logs |
 | Secure transport | Default endpoints use HTTPS with TLS 1.2 or newer |
@@ -69,7 +69,7 @@ Each public project must preserve these claims:
 | Supply-chain integrity | Dependencies and workflows remain reviewable, pinned, and scanned |
 | Release integrity | Published artifacts remain reproducible and cryptographically verifiable |
 
-### Repository Access Assurance
+### Repository access assurance
 
 GitHub requires 2FA for all organization members.
 
@@ -84,9 +84,9 @@ These controls satisfy `require_2FA` and `secure_2FA`.
 
 Reverify them after any organization membership or authentication change.
 
-## Threat Model
+## Threat model
 
-### Protected Assets
+### Protected assets
 
 - API credentials and authorization headers
 - Customer-selected identifiers and exported records
@@ -94,7 +94,7 @@ Reverify them after any organization membership or authentication change.
 - Source, workflows, tags, and release artifacts
 - Vulnerability reports before coordinated disclosure
 
-### Threat Actors
+### Threat actors
 
 - A caller supplying malformed or hostile input
 - A remote endpoint returning malformed content
@@ -103,9 +103,9 @@ Reverify them after any organization membership or authentication change.
 - A compromised distribution path
 - An accidental maintainer error
 
-### Threats & Controls
+### Threats & controls
 
-| Threat | Primary Controls | Residual Risk |
+| Threat | Primary controls | Residual risk |
 | --- | --- | --- |
 | Credential disclosure | Separate configuration, HTTPS defaults, redaction, and review | Host applications can still log or expose supplied credentials |
 | Endpoint redirection | Trusted defaults, certificate verification, and redirect guards | Explicit caller overrides can choose a less safe endpoint |
@@ -115,7 +115,7 @@ Reverify them after any organization membership or authentication change.
 | Workflow compromise | Immutable action pins, restricted permissions, and required review | The sole maintainer remains an access-continuity risk |
 | Artifact substitution | Reproducibility, checksums, provenance, and signing | Public verification remains incomplete for some projects |
 
-## Secure Design Argument
+## Secure design argument
 
 The projects apply these secure-design principles:
 
@@ -128,9 +128,9 @@ The projects apply these secure-design principles:
 
 The current evidence register links each pending technical control.
 
-See [OpenSSF Best Practices Evidence](OPENSSF.md).
+See [OpenSSF Best Practices evidence](OPENSSF.md).
 
-## Common Weakness Countermeasures
+## Common weakness countermeasures
 
 | Weakness | Countermeasure |
 | --- | --- |
@@ -145,7 +145,7 @@ Not every weakness applies to every project family.
 
 Repository tests must demonstrate each applicable countermeasure.
 
-## Assurance Status
+## Assurance status
 
 Passing badges and public policies provide baseline evidence.
 

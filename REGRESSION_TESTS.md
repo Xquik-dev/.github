@@ -1,11 +1,11 @@
-# Six-Month Regression-Test Evidence
+# Six-month regression-test evidence
 
 This register supports the OpenSSF Gold `regression_tests_added50` criterion.
 
 The snapshot date is July 25, 2026.
 The review window starts January 24, 2026.
 
-## Counting Rules
+## Counting rules
 
 Count one defect for each distinct, project-owned root cause.
 Use a public fix, pull request, issue, or changelog as evidence.
@@ -23,9 +23,9 @@ Later regression coverage may protect an earlier fix.
 Use `N/A` only when the six-month denominator is zero.
 Do not count pending pull-request evidence until merge.
 
-## Current Ratios
+## Current ratios
 
-| Project | Fixed Bugs | Guarded Bugs | Ratio | Default-Branch Result |
+| Project | Fixed bugs | Guarded bugs | Ratio | Default-branch result |
 | --- | ---: | ---: | ---: | --- |
 | `hermes-tweet` | 2 | 2 | 100% | Met |
 | `n8n-nodes-xquik` | 0 | 0 | N/A | N/A |
@@ -45,7 +45,7 @@ Do not count pending pull-request evidence until merge.
 | `x-twitter-scraper-typescript` | 3 | 3 | 100% | Met |
 | `xquik-haystack` | 1 | 1 | 100% | Met |
 
-## Project Evidence
+## Project evidence
 
 ### Hermes Tweet
 
@@ -58,25 +58,25 @@ These tests protect both fixes:
 
 - [Marketplace contract tests](https://github.com/Xquik-dev/hermes-tweet/blob/master/tests/test_metadata.py).
 - [Catalog behavior tests](https://github.com/Xquik-dev/hermes-tweet/blob/master/tests/test_catalog.py).
-- [Public-surface safety tests](https://github.com/Xquik-dev/hermes-tweet/blob/master/tests/test_public_safety.py).
+- [Public safety tests](https://github.com/Xquik-dev/hermes-tweet/blob/master/tests/test_public_safety.py).
 
 The ratio is 2 of 2.
 
-### n8n Nodes
+### n8n nodes
 
 No qualifying released product defect was fixed during this window.
 Changes affected features, dependencies, documentation, or release automation.
 
 The ratio is `N/A`.
 
-### Paperclip Plugin
+### Paperclip plugin
 
 No qualifying released product defect was fixed during this window.
 The deprecated action change only affected the CI workflow.
 
 The ratio is `N/A`.
 
-### Prefect Collection
+### Prefect collection
 
 Count the [default API host fix](https://github.com/Xquik-dev/prefect-xquik/commit/fa1b8db660f9c2530dc8c4c140618b34d16c6216).
 
@@ -87,16 +87,16 @@ These tests preserve the public host:
 
 The ratio is 1 of 1.
 
-### Terraform Provider
+### Terraform provider
 
 Count these 2 fixes:
 
-- [Remove the stale integration surface](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/commit/8fe251402e2f2170a8b0f222bf19d44241dc1cc1).
+- [Remove the stale integration](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/commit/8fe251402e2f2170a8b0f222bf19d44241dc1cc1).
 - [Make the JSON cache concurrency-safe](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/commit/7b3e09a8e87fe5a380a0809b8bf97e0495b6adfe).
 
 These tests protect both fixes:
 
-- [Registered provider-surface tests](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/blob/main/internal/provider_coverage_test.go).
+- [Registered provider tests](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/blob/main/internal/provider_coverage_test.go).
 - [JSON concurrency regression](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/blob/main/internal/apijson/concurrency_test.go).
 
 The ratio is 2 of 2.
@@ -118,12 +118,12 @@ These checks protect the first 2 fixes:
 The dependency-only Hono patch lacks a focused regression.
 The ratio is 2 of 3.
 
-### Skill & Plugin Bundle
+### Skill & plugin bundle
 
 Count 10 shipped package defects:
 
-- [Package audit surfaces](https://github.com/Xquik-dev/x-twitter-scraper/commit/56bad11881326fdcc7e593dbf2b263e16fb9607d).
-- [Skill audit surfaces](https://github.com/Xquik-dev/x-twitter-scraper/commit/aba2900e83ab37e44c193465189d9b96920ac2af).
+- [Add package audit files](https://github.com/Xquik-dev/x-twitter-scraper/commit/56bad11881326fdcc7e593dbf2b263e16fb9607d).
+- [Add Skill audit files](https://github.com/Xquik-dev/x-twitter-scraper/commit/aba2900e83ab37e44c193465189d9b96920ac2af).
 - [Skill safety metadata](https://github.com/Xquik-dev/x-twitter-scraper/commit/7936541f7605bf826a0da01df0e08604804405af).
 - [Skill references](https://github.com/Xquik-dev/x-twitter-scraper/commit/55d103756e8a1d50aceccef7d96229efe072701c).
 - [Claude plugin MCP configuration](https://github.com/Xquik-dev/x-twitter-scraper/commit/da7a6d1bdbfdf5df8c78dff9554e2b8fadd103d5).
@@ -302,7 +302,7 @@ The [TypeScript changelog](https://github.com/Xquik-dev/x-twitter-scraper-typesc
 
 The ratio is 3 of 3.
 
-### Haystack Integration
+### Haystack integration
 
 Count the [installed Twine invocation fix](https://github.com/Xquik-dev/xquik-haystack/commit/1b49376f0d7b62b4feffe4c64a1f5cefe4959f0f).
 
@@ -310,7 +310,7 @@ Count the [installed Twine invocation fix](https://github.com/Xquik-dev/xquik-ha
 
 The ratio is 1 of 1.
 
-## Shared Project Sites
+## Shared project sites
 
 The `.github` repository provides shared organization evidence.
 The `xquik-docs` repository provides shared project documentation.

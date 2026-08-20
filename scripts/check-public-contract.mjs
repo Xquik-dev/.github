@@ -25,10 +25,10 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
   [
     "ASSURANCE.md",
     [
-      "## Project Architecture",
-      "## Threat Model",
-      "## Secure Design Argument",
-      "## Common Weakness Countermeasures",
+      "## Project architecture",
+      "## Threat model",
+      "## Secure design argument",
+      "## Common weakness countermeasures",
       "Pending changes do not count as default-branch evidence.",
     ],
   ],
@@ -37,9 +37,9 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
     [
       "17 standalone software projects",
       "Do not count pending changes as default-branch evidence.",
-      "## Native Release Verification",
-      "## JVM Verification",
-      "## Source Package Verification",
+      "## Native release verification",
+      "## JVM verification",
+      "## Source package verification",
     ],
   ],
   ["CODE_OF_CONDUCT.md", ["## Enforcement", "support@xquik.com"]],
@@ -50,9 +50,9 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
   [
     "DISCOVERY.md",
     [
-      "## Repository Metadata",
-      "## README Structure",
-      "## Answer-Engine & Agent Readiness",
+      "## Repository metadata",
+      "## README structure",
+      "## Answer-engine & agent readiness",
       "Do not repeat keyword variants without adding useful information.",
       "Do not treat `llms.txt` as a Google ranking signal.",
     ],
@@ -66,20 +66,20 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
     [
       "17 standalone software projects",
       "xquik-docs",
-      "## Newcomer Tasks",
+      "## Newcomer tasks",
       "These tasks satisfy the Gold `small_tasks` evidence requirement.",
-      "Known Gold Gaps",
+      "Known Gold gaps",
     ],
   ],
   ["REVIEWING.md", ["person other than the author", "At least 50%"]],
   [
     "RELEASES.md",
     [
-      "## Verify npm Provenance",
-      "## Verify PyPI Attestations",
-      "## Verify RubyGems Attestations",
-      "## Verify GitHub Attestations",
-      "## Verify Project-Controlled SDK Artifacts",
+      "## Verify npm provenance",
+      "## Verify PyPI attestations",
+      "## Verify RubyGems attestations",
+      "## Verify GitHub attestations",
+      "## Verify project-controlled SDK artifacts",
       "6dfdcabd408a330d80ef87f4e650aca0004ba8a0eb8b49cb92e06a97a7cf5502",
       "17aaf5366ab6ad65869e5fb4f92acb2351bb08e0a12a0d4fcab6de8875193916",
       "7bef1ec1688b472424d7e92738342a446abfa6a9b1d314c4cd66fff919b5f34f",
@@ -92,7 +92,7 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
     "REVIEW_EVIDENCE.md",
     [
       "The review policy took effect on July 23, 2026.",
-      "The `.github` and `xquik-docs` repositories provide shared community and documentation surfaces.",
+      "The `.github` and `xquik-docs` repositories provide shared policies and documentation.",
       "Count direct commits as unreviewed.",
       "Require a known author and approval from another human.",
       "All 17 projects meet the required 50% threshold.",
@@ -204,7 +204,7 @@ function operationCount(openApi) {
 function requireCount(description, label, pattern) {
   const match = pattern.exec(description);
   if (match?.groups?.count === undefined) {
-    throw new Error(`Server card is missing the ${label} count.`);
+    throw new Error(`Server card lacks the ${label} count.`);
   }
   return Number(match.groups.count);
 }
@@ -451,7 +451,7 @@ if (cardRestCount !== restCount + BROWSER_ONLY_OPERATION_COUNT) {
 for (const expected of [
   `| REST API | ${cardRestCount} operations; ${restCount} in public OpenAPI discovery |`,
   `${mcpCount} catalog routes through 2 tools`,
-  `${textCount} JSON or text operations are supported`,
+  `MCP supports ${textCount} JSON or text operations`,
 ]) {
   if (!profile.includes(expected)) {
     throw new Error(`profile/README.md is missing: ${expected}`);

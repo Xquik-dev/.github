@@ -1,7 +1,7 @@
 # Copyright the Xquik contributors.
 # SPDX-License-Identifier: MIT
 
-name: Public SDK, Docs, or Package Issue
+name: Public SDK, docs, or package issue
 description: Report a public SDK, docs, skill, plugin, package, or example issue.
 title: "[public-surface] "
 body:
@@ -14,15 +14,15 @@ body:
   - type: input
     id: surface
     attributes:
-      label: Public Surface
-      description: Repository, package, docs page, skill, plugin, or example.
+      label: Affected project
+      description: Name the repository, package, docs page, Skill, plugin, or example.
       placeholder: Xquik-dev/x-twitter-scraper-python, docs.xquik.com/sdks/python, npm x-twitter-scraper
     validations:
       required: true
   - type: input
     id: version
     attributes:
-      label: Version Or Reference
+      label: Version or reference
       description: Package version, commit SHA, docs URL, or registry page.
       placeholder: 0.4.1, main, https://docs.xquik.com/sdks/python
     validations:
@@ -49,7 +49,7 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: Expected Result
+      label: Expected result
       description: What should happen instead?
     validations:
       required: false
