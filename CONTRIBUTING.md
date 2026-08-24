@@ -1,11 +1,8 @@
 # Contributing
 
-Thanks for helping improve public Xquik SDKs, docs, skills, plugins, examples, and package metadata.
-
 ## Find work
 
-- Browse issues labeled `good first issue` for small tasks.
-- Browse issues labeled `help wanted` for broader contributions.
+- Browse `good first issue` for small tasks or `help wanted` for broader work.
 - Ask for clarification before starting unclear or overlapping work.
 
 ## Grow with a project
@@ -35,24 +32,19 @@ Thanks for helping improve public Xquik SDKs, docs, skills, plugins, examples, a
 ## Pull requests
 
 - Keep changes focused on one public issue or improvement.
-- Create a branch and open a pull request.
 - Run the affected repository's documented format, lint, test, build, security, and package checks.
-- Add regression tests for behavior changes and tests for major new functionality.
+- Add regression tests for behavior changes.
 - Prefer small documentation, metadata, example, or workflow fixes over broad rewrites.
 - Verify public behavior against canonical repository sources.
 - Use source, generated SDKs, OpenAPI, or registry metadata as evidence.
-- Leave generated SDK internals to the generator.
 - Edit generated paths only when repository guidance permits it.
 - Avoid adding package-health, score, compatibility, or performance claims unless they are source-backed and current.
 - Follow the [code review policy](REVIEWING.md).
 
 ## Developer Certificate of Origin
 
-Every non-trivial contribution requires a [DCO 1.1](https://developercertificate.org/) sign-off.
-
-Run `git commit -s` with your real name and a reachable email address.
-
-The sign-off certifies your right to submit the work.
+Sign non-trivial work with `git commit -s` under the [DCO 1.1](https://developercertificate.org/).
+Use your real name and a reachable email address.
 
 ## Acceptance requirements
 
