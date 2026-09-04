@@ -7,8 +7,14 @@ import { GITHUB_ORG, OPENSSF_PROJECT_IDS } from "./public-projects.mjs";
 const GITHUB_API = "https://api.github.com";
 const OPENAPI_URL = "https://xquik.com/openapi.json";
 const SERVER_CARD_URL = "https://xquik.com/.well-known/mcp/server-card.json";
-const BROWSER_ONLY_OPERATION_COUNT = 1;
-const HTTP_METHODS = new Set(["delete", "get", "head", "options", "patch", "post", "put", "trace"]);
+const SERVER_CARD_FIELDS = {
+  $schema: "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  name: "com.xquik/mcp",
+  title: "Xquik MCP Server",
+  description:
+    "X Twitter scraper & Twitter API alternative. Search, monitor, publish & manage X accounts.",
+  websiteUrl: "https://docs.xquik.com/mcp/overview",
+};
 const INDEPENDENCE_NOTICE =
   'Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.';
 const REPOSITORY_DESCRIPTION_NOTICE = "Not affiliated with X Corp.";
@@ -118,6 +124,7 @@ const STALE_PUBLIC_COPY = [
   /\b119 catalog routes/iu,
   /\b118 (?:catalog )?routes/iu,
   /\b118 operations through 2 tools/iu,
+  /\blive OpenAPI contained \d+ HTTP operations/iu,
   /\b2\.5\.4\b/u,
 ];
 const INTEGRATION_SURFACES = [
@@ -192,21 +199,26 @@ async function fetchText(url, accept = "text/plain") {
   return (await fetchResource(url, accept)).text();
 }
 
-function operationCount(openApi) {
-  return Object.values(openApi.paths ?? {}).reduce(
-    (total, pathItem) =>
-      total +
-      Object.keys(pathItem ?? {}).filter((key) => HTTP_METHODS.has(key)).length,
-    0,
-  );
-}
-
-function requireCount(description, label, pattern) {
-  const match = pattern.exec(description);
-  if (match?.groups?.count === undefined) {
-    throw new Error(`Server card lacks the ${label} count.`);
+function checkServerCard(card) {
+  for (const [field, expected] of Object.entries(SERVER_CARD_FIELDS)) {
+    if (card[field] !== expected) throw new Error(`Server card has an invalid ${field}.`);
   }
-  return Number(match.groups.count);
+  if (!/^\d+\.\d+\.\d+$/u.test(card.version ?? "")) {
+    throw new Error("Server card needs a semantic version.");
+  }
+  if (
+    card.repository?.url !== "https://github.com/Xquik-dev/x-twitter-scraper" ||
+    card.repository?.source !== "github"
+  ) {
+    throw new Error("Server card has an invalid source repository.");
+  }
+  const remote = card.remotes?.find((entry) => entry?.url === "https://xquik.com/mcp");
+  if (
+    remote?.type !== "streamable-http" ||
+    !remote.supportedProtocolVersions?.includes("2026-07-28")
+  ) {
+    throw new Error("Server card lacks the production MCP remote and protocol.");
+  }
 }
 
 async function loadServerCard() {
@@ -423,35 +435,15 @@ const [openApi, serverCard, profile, repos] = await Promise.all([
   listPublicRepos(),
 ]);
 const reposByName = new Map(repos.map((repo) => [repo.name, repo]));
-const restCount = operationCount(openApi);
-const cardDescription = serverCard.description ?? "";
-const cardRestCount = requireCount(
-  cardDescription,
-  "REST operations",
-  /(?<count>\d+) REST operations\b/u,
-);
-const mcpCount = requireCount(
-  cardDescription,
-  "MCP routes",
-  /(?<count>\d+) MCP (?:catalog )?routes\b/u,
-);
-const textCount = requireCount(
-  cardDescription,
-  "JSON/text operations",
-  /(?<count>\d+) (?:JSON or text operations|JSON\/text ops)\b/u,
-);
 
 checkRepoDiscovery(repos);
+checkServerCard(serverCard);
 
-if (cardRestCount !== restCount + BROWSER_ONLY_OPERATION_COUNT) {
-  throw new Error(
-    `Server card says ${cardRestCount} REST operations; public OpenAPI has ${restCount} plus ${BROWSER_ONLY_OPERATION_COUNT} browser-only operation.`,
-  );
-}
+if (openApi.openapi !== "3.1.0") throw new Error("Public OpenAPI must use version 3.1.0.");
 for (const expected of [
-  `| REST API | ${cardRestCount} operations; ${restCount} in public OpenAPI discovery |`,
-  `${mcpCount} catalog routes through 2 tools`,
-  `MCP supports ${textCount} JSON or text operations`,
+  "| REST API | Public operations in the OpenAPI 3.1 contract |",
+  "| MCP | 2 tools with a searchable operation catalog |",
+  "| MCP responses | JSON or text results. Binary downloads use REST |",
 ]) {
   if (!profile.includes(expected)) {
     throw new Error(`profile/README.md is missing: ${expected}`);
@@ -469,5 +461,5 @@ await Promise.all([
 ]);
 
 process.stdout.write(
-  `Checked ${repos.length} public repositories. Contracts match ${cardRestCount} REST (${restCount} public OpenAPI), ${mcpCount} MCP, and ${textCount} JSON/text operations.\n`,
+  `Checked ${repos.length} public repositories and live OpenAPI/MCP discovery contracts.\n`,
 );

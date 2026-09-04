@@ -8,10 +8,10 @@ Search tweets, export followers, monitor X, and run approved account actions wit
 
 | Interface | Contract |
 | --- | --- |
-| REST API | 128 operations; 127 in public OpenAPI discovery |
+| REST API | Public operations in the OpenAPI 3.1 contract |
 | OpenAPI | 3.1.0 schema at [xquik.com/openapi.json](https://xquik.com/openapi.json) |
-| MCP | 120 catalog routes through 2 tools |
-| MCP responses | MCP supports 119 JSON or text operations. Binary downloads use REST |
+| MCP | 2 tools with a searchable operation catalog |
+| MCP responses | JSON or text results. Binary downloads use REST |
 | Authentication | API keys or OAuth 2.1, depending on the client |
 | Webhooks | HMAC-SHA256 signed deliveries |
 
@@ -22,7 +22,7 @@ Search tweets, export followers, monitor X, and run approved account actions wit
 3. Pick an SDK or integration below.
 4. Use the [MCP guide](https://docs.xquik.com/mcp/overview) for agents.
 
-## Choose a Task
+## Choose a task
 
 | Task | Start here |
 | --- | --- |
