@@ -65,7 +65,7 @@ Use each live entry for current status and submitted evidence.
 - Each entry includes dated remediation guidance for those requirements.
 - All 17 entries mark cryptographic 2FA as Met.
 - All 17 projects expose a scoped newcomer task.
-- All 17 projects have verified signed release artifacts.
+- [RELEASES.md](RELEASES.md) lists the evidence each release provides. 3 projects sign release files with a project key.
 - All 17 software projects protect `v*` tags against destructive updates.
 - All latest public Git tags remain unsigned.
 - All 15 projects with qualifying fixes meet the six-month regression ratio.

@@ -18,6 +18,7 @@ printf '%s token=%s\\n' "$name" "\${GITHUB_TOKEN:-none}" >> "$FAKE_CALLS"
 [ "$CASE" != "$name" ]
 `;
 const fakes = {
+  gpg: "exit 0",
   git: `case "$*" in
   "rev-parse HEAD") echo ${sha} ;;
   "status --porcelain") if [ "$CASE" = dirty ] || [ -e "$DIRTY" ]; then echo ' M README.md'; fi ;;
@@ -42,12 +43,12 @@ const checks = [
   "node --test tests/example.test.mjs",
   contract,
   review,
-  "verify-release-attestations token=none",
+  "node scripts/verify-release-evidence.mjs",
   "codeql-security token=none",
 ];
-const pending = "state=pending Running script tests, contract, review evidence, attestations & CodeQL.";
+const pending = "state=pending Running script tests, contract, review & release evidence & CodeQL.";
 const passed =
-  "script tests, public contract, review evidence, release attestations, CodeQL 2.27.2.";
+  "script tests, public contract, review evidence, release evidence, CodeQL 2.27.2.";
 
 function runChecks(t, testCase, args = [], env = {}) {
   const folder = workspace(t);
@@ -57,9 +58,7 @@ function runChecks(t, testCase, args = [], env = {}) {
   }
   copyFileSync(join(root, "bin/check-local"), join(project, "bin/check-local"));
   writeFileSync(join(project, "tests/example.test.mjs"), "");
-  for (const name of ["codeql-security", "verify-release-attestations"]) {
-    writeFileSync(join(project, "scripts", name), stubCheck, { mode: 0o755 });
-  }
+  writeFileSync(join(project, "scripts/codeql-security"), stubCheck, { mode: 0o755 });
   writeFakes(folder, fakes);
   const result = run(folder, ["/bin/bash", join(project, "bin/check-local"), ...args], {
     CASE: testCase,
@@ -84,7 +83,7 @@ test("success posts the checks that passed to the exact head", (t) => {
   assert.equal(result.stdout.trimEnd().split("\n").at(-1), `All local checks passed. They were ${passed}`);
 });
 
-test("only the contract and review checks receive the GitHub token", (t) => {
+test("only the contract, review and release checks receive the GitHub token", (t) => {
   const result = runChecks(t, "ready", ["--no-status"]);
   assert.equal(result.status, 0, result.stderr);
   assert.deepEqual(
@@ -93,7 +92,7 @@ test("only the contract and review checks receive the GitHub token", (t) => {
       "token tests/example.test.mjs none",
       "token scripts/check-public-contract.mjs secret-token",
       "token scripts/check-review-evidence.mjs secret-token",
-      "verify-release-attestations token=none",
+      "token scripts/verify-release-evidence.mjs secret-token",
       "codeql-security token=none",
     ],
   );
@@ -103,7 +102,7 @@ for (const [testCase, ran, failed] of [
   ["tests/example.test.mjs", 1, "Script tests"],
   ["scripts/check-public-contract.mjs", 2, "Public contract with live discovery, OpenAPI and repository copy"],
   ["scripts/check-review-evidence.mjs", 3, "Review evidence for the public inventory and reviewed pull requests"],
-  ["verify-release-attestations", 4, "Release attestations of the latest C#, Go and PHP SDK releases"],
+  ["scripts/verify-release-evidence.mjs", 4, "Release evidence of the latest release of all 17 projects"],
   ["codeql-security", 5, "Static analysis with CodeQL 2.27.2 security-extended queries"],
   ["changed", 5, "Final tree check"],
 ]) {
