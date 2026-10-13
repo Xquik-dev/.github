@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Copyright the Xquik contributors.
+# SPDX-License-Identifier: MIT
+#
+# Downloads the latest release artifact of each SDK that publishes GitHub
+# attestations and verifies its provenance, as RELEASES.md tells consumers to.
+# Every SDK is verified even when an earlier one fails.
+# Usage: scripts/verify-release-attestations
+set -euo pipefail
+
+workspace="$(mktemp -d "${TMPDIR:-/tmp}/xquik-profile-attestations.XXXXXX")"
+trap 'rm -rf -- "${workspace:?}"' EXIT
+
+# verify <project> <repository name> <artifact template> <bare version> <signer workflow file>
+# Callers test the result, so each step returns its own failure.
+verify() {
+  local project="$1" name="$2" template="$3" bare_version="$4" signer="$5"
+  local repository="Xquik-dev/$name" tag version artifact
+  echo "==> Verifying the $project"
+  tag="$(gh release view --repo "$repository" --json tagName --jq .tagName)" || return 1
+  version="$tag"
+  if [[ "$bare_version" == true ]]; then
+    version="${tag#v}"
+  fi
+  artifact="${template/__VERSION__/$version}"
+  mkdir "$workspace/$name" || return 1
+  gh release download "$tag" --repo "$repository" --pattern "$artifact" --dir "$workspace/$name" || return 1
+  [[ -f "$workspace/$name/$artifact" ]] || {
+    echo "Release $tag of $repository has no $artifact." >&2
+    return 1
+  }
+  gh attestation verify "$workspace/$name/$artifact" --repo "$repository" \
+    --signer-workflow "$repository/.github/workflows/$signer" --deny-self-hosted-runners
+}
+
+failed=()
+verify "C# SDK" x-twitter-scraper-csharp "XTwitterScraper.__VERSION__.nupkg" true publish-nuget.yml ||
+  failed+=("C# SDK")
+verify "Go SDK" x-twitter-scraper-go "x-twitter-scraper-go-__VERSION__.zip" false release-provenance.yml ||
+  failed+=("Go SDK")
+verify "PHP SDK" x-twitter-scraper-php "x-twitter-scraper-php-__VERSION__.zip" false release-provenance.yml ||
+  failed+=("PHP SDK")
+
+if ((${#failed[@]} > 0)); then
+  printf -v joined '%s, ' "${failed[@]}"
+  echo "Release attestation failed for the ${joined%, }." >&2
+  exit 1
+fi
+echo "Release attestations verified for the C# SDK, Go SDK, PHP SDK."

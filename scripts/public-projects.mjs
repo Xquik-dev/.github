@@ -5,6 +5,9 @@ export const GITHUB_ORG = "Xquik-dev";
 
 export const SHARED_REPOSITORY_NAMES = [".github", "xquik-docs"];
 
+// An agent skill and a search reference. Neither publishes standalone software releases.
+export const REFERENCE_REPOSITORY_NAMES = ["x-api", "x-twitter-advanced-search"];
+
 export const OPENSSF_PROJECTS = [
   ["hermes-tweet", 13725],
   ["n8n-nodes-xquik", 13726],
