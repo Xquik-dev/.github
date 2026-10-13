@@ -1,4 +1,4 @@
-# Xquik APIs, SDKs & Agent Tools
+# Xquik Twitter API, SDKs & agent tools
 
 > **Xquik is an independent third-party service.** Not affiliated with X Corp.
 > "Twitter" and "X" are trademarks of X Corp.
