@@ -172,14 +172,17 @@ const INTEGRATION_SURFACES = [
   },
 ];
 
-function requestHeaders(accept) {
+// The token goes to the GitHub API only, never to another host.
+function requestHeaders(url, accept) {
   const headers = { accept, "user-agent": "xquik-public-contract-check" };
-  if (process.env.GITHUB_TOKEN) headers.authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  if (process.env.GITHUB_TOKEN && url.startsWith(`${GITHUB_API}/`)) {
+    headers.authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  }
   return headers;
 }
 
 async function fetchResource(url, accept) {
-  const response = await fetch(url, { headers: requestHeaders(accept) });
+  const response = await fetch(url, { headers: requestHeaders(url, accept) });
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}.`);
   return response;
 }

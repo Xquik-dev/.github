@@ -73,7 +73,7 @@ Run the verifier with a GitHub token that can read public pull requests:
 GITHUB_TOKEN=... node scripts/check-review-evidence.mjs
 ```
 
-The [public contract workflow](.github/workflows/public-contract.yml) runs it weekly.
+[`bin/check-local`](bin/check-local) runs it before every merge.
 
 The verifier reports every project below 50%.
 

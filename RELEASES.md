@@ -28,8 +28,7 @@ All 17 projects have verifiable signed release artifacts.
 
 Keep each badge answer aligned with current default-branch evidence.
 
-The [consumer verification workflow](.github/workflows/release-attestations.yml)
-checks the latest C#, Go, and PHP artifacts weekly.
+[`bin/check-local`](bin/check-local) verifies the latest C#, Go, and PHP artifacts on every run.
 
 ## Verify npm provenance
 

@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Copyright the Xquik contributors.
+# SPDX-License-Identifier: MIT
+#
+# Asks Context7 to index this repository's docs again. Run it after a change to
+# README.md, SECURITY.md, SUPPORT.md, context7.json or profile/README.md lands
+# on main.
+# Usage: bin/refresh-context7 [--dry-run]
+# CONTEXT7_KEYCHAIN_SERVICE names the macOS Keychain item that holds the
+# Context7 API key. --dry-run sends nothing and never reads the Keychain.
+set -euo pipefail
+
+library="/xquik-dev/.github"
+endpoint="https://context7.com/api/v1/refresh"
+
+dry_run=false
+for argument in "$@"; do
+  case "$argument" in
+    --dry-run) dry_run=true ;;
+    *)
+      echo "refresh-context7: unknown option $argument. Use --dry-run or no option." >&2
+      exit 2
+      ;;
+  esac
+done
+
+fail() {
+  echo "refresh-context7: $1" >&2
+  exit 1
+}
+
+if $dry_run; then
+  echo "Dry run finished. It would ask $endpoint to refresh $library, and it read no key."
+  exit 0
+fi
+
+keychain_service="${CONTEXT7_KEYCHAIN_SERVICE:-}"
+[[ -n "$keychain_service" ]] ||
+  fail "CONTEXT7_KEYCHAIN_SERVICE is unset. Set it to the Keychain item that holds the Context7 API key, then rerun."
+# Messages never name the item, because this output gets pasted in public.
+api_key="$(security find-generic-password -s "$keychain_service" -w 2>/dev/null)" && [[ -n "$api_key" ]] ||
+  fail "The Keychain has no item named by CONTEXT7_KEYCHAIN_SERVICE. Add the Context7 API key under that name, then rerun."
+
+body_file="$(mktemp "${TMPDIR:-/tmp}/xquik-profile-context7.XXXXXX")"
+trap 'rm -f -- "${body_file:?}"' EXIT
+# The key travels on standard input, so no process listing shows it.
+status="$(printf 'Authorization: Bearer %s\n' "$api_key" |
+  curl --connect-timeout 10 --max-time 30 --proto '=https' -sS --tlsv1.2 \
+    -o "$body_file" -w '%{http_code}' -X POST "$endpoint" \
+    -H 'Content-Type: application/json' -H @- \
+    -d "{\"libraryName\": \"$library\"}")" || fail "Could not reach Context7. Check network access, then rerun."
+
+case "$status" in
+  200 | 202)
+    cat "$body_file"
+    echo
+    echo "Context7 accepted the refresh."
+    ;;
+  400)
+    cat "$body_file"
+    echo
+    if grep -Eiq 'active-task|being processed|already.*process' "$body_file"; then
+      echo "Context7 is already processing another library. Rerun after the next docs change."
+    elif grep -Eiq 'too-early|minimum .* days|required between updates' "$body_file"; then
+      echo "Context7 refresh is not due yet."
+    else
+      fail "Context7 refresh returned HTTP $status."
+    fi
+    ;;
+  404)
+    cat "$body_file"
+    echo
+    echo "Context7 has not indexed $library yet. Rerun after indexing finishes."
+    ;;
+  401 | 403) fail "Context7 authentication failed. Replace the API key in the Keychain, then rerun." ;;
+  429) echo "Context7 refresh is rate limited. Rerun after the next docs change." ;;
+  *)
+    cat "$body_file"
+    echo
+    fail "Context7 refresh returned HTTP $status."
+    ;;
+esac
