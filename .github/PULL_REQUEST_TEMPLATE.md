@@ -20,4 +20,4 @@ List every command and manual check you ran.
 - [ ] I updated user-facing documentation and release notes.
 - [ ] I kept metadata accurate and avoided keyword stuffing.
 - [ ] I signed every commit under the DCO.
-- [ ] A person other than the author will review this change.
+- [ ] Every required check passed on this exact head.
