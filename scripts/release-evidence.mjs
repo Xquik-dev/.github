@@ -176,7 +176,7 @@ const goPath = (module) => module.replaceAll(/[A-Z]/gu, (letter) => `!${letter.t
 // Reads the registry's latest version once and keeps what later checks need.
 const REGISTRY = {
   async npm(context) {
-    context.manifest = await context.io.json(`https://registry.npmjs.org/${context.project.name.replace("/", "%2f")}/latest`);
+    context.manifest = await context.io.json(`https://registry.npmjs.org/${context.project.name.replaceAll("/", "%2f")}/latest`);
     return context.manifest.version;
   },
   async PyPI(context) {
