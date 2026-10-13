@@ -14,7 +14,7 @@ A maintainer publishes each release from the maintainer's own machine.
 
 Most repositories have a `bin/release-local` script for that. It runs the checks, builds, uploads, tags, and creates the GitHub release.
 
-16 of the 17 projects release this way. `n8n-nodes-xquik` still publishes from a GitHub Actions workflow until its local release script lands.
+No project publishes from a GitHub Actions workflow.
 
 `hermes-tweet`, `prefect-xquik`, and `xquik-haystack` have no PyPI trusted publisher. A maintainer's PyPI token is the only way they publish.
 
