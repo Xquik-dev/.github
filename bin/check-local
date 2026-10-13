@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+# Copyright the Xquik contributors.
+# SPDX-License-Identifier: MIT
+#
+# Runs every check a change to this repository must pass, in order, and stops
+# at the first failure.
+# Usage: bin/check-local [--no-status]
+# The contract and review checks read the GitHub API through the gh login of
+# whoever runs this script. CodeQL is mandatory, so install it with
+# brew install --cask codeql.
+# When the tree is clean and GitHub has HEAD, the result is posted to HEAD as
+# the xquik-local-checks commit status. The status text lists only the checks
+# that passed in this run. --no-status skips posting.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+repository="Xquik-dev/.github"
+status_context="xquik-local-checks"
+minimum_node="v22.23.1"
+
+post_commit_status=true
+for argument in "$@"; do
+  case "$argument" in
+    --no-status) post_commit_status=false ;;
+    *)
+      echo "check-local: unknown option $argument. Use --no-status or no option." >&2
+      exit 2
+      ;;
+  esac
+done
+
+for tool in git gh node; do
+  command -v "$tool" >/dev/null || {
+    echo "check-local: $tool is missing. Install it, then rerun." >&2
+    exit 1
+  }
+done
+
+head_commit="$(git rev-parse HEAD)"
+status_commit=""
+if ! $post_commit_status; then
+  echo "==> Commit status not posted because --no-status was passed."
+elif [[ -n "$(git status --porcelain)" ]]; then
+  echo "==> Commit status not posted because the tree has uncommitted changes."
+elif ! gh api --silent "repos/$repository/commits/$head_commit" >/dev/null 2>&1; then
+  echo "==> Commit status not posted because GitHub does not have HEAD, or gh is signed out. Push first."
+else
+  status_commit="$head_commit"
+fi
+
+# Posts the commit status. A failed post prints a warning and keeps the check result.
+post_status() {
+  local state="$1" description="${2:0:139}"
+  gh api --silent "repos/$repository/statuses/$status_commit" \
+    -f state="$state" -f context="$status_context" -f description="$description" >/dev/null 2>&1 ||
+    echo "check-local: could not post the $state $status_context status. Run gh auth status." >&2
+}
+
+current_check="Setup"
+passed=()
+summary=""
+
+on_exit() {
+  local status=$?
+  if [[ -n "$status_commit" ]]; then
+    if ((status == 0)) && [[ -n "$summary" ]]; then
+      post_status success "Passed $summary"
+    else
+      post_status failure "Failed at $current_check."
+    fi
+  fi
+}
+trap on_exit EXIT
+
+if [[ -n "$status_commit" ]]; then
+  echo "==> Posting a pending $status_context status to ${status_commit:0:12}."
+  post_status pending "Running script tests, contract, review evidence, attestations & CodeQL."
+fi
+
+# A wrong tool fails here, before the slower checks run.
+current_check="Node.js version"
+node_version="$(node --version)"
+[[ "$(printf '%s\n' "$minimum_node" "$node_version" | sort -V | head -n 1)" == "$minimum_node" ]] || {
+  echo "check-local: Node.js $node_version is older than $minimum_node. Upgrade Node.js, then rerun." >&2
+  exit 1
+}
+current_check="GitHub sign-in"
+github_token="$(gh auth token 2>/dev/null)" && [[ -n "$github_token" ]] || {
+  echo "check-local: gh is signed out. Run gh auth login, then rerun." >&2
+  exit 1
+}
+current_check="CodeQL CLI"
+codeql_version="$(bash scripts/codeql-security --version)"
+
+# Runs 1 check and records its label for the status. On failure, prints the
+# check name and the next step, then exits.
+run_check() {
+  local label="$1" name="$2" next_step="$3"
+  shift 3
+  current_check="$name"
+  echo "==> $name"
+  "$@" || {
+    local status=$?
+    echo "check-local: $name failed. $next_step" >&2
+    exit "$status"
+  }
+  passed+=("$label")
+}
+
+# Only the 2 verifiers below receive the token.
+with_github_token() {
+  GITHUB_TOKEN="$github_token" "$@"
+}
+
+run_check "script tests" "Script tests" \
+  "Fix the failing tests above." node --test tests/*.test.mjs
+run_check "public contract" "Public contract with live discovery, OpenAPI and repository copy" \
+  "Fix the contract error above. scripts/check-public-contract.mjs holds each rule." \
+  with_github_token node scripts/check-public-contract.mjs
+run_check "review evidence" "Review evidence for the public inventory and reviewed pull requests" \
+  "Fix the evidence error above. REVIEW_EVIDENCE.md explains each rule." \
+  with_github_token node scripts/check-review-evidence.mjs
+run_check "release attestations" "Release attestations of the latest C#, Go and PHP SDK releases" \
+  "Follow RELEASES.md to inspect the release named above." bash scripts/verify-release-attestations
+run_check "CodeQL $codeql_version" "Static analysis with CodeQL $codeql_version security-extended queries" \
+  "Fix the CodeQL results above, then rerun." bash scripts/codeql-security
+
+current_check="Final tree check"
+if [[ -n "$status_commit" ]]; then
+  [[ "$(git rev-parse HEAD)" == "$status_commit" && -z "$(git status --porcelain)" ]] || {
+    echo "check-local: the tree changed during the checks. Commit or remove the changes, then rerun." >&2
+    exit 1
+  }
+fi
+printf -v joined '%s, ' "${passed[@]}"
+summary="${joined%, }."
+echo "All local checks passed. They were $summary"

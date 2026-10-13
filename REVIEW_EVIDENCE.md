@@ -8,6 +8,10 @@ The `.github` and `xquik-docs` repositories provide shared policies and document
 
 They do not publish standalone software releases.
 
+The `x-api` and `x-twitter-advanced-search` repositories hold an agent skill and a search reference.
+
+They do not publish standalone software releases either.
+
 The project criterion does not apply to them separately.
 
 ## Audit window
@@ -73,7 +77,7 @@ Run the verifier with a GitHub token that can read public pull requests:
 GITHUB_TOKEN=... node scripts/check-review-evidence.mjs
 ```
 
-The [public contract workflow](.github/workflows/public-contract.yml) runs it weekly.
+[`bin/check-local`](bin/check-local) runs it before every merge.
 
 The verifier reports every project below 50%.
 

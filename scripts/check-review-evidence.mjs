@@ -4,6 +4,7 @@
 import {
   GITHUB_ORG,
   OPENSSF_PROJECT_NAMES,
+  REFERENCE_REPOSITORY_NAMES,
   SHARED_REPOSITORY_NAMES,
 } from "./public-projects.mjs";
 
@@ -115,7 +116,11 @@ async function loadPublicRepoNames() {
 }
 
 async function verifyPublicInventory() {
-  const expected = new Set([...SHARED_REPOSITORY_NAMES, ...OPENSSF_PROJECT_NAMES]);
+  const expected = new Set([
+    ...SHARED_REPOSITORY_NAMES,
+    ...REFERENCE_REPOSITORY_NAMES,
+    ...OPENSSF_PROJECT_NAMES,
+  ]);
   const actual = new Set(await loadPublicRepoNames());
   const unexpected = [...actual].filter((name) => !expected.has(name));
   const missing = [...expected].filter((name) => !actual.has(name));
