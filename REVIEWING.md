@@ -6,7 +6,11 @@ This policy applies to every public Xquik-dev repository.
 
 Submit non-trivial changes through pull requests.
 
-A person other than the author must review each non-trivial change.
+Each repository's required checks must pass on a pull request's exact head before it merges.
+
+1 maintainer reviews each change. No second human reviewer is required for a single change today.
+
+The review measurement below still applies to each release.
 
 Review generated changes at their source and generated output.
 
@@ -82,13 +86,15 @@ Keep exploit details inside GitHub's private vulnerability process.
 
 Maintainers may prepare fixes privately before coordinated disclosure.
 
-A different reviewer must approve the fix before public release.
+The maintainer reviews the fix, and every required check passes on its exact head, before public release.
 
 ## Review measurement
 
 Maintainers must review the modification history before each major release.
 
 At least 50% of released modifications require non-author human review.
+
+A review counts toward this measure only when a person other than the author approves the pull request.
 
 The [two-person review ledger](REVIEW_EVIDENCE.md) records current evidence.
 
