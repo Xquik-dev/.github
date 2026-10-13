@@ -66,6 +66,7 @@ const io = {
   run,
   signers,
   text: async (url) => (await request(url)).toString(),
+  wait,
 };
 
 if (process.argv.includes("--table")) {

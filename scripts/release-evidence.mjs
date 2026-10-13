@@ -16,6 +16,8 @@ export const TERRAFORM_KEY = "0DC478C17474B9645C25B46C4900C25E85324F28";
 const MAVEN = "https://repo1.maven.org/maven2/com/xquik/api";
 const NUGET = "https://api.nuget.org/v3-flatcontainer";
 const NUGET_SIGNATURE = ".signature.p7s";
+const ATTESTATION_ATTEMPTS = 3;
+const ATTESTATION_RETRY_MS = 2000;
 
 export const EVIDENCE = {
   tag: "Release tag on the default branch",
@@ -286,9 +288,17 @@ const CHECKS = {
       throw new Error("Packagist serves another commit than the tag");
     }
   },
+  // GitHub's attestation service fails now and then, so 1 failure is tried again.
   async attestation(context) {
-    const { status } = await context.io.run("gh", ["release", "verify", context.tag, "--repo", `${ORG}/${context.project.repo}`]);
-    if (status !== 0) throw new Error(`gh release verify ${context.tag} failed`);
+    const args = ["release", "verify", context.tag, "--repo", `${ORG}/${context.project.repo}`];
+    let result;
+    for (let attempt = 1; attempt <= ATTESTATION_ATTEMPTS; attempt += 1) {
+      if (attempt > 1) await context.io.wait(ATTESTATION_RETRY_MS);
+      result = await context.io.run("gh", args);
+      if (result.status === 0) return;
+    }
+    const reason = result.stderr.trim().split("\n").at(-1) ?? "";
+    throw new Error(`gh release verify ${context.tag} failed ${ATTESTATION_ATTEMPTS} times. ${reason}`.trim().replace(/\.$/u, ""));
   },
 };
 
