@@ -1,50 +1,87 @@
 # Release integrity & verification
 
-This guide covers cryptographic verification for public Xquik-dev releases.
+This guide covers verification for public Xquik-dev releases.
 
 Use public registry or GitHub evidence for every verification.
 
 Never trust a package because a signature merely exists.
 
-Verify the signer identity, repository, artifact digest, and expected workflow.
+Verify the signer identity, repository, artifact digest, and release tag.
+
+## How releases are made
+
+A maintainer publishes each release from the maintainer's own machine.
+
+Most repositories have a `bin/release-local` script for that. It runs the checks, builds, uploads, tags, and creates the GitHub release.
+
+16 of the 17 projects release this way. `n8n-nodes-xquik` still publishes from a GitHub Actions workflow until its local release script lands.
+
+`hermes-tweet`, `prefect-xquik`, and `xquik-haystack` have no PyPI trusted publisher. A maintainer's PyPI token is the only way they publish.
+
+So a release carries no workflow provenance. It has no SLSA provenance, no PyPI attestation, no RubyGems attestation, and no workflow signature.
+
+Older releases came from workflows and still carry that provenance. Do not require it for a newer release.
 
 ## Evidence status
 
-Assessment date: July 25, 2026.
+Assessment date: October 13, 2026.
 
-| Projects | Distribution | Current public evidence |
+| Project | Distribution | Evidence of every release |
 | --- | --- | --- |
-| `n8n-nodes-xquik`, `paperclip-plugin-xquik`, `tweetclaw`, `x-twitter-scraper`, `x-twitter-scraper-typescript` | npm | Registry signature and SLSA provenance |
-| `hermes-tweet`, `prefect-xquik`, `x-twitter-scraper-python`, `xquik-haystack` | PyPI | PEP 740 publish attestations |
-| `terraform-provider-x-twitter-scraper` | GitHub Releases and Terraform Registry | GitHub SLSA provenance and signed checksums |
-| `x-twitter-scraper-cli` | GitHub Releases | GitHub SLSA provenance |
-| `x-twitter-scraper-ruby` | RubyGems | Sigstore bundle bound to the published gem |
-| `x-twitter-scraper-java`, `x-twitter-scraper-kotlin` | Maven Central | OpenPGP signatures for every published Maven file |
-| `x-twitter-scraper-csharp` | NuGet and GitHub Releases | Repository-bound SLSA provenance for the exact `.nupkg` |
-| `x-twitter-scraper-go` | Go modules and GitHub Releases | Repository-bound SLSA provenance for the source archive |
-| `x-twitter-scraper-php` | Packagist and GitHub Releases | Repository-bound SLSA provenance for the Composer archive |
+| `hermes-tweet` | PyPI `hermes-tweet` | Release tag on the default branch. Registry version equals the tag. Release assets equal the PyPI files |
+| `n8n-nodes-xquik` | npm `n8n-nodes-xquik` | Release tag on the default branch. Registry version equals the tag. npm registry signature |
+| `paperclip-plugin-xquik` | npm `@xquik/paperclip-plugin-xquik` | Release tag on the default branch. Registry version equals the tag. npm registry signature |
+| `prefect-xquik` | PyPI `prefect-xquik` | Release tag on the default branch. Registry version equals the tag |
+| `terraform-provider-x-twitter-scraper` | Terraform Registry `Xquik-dev/x-twitter-scraper` | Release tag on the default branch. Registry version equals the tag. Checksums signed by the Xquik Terraform key. GitHub release attestation |
+| `tweetclaw` | npm `@xquik/tweetclaw` | Release tag on the default branch. Registry version equals the tag. npm registry signature |
+| `x-twitter-scraper` | npm `x-developer` | Release tag on the default branch. Registry version equals the tag. npm registry signature |
+| `x-twitter-scraper-cli` | GitHub Releases `x-twitter-scraper` | Release tag on the default branch. Checksum file matches the release assets |
+| `x-twitter-scraper-csharp` | NuGet `XTwitterScraper` | Release tag on the default branch. Registry version equals the tag. NuGet package holds the files of the release asset. GitHub release attestation |
+| `x-twitter-scraper-go` | Go modules `github.com/Xquik-dev/x-twitter-scraper-go` | Release tag on the default branch. Registry version equals the tag. Go checksum database entry and source commit |
+| `x-twitter-scraper-java` | Maven Central `com.xquik.api:x-twitter-scraper-java` | Release tag on the default branch. Registry version equals the tag. OpenPGP signature from the Xquik Maven key |
+| `x-twitter-scraper-kotlin` | Maven Central `com.xquik.api:x-twitter-scraper-kotlin` | Release tag on the default branch. Registry version equals the tag. OpenPGP signature from the Xquik Maven key |
+| `x-twitter-scraper-php` | Packagist `xquik/x-twitter-scraper` | Release tag on the default branch. Registry version equals the tag. Packagist source commit equals the tag |
+| `x-twitter-scraper-python` | PyPI `x-twitter-scraper` | Release tag on the default branch. Registry version equals the tag. GitHub release attestation |
+| `x-twitter-scraper-ruby` | RubyGems `x-twitter-scraper` | Release tag on the default branch. Registry version equals the tag. GitHub release attestation |
+| `x-twitter-scraper-typescript` | npm `x-twitter-scraper` | Release tag on the default branch. Registry version equals the tag. npm registry signature. Release asset equals the npm tarball. GitHub release attestation |
+| `xquik-haystack` | PyPI `xquik-haystack` | Release tag on the default branch. Registry version equals the tag |
 
-All 17 projects have verifiable signed release artifacts.
+Every row holds for the latest release of the project.
 
-Keep each badge answer aligned with current default-branch evidence.
+[`bin/check-local`](bin/check-local) verifies every row on every run. It runs [`scripts/verify-release-evidence.mjs`](scripts/verify-release-evidence.mjs).
 
-[`bin/check-local`](bin/check-local) verifies the latest C#, Go, and PHP artifacts on every run.
+What each kind of evidence means.
 
-## Verify npm provenance
+| Evidence | Meaning |
+| --- | --- |
+| Release tag on the default branch | The commit of the latest release tag is in the history of the default branch |
+| Registry version equals the tag | The registry's latest version is the version of the latest release tag |
+| npm registry signature | An npm registry key signed the package name, version, and integrity value |
+| Release asset equals the npm tarball | The GitHub release asset has the SHA-256 digest of the tarball npm serves |
+| Release assets equal the PyPI files | Each file on PyPI has the SHA-256 digest of a GitHub release asset |
+| OpenPGP signature from the Xquik Maven key | The Xquik Maven key made a valid signature over the published JAR |
+| Checksums signed by the Xquik Terraform key | The Xquik Terraform key signed the checksum file, and every archive matches its line |
+| Checksum file matches the release assets | Every line of the checksum file matches a release asset. The file is not signed |
+| NuGet package holds the files of the release asset | NuGet.org serves the same files as the release asset, plus its own signature file |
+| Go checksum database entry and source commit | The Go checksum database lists the version, and the Go proxy built it from the tag's commit |
+| Packagist source commit equals the tag | Packagist serves the commit that the release tag names |
+| GitHub release attestation | The repository has immutable releases, and GitHub signed a record of the release |
 
-The npm registry signs packages and publishes SLSA provenance.
+No release script signs its Git tags. No project publishes build provenance for a local release.
 
-Install the package with a lockfile.
+## Verify npm packages
 
-Then run:
+The npm registry signs every package version.
+
+Install the package with a lockfile, then check the signatures.
 
 ```sh
 npm audit signatures
 ```
 
-Confirm the expected package name and Xquik-dev source repository.
+The signature proves that npm served the package it published. It does not name a source repository.
 
-The supported public package names are:
+The supported public package names are these.
 
 - `n8n-nodes-xquik`
 - `@xquik/paperclip-plugin-xquik`
@@ -52,72 +89,54 @@ The supported public package names are:
 - `x-developer`
 - `x-twitter-scraper`
 
-## Verify PyPI attestations
-
-PyPI publishes PEP 740 attestations for trusted releases.
-
-Copy the wheel URL from the project's PyPI Files page.
-
-Run:
+`x-twitter-scraper` also attaches its tarball to the GitHub release. Download the registry tarball and check it against that release.
 
 ```sh
-uvx --from pypi-attestations \
-  pypi-attestations verify pypi \
-  --repository https://github.com/Xquik-dev/PROJECT \
-  WHEEL_URL
+curl --fail --location --remote-name \
+  https://registry.npmjs.org/x-twitter-scraper/-/x-twitter-scraper-0.13.1.tgz
+gh release verify-asset v0.13.1 x-twitter-scraper-0.13.1.tgz \
+  --repo Xquik-dev/x-twitter-scraper-typescript
 ```
 
-Replace `PROJECT` with the matching repository.
+## Verify PyPI packages
 
-Replace `WHEEL_URL` with the selected PyPI wheel URL.
+PyPI lists a SHA-256 digest for every file. `pip` and `uv` check it on download.
 
-The verifier checks the artifact digest and trusted publisher identity.
+A local release has no PyPI attestation, so `pypi-attestations` finds none.
 
-## Verify RubyGems attestations
-
-RubyGems publishes a Sigstore bundle for the current gem.
-
-Download the gem and its bundle:
+`hermes-tweet` attaches its wheel and source archive to the GitHub release. Check the release assets against the digests PyPI lists.
 
 ```sh
-gem_file=x-twitter-scraper-0.5.5.gem
-bundle_file="$gem_file.sigstore.json"
-
-curl --fail --location --output "$gem_file" \
-  "https://rubygems.org/downloads/$gem_file"
-
-curl --fail --location \
-  https://rubygems.org/api/v1/attestations/x-twitter-scraper-0.5.5.json \
-  | jq '.[0]' > "$bundle_file"
+curl --fail --silent https://pypi.org/pypi/hermes-tweet/0.1.13/json \
+  | jq -r '.urls[] | "\(.digests.sha256)  \(.filename)"' > SHA256SUMS
+gh release download v0.1.13 --repo Xquik-dev/hermes-tweet \
+  --pattern 'hermes_tweet-*'
+shasum -a 256 --check SHA256SUMS
 ```
 
-Verify the exact workflow identity:
+`x-twitter-scraper` has a GitHub release attestation, described below.
 
-```sh
-gem exec sigstore-cli:0.2.3 verify \
-  --bundle="$bundle_file" \
-  --certificate-identity=https://github.com/Xquik-dev/x-twitter-scraper-ruby/.github/workflows/publish-gem.yml@refs/tags/v0.5.5 \
-  --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
-  "$gem_file"
-```
+`prefect-xquik` and `xquik-haystack` have neither. Their evidence is the release tag and the registry version.
 
-Require an `OK` result for the downloaded artifact.
+## Verify the Ruby gem
 
-The verified SHA-256 digest is:
+RubyGems lists a SHA-256 digest for every gem version.
 
-```text
-6dfdcabd408a330d80ef87f4e650aca0004ba8a0eb8b49cb92e06a97a7cf5502
-```
+A local release has no RubyGems attestation.
+
+The repository has immutable releases, so GitHub attests each release. The section on GitHub release attestations shows the command.
 
 ## Verify Maven Central signatures
 
 Maven Central publishes detached OpenPGP signatures for Java and Kotlin.
 
-Download an artifact and its signature:
+The release script signs every Maven file with the Xquik Maven key. That key is long-lived, and a maintainer holds it.
+
+Download an artifact and its signature.
 
 ```sh
 project=java
-version=0.6.0
+version=0.10.3
 artifact="x-twitter-scraper-$project-$version.jar"
 base="https://repo.maven.apache.org/maven2/com/xquik/api/x-twitter-scraper-$project/$version"
 
@@ -125,129 +144,129 @@ curl --fail --location --remote-name "$base/$artifact"
 curl --fail --location --remote-name "$base/$artifact.asc"
 ```
 
-Import the public key and verify the artifact:
+Import the public key from this repository and verify the artifact.
 
 ```sh
-gpg --keyserver hkps://keyserver.ubuntu.com \
-  --recv-keys 0xD2037E4157E62A59
+curl --fail --location --remote-name \
+  https://raw.githubusercontent.com/Xquik-dev/.github/main/keys/xquik-maven-central.asc
+gpg --import xquik-maven-central.asc
 gpg --verify "$artifact.asc" "$artifact"
 ```
 
-Set `project=kotlin` and `version=0.5.3` to verify Kotlin.
+Set `project=kotlin` and `version=0.9.3` to verify Kotlin.
 
-Confirm this full fingerprint before trusting the key:
+Confirm this full fingerprint before trusting the key.
 
 ```text
 6965 E561 C0AC EE32 060A B961 D203 7E41 57E6 2A59
 ```
 
-The verified root JAR SHA-256 digests are:
+## Verify GitHub release attestations
 
-```text
-Java:   17aaf5366ab6ad65869e5fb4f92acb2351bb08e0a12a0d4fcab6de8875193916
-Kotlin: 6e083f62f50231bbce09b99c6c6fe5b8f5ade1babaefac8220d80897df93cdf1
-```
+5 repositories have immutable releases.
 
-The audit verified 15 Java artifacts and their signatures.
+- `terraform-provider-x-twitter-scraper`
+- `x-twitter-scraper-csharp`
+- `x-twitter-scraper-python`
+- `x-twitter-scraper-ruby`
+- `x-twitter-scraper-typescript`
 
-They span 3 Maven components.
+GitHub signs a record of each release there. The record names the tag, its commit, and the digest of every asset.
 
-It also verified 15 Kotlin artifacts and their signatures.
-
-They span 3 Maven components.
-
-Public workflows verified both root artifacts after registry publication:
-
-- [Java release verification](https://github.com/Xquik-dev/x-twitter-scraper-java/actions/runs/30110262525)
-- [Kotlin release verification](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/actions/runs/30125831619)
-
-## Verify GitHub attestations
-
-Download the selected release artifact.
-
-Run:
+Verify the release, then any asset you downloaded.
 
 ```sh
-gh attestation verify ARTIFACT --repo Xquik-dev/PROJECT
+gh release verify TAG --repo Xquik-dev/PROJECT
+gh release verify-asset TAG FILE --repo Xquik-dev/PROJECT
 ```
 
-Replace `PROJECT` with the matching repository.
+Replace `TAG`, `FILE`, and `PROJECT` with the release tag, the downloaded file, and the repository.
 
-Replace `ARTIFACT` with the downloaded file path.
+This attestation is GitHub's record of a release. It is not build provenance, and it names no workflow.
 
-Require the SLSA provenance predicate.
+The other 12 repositories have no release attestation.
 
-Confirm the subject digest matches the downloaded artifact.
+## Verify SDK packages against their tags
 
-For stricter policy, also require the expected signer workflow.
+The C#, Go, and PHP registries each offer a different check.
 
-## Verify project-controlled SDK artifacts
-
-Three SDK ecosystems also publish canonical GitHub release artifacts.
-
-Download and verify each artifact:
+For C#, download the release asset and verify it against the attested release.
 
 ```sh
-gh release download v0.5.4 \
+gh release download v0.6.2 \
   --repo Xquik-dev/x-twitter-scraper-csharp \
-  --pattern XTwitterScraper.0.5.4.nupkg
-gh attestation verify XTwitterScraper.0.5.4.nupkg \
-  --repo Xquik-dev/x-twitter-scraper-csharp \
-  --signer-workflow Xquik-dev/x-twitter-scraper-csharp/.github/workflows/publish-nuget.yml \
-  --deny-self-hosted-runners
-
-gh release download v0.7.0 \
-  --repo Xquik-dev/x-twitter-scraper-go \
-  --pattern x-twitter-scraper-go-v0.7.0.zip
-gh attestation verify x-twitter-scraper-go-v0.7.0.zip \
-  --repo Xquik-dev/x-twitter-scraper-go \
-  --signer-workflow Xquik-dev/x-twitter-scraper-go/.github/workflows/release-provenance.yml \
-  --deny-self-hosted-runners
-
-gh release download v0.6.0 \
-  --repo Xquik-dev/x-twitter-scraper-php \
-  --pattern x-twitter-scraper-php-v0.6.0.zip
-gh attestation verify x-twitter-scraper-php-v0.6.0.zip \
-  --repo Xquik-dev/x-twitter-scraper-php \
-  --signer-workflow Xquik-dev/x-twitter-scraper-php/.github/workflows/release-provenance.yml \
-  --deny-self-hosted-runners
+  --pattern XTwitterScraper.0.6.2.nupkg
+gh release verify-asset v0.6.2 XTwitterScraper.0.6.2.nupkg \
+  --repo Xquik-dev/x-twitter-scraper-csharp
 ```
 
-The verified SHA-256 digests are:
+NuGet.org adds its own signature file to the package it serves. The 2 packages differ in bytes and hold the same files otherwise.
 
-```text
-C#:  7bef1ec1688b472424d7e92738342a446abfa6a9b1d314c4cd66fff919b5f34f
-Go:  a59bd116af5ff6cc911c38b2fd515559d5f97b3eeb489d1a6148fd13fb459fb0
-PHP: 31fdf66d8cb1d0d8aeacbb8748189029eafc8b178b905057fd35540f5a01589b
+For Go, the checksum database protects every download. Compare the source commit with the tag.
+
+```sh
+go mod download -json github.com/Xquik-dev/x-twitter-scraper-go@v0.18.1
+gh api repos/Xquik-dev/x-twitter-scraper-go/commits/v0.18.1 --jq .sha
 ```
 
-Each certificate identifies its Xquik-dev release workflow.
+`Origin.Hash` in the first answer must equal the commit in the second.
 
-Each certificate also binds the artifact to its matching release tag.
+For PHP, Packagist serves the commit of the tag. Compare both.
+
+```sh
+curl --fail --silent https://repo.packagist.org/p2/xquik/x-twitter-scraper.json \
+  | jq -r '.packages["xquik/x-twitter-scraper"][0].source.reference'
+gh api repos/Xquik-dev/x-twitter-scraper-php/commits/v0.13.3 --jq .sha
+```
 
 ## Verify Terraform checksums
 
-Download the checksum file, its signature, and the selected archive.
+Download the checksum file, its signature, and the selected archive from the GitHub release.
 
-Verify the checksum signature using the published Terraform Registry key.
+The Terraform Registry publishes the signing key. Confirm this full fingerprint before trusting it.
 
-Then compare the selected archive:
-
-```sh
-sha256sum --check terraform-provider-x-twitter-scraper_*_SHA256SUMS
+```text
+0DC4 78C1 7474 B964 5C25 B46C 4900 C25E 8532 4F28
 ```
 
-Also verify the archive's GitHub attestation.
+Verify the signature, then the archive.
 
-## Keyless signing
+```sh
+gpg --verify terraform-provider-x-twitter-scraper_*_SHA256SUMS.sig \
+  terraform-provider-x-twitter-scraper_*_SHA256SUMS
+shasum -a 256 --ignore-missing --check terraform-provider-x-twitter-scraper_*_SHA256SUMS
+```
 
-npm, PyPI, RubyGems, and GitHub attestations use identity-bound signing.
+The repository has immutable releases, so `gh release verify` also works.
 
-Their signing certificates use short-lived keys and public trust roots.
+## Verify the CLI checksums
 
-Verification checks the repository identity and transparency-log timestamp.
+`x-twitter-scraper-cli` publishes on GitHub Releases only.
 
-No long-lived project private signing key is required.
+Download the archive and the checksum file, then compare.
+
+```sh
+shasum -a 256 --ignore-missing --check x-twitter-scraper_*_checksums.txt
+```
+
+The checksum file is not signed. It detects a damaged download. It does not prove who published the release.
+
+## Signing keys
+
+A local release signs in to each registry with a maintainer's long-lived token. Nothing in a package proves that sign-in.
+
+2 projects sign with long-lived project keys.
+
+| Key | Fingerprint | Signs |
+| --- | --- | --- |
+| Xquik Maven key | `6965 E561 C0AC EE32 060A B961 D203 7E41 57E6 2A59` | Every Java and Kotlin file on Maven Central |
+| Xquik Terraform key | `0DC4 78C1 7474 B964 5C25 B46C 4900 C25E 8532 4F28` | The checksum file of each Terraform provider release |
+
+Both are long-lived keys that a maintainer holds. Neither private key is in a repository.
+
+GitHub signs the release attestations of the 5 repositories with immutable releases. That signing uses GitHub's own identity and short-lived keys.
+
+No other release is signed.
 
 ## Protected release tags
 
@@ -263,7 +282,7 @@ They do not make an unsigned tag signed.
 
 ## Unsigned tags
 
-The latest public Git tags lacked verified Git signatures during this audit.
+16 of the 17 latest release tags have no verified Git signature. The release scripts create annotated tags and do not sign them.
 
 Keep `version_tags_signed` Unmet until important tags are verifiable.
 
@@ -307,14 +326,14 @@ Before publishing:
 - Match the release version and source tag.
 - Run every required test, analysis, and licensing check.
 - Produce reproducible artifacts where the project builds artifacts.
-- Publish cryptographic provenance or signatures.
+- Publish the evidence this guide lists for the project.
 - Keep signing authority outside the artifact distribution path.
 - Document verification with public commands.
 
 After publishing:
 
 - Verify one public artifact as a consumer.
-- Record the artifact digest and signer identity.
+- Run `bin/check-local` in this repository, which verifies the new release.
 - Confirm registry propagation.
 - Link security fixes from release notes.
 - Stop the release when verification fails.

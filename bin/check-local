@@ -5,9 +5,9 @@
 # Runs every check a change to this repository must pass, in order, and stops
 # at the first failure.
 # Usage: bin/check-local [--no-status]
-# The contract and review checks read the GitHub API through the gh login of
-# whoever runs this script. CodeQL is mandatory, so install it with
-# brew install --cask codeql.
+# The contract, review and release checks read the GitHub API through the gh
+# login of whoever runs this script. CodeQL and gpg are mandatory, so install
+# them with brew install --cask codeql and brew install gnupg.
 # When the tree is clean and GitHub has HEAD, the result is posted to HEAD as
 # the xquik-local-checks commit status. The status text lists only the checks
 # that passed in this run. --no-status skips posting.
@@ -29,7 +29,7 @@ for argument in "$@"; do
   esac
 done
 
-for tool in git gh node; do
+for tool in git gh node gpg; do
   command -v "$tool" >/dev/null || {
     echo "check-local: $tool is missing. Install it, then rerun." >&2
     exit 1
@@ -74,7 +74,7 @@ trap on_exit EXIT
 
 if [[ -n "$status_commit" ]]; then
   echo "==> Posting a pending $status_context status to ${status_commit:0:12}."
-  post_status pending "Running script tests, contract, review evidence, attestations & CodeQL."
+  post_status pending "Running script tests, contract, review & release evidence & CodeQL."
 fi
 
 # A wrong tool fails here, before the slower checks run.
@@ -107,7 +107,7 @@ run_check() {
   passed+=("$label")
 }
 
-# Only the 2 verifiers below receive the token.
+# Only the 3 verifiers below receive the token.
 with_github_token() {
   GITHUB_TOKEN="$github_token" "$@"
 }
@@ -120,8 +120,9 @@ run_check "public contract" "Public contract with live discovery, OpenAPI and re
 run_check "review evidence" "Review evidence for the public inventory and reviewed pull requests" \
   "Fix the evidence error above. REVIEW_EVIDENCE.md explains each rule." \
   with_github_token node scripts/check-review-evidence.mjs
-run_check "release attestations" "Release attestations of the latest C#, Go and PHP SDK releases" \
-  "Follow RELEASES.md to inspect the release named above." bash scripts/verify-release-attestations
+run_check "release evidence" "Release evidence of the latest release of all 17 projects" \
+  "Follow RELEASES.md to inspect the release named above." \
+  with_github_token node scripts/verify-release-evidence.mjs
 run_check "CodeQL $codeql_version" "Static analysis with CodeQL $codeql_version security-extended queries" \
   "Fix the CodeQL results above, then rerun." bash scripts/codeql-security
 
