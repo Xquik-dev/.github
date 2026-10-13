@@ -8,6 +8,10 @@ The `.github` and `xquik-docs` repositories provide shared policies and document
 
 They do not publish standalone software releases.
 
+The `x-api` and `x-twitter-advanced-search` repositories hold an agent skill and a search reference.
+
+They do not publish standalone software releases either.
+
 The project criterion does not apply to them separately.
 
 ## Audit window
