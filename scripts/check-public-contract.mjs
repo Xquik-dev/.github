@@ -36,6 +36,8 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
       "## Secure design argument",
       "## Common weakness countermeasures",
       "Pending changes do not count as default-branch evidence.",
+      "No project keeps a GitHub Actions workflow.",
+      "`xquik-local-checks`",
     ],
   ],
   [
@@ -379,6 +381,23 @@ function checkRepoDiscovery(repos) {
   }
 }
 
+// ASSURANCE.md says no project keeps a GitHub Actions workflow, so every public repository is checked.
+async function checkNoWorkflows(repos) {
+  await Promise.all(
+    repos.map(async (repo) => {
+      const url = contentUrl(repo, ".github/workflows");
+      const response = await fetch(url, { headers: requestHeaders(url, "application/json") });
+      if (response.status === 404) return;
+      if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}.`);
+      const entries = await response.json();
+      const workflows = Array.isArray(entries) ? entries.map(({ name }) => name) : [".github/workflows"];
+      if (workflows.length > 0) {
+        throw new Error(`${repo.name} keeps GitHub Actions workflow files ${workflows.join(", ")}.`);
+      }
+    }),
+  );
+}
+
 async function checkCommunityPolicies() {
   await Promise.all(
     [...COMMUNITY_POLICY_REQUIREMENTS].map(async ([path, requirements]) => {
@@ -459,6 +478,7 @@ if (/126 operations|40\+ agents|118 operations through 2 tools/u.test(profile)) 
 
 await Promise.all([
   checkCommunityPolicies(),
+  checkNoWorkflows(repos),
   checkOpenSsfInventory(),
   checkIntegrationSurfaces(openApi, reposByName),
   checkRepoReadmes(repos),

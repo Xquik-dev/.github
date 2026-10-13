@@ -36,7 +36,15 @@ Maintained runtime code owns transport and safety behavior.
 
 Package managers own dependency resolution and installation.
 
-GitHub Actions owns public build, test, analysis, and release automation.
+No project keeps a GitHub Actions workflow.
+
+Maintainers run each project's checks and releases on their own machines.
+
+15 projects run `bin/check-local` before every merge. It posts the `xquik-local-checks` commit status on the exact commit, and branch protection requires that status.
+
+`tweetclaw` runs its own npm check scripts. `x-twitter-scraper` holds Skills and documentation, and has no build or test step.
+
+Releases run from `bin/release-local` or the project's own release script. [RELEASES.md](RELEASES.md) lists what each release provides.
 
 ### Trust boundaries
 
@@ -46,7 +54,7 @@ GitHub Actions owns public build, test, analysis, and release automation.
 | Project to network | Base URL, headers, credentials, and request bodies | Default to HTTPS and verify TLS certificates |
 | Network to project | Status codes, headers, JSON, text, and files | Parse defensively and bound retry behavior |
 | Project to host | Returned records, files, logs, and errors | Preserve documented types and avoid secret disclosure |
-| Source to release | Dependencies, generators, workflows, and artifacts | Pin, review, scan, test, and verify outputs |
+| Source to release | Dependencies, generators, release scripts, and artifacts | Pin, review, scan, test, and verify outputs |
 
 Applications remain responsible for their own authorization and data retention.
 
@@ -66,8 +74,8 @@ Each public project must preserve these claims:
 | Contract integrity | Requests and responses follow documented public schemas |
 | Input safety | Restricted inputs use positive type, range, or format checks |
 | Output safety | Remote content remains data and is never executed implicitly |
-| Supply-chain integrity | Dependencies and workflows remain reviewable, pinned, and scanned |
-| Release integrity | Published artifacts remain reproducible and cryptographically verifiable |
+| Supply-chain integrity | Dependencies and release scripts remain reviewable, pinned, and scanned |
+| Release integrity | Published artifacts match their source, and consumers can verify them as RELEASES.md describes |
 
 ### Repository access assurance
 
@@ -91,7 +99,8 @@ Reverify them after any organization membership or authentication change.
 - API credentials and authorization headers
 - Customer-selected identifiers and exported records
 - Public API and package contracts
-- Source, workflows, tags, and release artifacts
+- Source, release scripts, tags, and release artifacts
+- Registry tokens on maintainer machines
 - Vulnerability reports before coordinated disclosure
 
 ### Threat actors
@@ -99,8 +108,8 @@ Reverify them after any organization membership or authentication change.
 - A caller supplying malformed or hostile input
 - A remote endpoint returning malformed content
 - A compromised or obsolete dependency
-- A malicious contribution or workflow change
-- A compromised distribution path
+- A malicious contribution or release script change
+- A compromised distribution path or maintainer machine
 - An accidental maintainer error
 
 ### Threats & controls
@@ -111,16 +120,16 @@ Reverify them after any organization membership or authentication change.
 | Endpoint redirection | Trusted defaults, certificate verification, and redirect guards | Explicit caller overrides can choose a less safe endpoint |
 | Malformed remote data | Typed decoding, schema tests, bounds, and generic errors | Callers must safely handle returned content |
 | Resource exhaustion | Bounded retries, capped delays, timeouts, and pagination controls | Large requested exports still consume caller resources |
-| Dependency compromise | Lock data, Dependabot, audits, CodeQL, and least privilege | Newly disclosed vulnerabilities need timely remediation |
-| Workflow compromise | Immutable action pins, restricted permissions, and required review | The sole maintainer remains an access-continuity risk |
-| Artifact substitution | Reproducibility, checksums, provenance, and signing | Public verification remains incomplete for some projects |
+| Dependency compromise | Lock data, dependency audits, CodeQL in 13 projects, Dependabot in 4, and least privilege | Newly disclosed vulnerabilities need timely remediation |
+| Release machine compromise | Tokens in the macOS Keychain, required local checks on the exact commit, and registry digests compared before tagging | A stolen machine or token can publish until the token is revoked, and the sole maintainer remains an access-continuity risk |
+| Artifact substitution | Reproducible builds, registry digests compared before tagging, checksums, and the signatures RELEASES.md lists | New releases carry no build provenance, and some projects have only a registry signature |
 
 ## Secure design argument
 
 The projects apply these secure-design principles:
 
 - Fail-safe defaults use HTTPS and maintained certificate verification.
-- Least privilege limits workflow permissions and credential scope.
+- Least privilege limits registry token scope and keeps tokens out of repositories.
 - Complete mediation routes network access through maintained transports.
 - Economy of mechanism relies on standard runtimes and package managers.
 - Separation keeps credentials outside source and ordinary configuration examples.
