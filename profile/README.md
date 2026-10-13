@@ -1,6 +1,9 @@
-# Xquik Twitter API Tools
+# Xquik Twitter API, X API & Twitter scraper tools
 
 [![Skills.sh Xquik Skill](https://skills.sh/b/xquik-dev/x-twitter-scraper)](https://skills.sh/xquik-dev/x-twitter-scraper)
+
+Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
+Xquik charges only for delivered, unique, filter-matching results and never pads rows.
 
 Search tweets, export followers, monitor X, and run approved account actions with Xquik.
 
