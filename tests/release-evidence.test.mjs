@@ -42,8 +42,10 @@ function github(repo, { tag = "v1.2.3", assets = [], status = "behind" } = {}) {
 }
 
 // A fake that answers only the listed addresses and records every command.
+// ghStatus is 1 exit status for every gh call, or a list with 1 status per call.
 function fakeIo(responses, { signers = [], ghStatus = 0 } = {}) {
   const commands = [];
+  const statuses = [ghStatus].flat();
   const answer = (url) => {
     assert.ok(url in responses, `unexpected request ${url}`);
     return responses[url];
@@ -55,13 +57,17 @@ function fakeIo(responses, { signers = [], ghStatus = 0 } = {}) {
     readFile: async (path) => `public key in ${path}`,
     run: async (command, args) => {
       commands.push([command, ...args].join(" "));
-      return { status: ghStatus, stderr: "", stdout: "" };
+      const status = statuses.length > 1 ? statuses.shift() : statuses[0];
+      return { status, stderr: status === 0 ? "" : "Error: could not reach the trust root\n", stdout: "" };
     },
     signers: async ({ key }) => {
       commands.push(`gpg verify with ${String(key).slice(0, 60)}`);
       return signers;
     },
     text: async (url) => answer(url),
+    wait: async (milliseconds) => {
+      commands.push(`wait ${milliseconds}`);
+    },
   };
 }
 
@@ -149,6 +155,16 @@ test("an npm project with a release asset and an attestation passes all 5 checks
   assert.deepEqual(io.commands, ["gh release verify v1.2.3 --repo Xquik-dev/x-twitter-scraper-typescript"]);
 });
 
+test("a release attestation that fails once passes on the next try", async () => {
+  const io = fakeIo(typescript(), { ghStatus: [1, 0] });
+  assert.match(await verifyProject(project("x-twitter-scraper-typescript"), io), /has 5 kinds of evidence/u);
+  assert.deepEqual(io.commands, [
+    "gh release verify v1.2.3 --repo Xquik-dev/x-twitter-scraper-typescript",
+    "wait 2000",
+    "gh release verify v1.2.3 --repo Xquik-dev/x-twitter-scraper-typescript",
+  ]);
+});
+
 test("a scoped npm package is read by its encoded name", async () => {
   const responses = {
     ...github("tweetclaw"),
@@ -161,7 +177,7 @@ test("a scoped npm package is read by its encoded name", async () => {
 for (const [name, responses, options, message] of [
   ["a tarball that differs from the release asset", typescript({ tarball: "other" }), {}, '"Release asset equals the npm tarball". x-twitter-scraper-1.2.3.tgz differs from the npm tarball.'],
   ["a manifest no registry key signed", typescript({ signed: manifest("x-twitter-scraper", "1.2.3", { dist: { integrity: "sha512-other", tarball: "https://registry.test/package.tgz" } }) }), {}, '"npm registry signature". no npm registry key signed the latest version.'],
-  ["a release GitHub does not attest", typescript(), { ghStatus: 1 }, '"GitHub release attestation". gh release verify v1.2.3 failed.'],
+  ["a release GitHub does not attest", typescript(), { ghStatus: 1 }, '"GitHub release attestation". gh release verify v1.2.3 failed 3 times. Error: could not reach the trust root.'],
 ]) {
   test(`${name} fails`, async () => {
     assert.equal(await failure("x-twitter-scraper-typescript", responses, options), `x-twitter-scraper-typescript v1.2.3 lacks ${message}`);
