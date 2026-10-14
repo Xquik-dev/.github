@@ -102,7 +102,7 @@ for (const [testCase, ran, failed] of [
   ["scripts/check-public-contract.mjs", 2, "Public contract with live discovery, OpenAPI and repository copy"],
   ["scripts/check-review-evidence.mjs", 3, "Review evidence for the public inventory and reviewed pull requests"],
   ["scripts/verify-release-evidence.mjs", 4, "Release evidence of the latest release of all 17 projects"],
-  ["codeql-security", 5, "Static analysis with CodeQL 2.27.2 security-extended queries"],
+  ["codeql-security", 5, "Static analysis with CodeQL 2.27.2 security-extended and comment queries"],
   ["changed", 5, "Final tree check"],
 ]) {
   test(`a failure at ${failed} posts failure and stops`, (t) => {
