@@ -6,6 +6,9 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg?url=https%3A%2F%2Fgithub.com%2FXquik-dev%2F.github)](https://deepwiki.com/Xquik-dev/.github)
 [![Skills.sh x-twitter-scraper Skill](https://skills.sh/b/xquik-dev/x-twitter-scraper)](https://skills.sh/xquik-dev/x-twitter-scraper)
 
+Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
+Xquik charges only for delivered, unique, filter-matching results and never pads rows.
+
 Public GitHub profile and community defaults for Xquik SDKs, docs, and agent integrations.
 
 - Org profile: [profile/README.md](profile/README.md)
