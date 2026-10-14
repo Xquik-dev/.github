@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 # Copyright the Xquik contributors.
 # SPDX-License-Identifier: MIT
-#
-# Analyzes this repository's JavaScript with CodeQL's security-extended
-# queries and fails on any result that codeql-exceptions.json does not list.
-# Usage: scripts/codeql-security [--version]
-# --version checks the CodeQL CLI and prints its version without analyzing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 minimum_version=2.27.0
 queries="codeql/javascript-queries@2.4.7:codeql-suites/javascript-security-extended.qls"
+comments="codeql/no-code-comments"
 codeql="${XQUIK_CODEQL_BIN:-$(command -v codeql || true)}"
 [[ -x "$codeql" ]] || {
   echo "CodeQL CLI is missing. Install it with brew install --cask codeql, then rerun." >&2
@@ -27,8 +23,9 @@ fi
 echo "CodeQL CLI $version"
 report="$(mktemp -d "${TMPDIR:-/tmp}/xquik-profile-codeql.XXXXXX")"
 trap 'rm -rf -- "${report:?}"' EXIT
+"$codeql" pack install "$comments"
 "$codeql" database create "$report/database" --language=javascript-typescript --build-mode=none \
   --source-root="$PWD" --threads=2
-"$codeql" database analyze --download "$report/database" "$queries" \
+"$codeql" database analyze --download "$report/database" "$queries" "$comments" \
   --format=sarifv2.1.0 --output="$report/report.sarif" --threads=2
 node scripts/verify-codeql.mjs "$report/report.sarif" codeql-exceptions.json

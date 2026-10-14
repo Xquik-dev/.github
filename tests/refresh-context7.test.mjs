@@ -10,8 +10,6 @@ const script = join(root, "bin/refresh-context7");
 const item = "test-item";
 const readKey = `security find-generic-password -s ${item} -w`;
 const fakes = {
-  // Writes the body to the -o file, records the headers from standard input,
-  // and prints the status.
   curl: `[ -n "$STATUS" ] || exit 7
 printf 'stdin %s\\n' "$(cat)" >> "$FAKE_CALLS"
 while [ "$#" -gt 0 ]; do [ "$1" != -o ] || printf '%s' "$BODY" > "$2"; shift; done

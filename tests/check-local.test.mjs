@@ -9,7 +9,6 @@ import { root, run, workspace, writeFakes } from "./helpers.mjs";
 
 const sha = "0123456789abcdef0123456789abcdef01234567";
 const statusUrl = `repos/Xquik-dev/.github/statuses/${sha}`;
-// A stub check script records its call and fails when CASE names it.
 const stubCheck = `#!/bin/bash
 name="\${0##*/}"
 if [ "\${1:-}" = --version ]; then [ "$CASE" != no-codeql ] || exit 1; echo 2.27.2; exit; fi
@@ -103,7 +102,7 @@ for (const [testCase, ran, failed] of [
   ["scripts/check-public-contract.mjs", 2, "Public contract with live discovery, OpenAPI and repository copy"],
   ["scripts/check-review-evidence.mjs", 3, "Review evidence for the public inventory and reviewed pull requests"],
   ["scripts/verify-release-evidence.mjs", 4, "Release evidence of the latest release of all 17 projects"],
-  ["codeql-security", 5, "Static analysis with CodeQL 2.27.2 security-extended queries"],
+  ["codeql-security", 5, "Static analysis with CodeQL 2.27.2 security-extended and comment queries"],
   ["changed", 5, "Final tree check"],
 ]) {
   test(`a failure at ${failed} posts failure and stops`, (t) => {

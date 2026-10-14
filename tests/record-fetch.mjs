@@ -1,9 +1,6 @@
 // Copyright the Xquik contributors.
 // SPDX-License-Identifier: MIT
 
-// Preloaded by contract-token.test.mjs. Replaces fetch with a fake that
-// records each host and whether the request carried a token, then answers 500.
-
 import { appendFileSync } from "node:fs";
 
 globalThis.fetch = async (url, options = {}) => {
