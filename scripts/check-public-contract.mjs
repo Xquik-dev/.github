@@ -182,7 +182,6 @@ const INTEGRATION_SURFACES = [
   },
 ];
 
-// The token goes to the GitHub API only, never to another host.
 function requestHeaders(url, accept) {
   const headers = { accept, "user-agent": "xquik-public-contract-check" };
   if (process.env.GITHUB_TOKEN && url.startsWith(`${GITHUB_API}/`)) {
@@ -381,7 +380,6 @@ function checkRepoDiscovery(repos) {
   }
 }
 
-// ASSURANCE.md says no project keeps a GitHub Actions workflow, so every public repository is checked.
 async function checkNoWorkflows(repos) {
   await Promise.all(
     repos.map(async (repo) => {

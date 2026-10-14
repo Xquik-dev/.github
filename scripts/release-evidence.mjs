@@ -1,10 +1,6 @@
 // Copyright the Xquik contributors.
 // SPDX-License-Identifier: MIT
 
-// What the latest release of each project provides, and the functions that
-// verify it. RELEASES.md shows the table that renderEvidenceTable builds from
-// PROJECTS, so the document can promise only what verifyProject checks.
-
 import { createHash, createPublicKey, verify as verifySignature } from "node:crypto";
 import { inflateRawSync } from "node:zlib";
 
@@ -86,10 +82,8 @@ export function renderEvidenceTable(projects = PROJECTS) {
   return ["| Project | Distribution | Evidence of every release |", "| --- | --- | --- |", ...rows].join("\n");
 }
 
-// Commands that verify a workflow identity. A release from a maintainer's machine has none.
 const WORKFLOW_PROVENANCE = [/--signer-workflow/u, /--certificate-identity/u, /pypi-attestations verify/u, /sigstore-cli/u];
 
-// Why the guide may not be published as it is, or nothing when it is fine.
 export function guideProblem(guide, projects = PROJECTS) {
   if (!guide.includes(renderEvidenceTable(projects))) {
     return "RELEASES.md does not show the current evidence table. Paste the output of --table into it.";
@@ -98,7 +92,6 @@ export function guideProblem(guide, projects = PROJECTS) {
   return promised ? `RELEASES.md shows a command that needs workflow provenance, ${promised.source}. Remove it.` : undefined;
 }
 
-// The token goes to the GitHub API only, never to a registry or a download host.
 export function requestHeaders(url, token) {
   const headers = { "user-agent": "xquik-release-evidence-check" };
   if (token && url.startsWith(`${GITHUB_API}/`)) headers.authorization = `Bearer ${token}`;
@@ -109,7 +102,6 @@ export function sha256(bytes) {
   return createHash("sha256").update(bytes).digest("hex");
 }
 
-// True when an npm registry key signed this exact name, version and integrity.
 export function hasValidNpmSignature(manifest, keys) {
   const message = Buffer.from(`${manifest.name}@${manifest.version}:${manifest.dist?.integrity}`);
   return (manifest.dist?.signatures ?? []).some(({ keyid, sig }) => {
@@ -120,7 +112,6 @@ export function hasValidNpmSignature(manifest, keys) {
   });
 }
 
-// The SHA-256 digest of every file in a ZIP archive, by file name.
 export function zipDigests(archive) {
   const end = archive.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
   if (end < 0) throw new Error("The file is not a ZIP archive.");
@@ -141,8 +132,6 @@ export function zipDigests(archive) {
   return digests;
 }
 
-// Every line of a checksum file must name a release asset with that digest,
-// and every asset the file must cover has to be listed.
 export async function compareChecksums(context, text, mustList) {
   const listed = new Map(
     text.split("\n").filter(Boolean).map((line) => line.trim().split(/\s+/u).reverse()),
@@ -175,7 +164,6 @@ async function tagCommit(context) {
 
 const goPath = (module) => module.replaceAll(/[A-Z]/gu, (letter) => `!${letter.toLowerCase()}`);
 
-// Reads the registry's latest version once and keeps what later checks need.
 const REGISTRY = {
   async npm(context) {
     context.manifest = await context.io.json(`https://registry.npmjs.org/${context.project.name.replaceAll("/", "%2f")}/latest`);
@@ -288,7 +276,6 @@ const CHECKS = {
       throw new Error("Packagist serves another commit than the tag");
     }
   },
-  // GitHub's attestation service fails now and then, so 1 failure is tried again.
   async attestation(context) {
     const args = ["release", "verify", context.tag, "--repo", `${ORG}/${context.project.repo}`];
     let result;
@@ -302,7 +289,6 @@ const CHECKS = {
   },
 };
 
-// Verifies every evidence kind of 1 project and returns what it verified.
 export async function verifyProject(project, io) {
   const api = `${GITHUB_API}/repos/${ORG}/${project.repo}`;
   const release = await io.json(`${api}/releases/latest`);

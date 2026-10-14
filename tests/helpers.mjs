@@ -9,15 +9,12 @@ import { fileURLToPath } from "node:url";
 
 export const root = fileURLToPath(new URL("..", import.meta.url));
 
-// Makes a temporary folder that the test removes when it ends.
 export function workspace(t) {
   const folder = mkdtempSync(join(tmpdir(), "xquik-profile-test-"));
   t.after(() => rmSync(folder, { force: true, recursive: true }));
   return folder;
 }
 
-// Writes fake commands into <folder>/fakes. Each fake appends its call to
-// <folder>/calls.log, then runs its body.
 export function writeFakes(folder, fakes) {
   const directory = join(folder, "fakes");
   mkdirSync(directory);
@@ -29,7 +26,6 @@ export function writeFakes(folder, fakes) {
   return directory;
 }
 
-// Runs a script with only the fakes and the system tools on PATH.
 export function run(folder, command, env = {}) {
   const result = spawnSync(command[0], command.slice(1), {
     encoding: "utf8",

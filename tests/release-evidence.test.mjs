@@ -31,7 +31,6 @@ const asset = (name, content) => ({
   name,
 });
 
-// The GitHub answers every project needs: its latest release, its default branch and the comparison.
 function github(repo, { tag = "v1.2.3", assets = [], status = "behind" } = {}) {
   return {
     [`${API}/${repo}/releases/latest`]: { assets, tag_name: tag },
@@ -41,8 +40,6 @@ function github(repo, { tag = "v1.2.3", assets = [], status = "behind" } = {}) {
   };
 }
 
-// A fake that answers only the listed addresses and records every command.
-// ghStatus is 1 exit status for every gh call, or a list with 1 status per call.
 function fakeIo(responses, { signers = [], ghStatus = 0 } = {}) {
   const commands = [];
   const statuses = [ghStatus].flat();
@@ -108,7 +105,6 @@ test("a registry version that differs from the release tag fails", async () => {
   );
 });
 
-// An npm manifest signed the way the registry signs, with a key made for this test.
 const { privateKey, publicKey } = generateKeyPairSync("ec", { namedCurve: "P-256" });
 const registryKeys = [{ key: publicKey.export({ format: "der", type: "spki" }).toString("base64"), keyid: "SHA256:test" }];
 function manifest(name, version, change = {}) {
@@ -281,7 +277,6 @@ test("a checksum file that differs from a release asset fails", async () => {
   );
 });
 
-// Builds a ZIP archive the way a packer does, stored or deflated.
 function zip(files, { deflate = false } = {}) {
   const locals = [];
   const directory = [];

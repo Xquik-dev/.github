@@ -1,12 +1,6 @@
 // Copyright the Xquik contributors.
 // SPDX-License-Identifier: MIT
 
-// Fails unless the SARIF report shows 1 complete CodeQL run whose every result
-// is a reviewed exception. An exception names the rule, the file and the exact
-// message, and it fails once its recheck date has passed or CodeQL stops
-// reporting it.
-// Usage: node scripts/verify-codeql.mjs <report.sarif> <exceptions.json> [today]
-
 import { readFile } from "node:fs/promises";
 
 const EXTRACTED_FILES = "js/diagnostics/successfully-extracted-files";

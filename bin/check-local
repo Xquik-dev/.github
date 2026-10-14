@@ -1,16 +1,6 @@
 #!/usr/bin/env bash
 # Copyright the Xquik contributors.
 # SPDX-License-Identifier: MIT
-#
-# Runs every check a change to this repository must pass, in order, and stops
-# at the first failure.
-# Usage: bin/check-local [--no-status]
-# The contract, review and release checks read the GitHub API through the gh
-# login of whoever runs this script. CodeQL and gpg are mandatory, so install
-# them with brew install --cask codeql and brew install gnupg.
-# When the tree is clean and GitHub has HEAD, the result is posted to HEAD as
-# the xquik-local-checks commit status. The status text lists only the checks
-# that passed in this run. --no-status skips posting.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -48,7 +38,6 @@ else
   status_commit="$head_commit"
 fi
 
-# Posts the commit status. A failed post prints a warning and keeps the check result.
 post_status() {
   local state="$1" description="${2:0:139}"
   gh api --silent "repos/$repository/statuses/$status_commit" \
@@ -77,7 +66,6 @@ if [[ -n "$status_commit" ]]; then
   post_status pending "Running script tests, contract, review & release evidence & CodeQL."
 fi
 
-# A wrong tool fails here, before the slower checks run.
 current_check="Node.js version"
 node_version="$(node --version)"
 [[ "$(printf '%s\n' "$minimum_node" "$node_version" | sort -V | head -n 1)" == "$minimum_node" ]] || {
@@ -92,8 +80,6 @@ github_token="$(gh auth token 2>/dev/null)" && [[ -n "$github_token" ]] || {
 current_check="CodeQL CLI"
 codeql_version="$(bash scripts/codeql-security --version)"
 
-# Runs 1 check and records its label for the status. On failure, prints the
-# check name and the next step, then exits.
 run_check() {
   local label="$1" name="$2" next_step="$3"
   shift 3
@@ -107,7 +93,6 @@ run_check() {
   passed+=("$label")
 }
 
-# Only the 3 verifiers below receive the token.
 with_github_token() {
   GITHUB_TOKEN="$github_token" "$@"
 }
@@ -123,7 +108,7 @@ run_check "review evidence" "Review evidence for the public inventory and review
 run_check "release evidence" "Release evidence of the latest release of all 17 projects" \
   "Follow RELEASES.md to inspect the release named above." \
   with_github_token node scripts/verify-release-evidence.mjs
-run_check "CodeQL $codeql_version" "Static analysis with CodeQL $codeql_version security-extended queries" \
+run_check "CodeQL $codeql_version" "Static analysis with CodeQL $codeql_version security-extended and comment queries" \
   "Fix the CodeQL results above, then rerun." bash scripts/codeql-security
 
 current_check="Final tree check"

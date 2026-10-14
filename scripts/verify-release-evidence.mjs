@@ -1,11 +1,6 @@
 // Copyright the Xquik contributors.
 // SPDX-License-Identifier: MIT
 
-// Verifies that the latest release of every project provides the evidence
-// RELEASES.md promises. The GitHub token goes to the GitHub API only.
-// Usage: node scripts/verify-release-evidence.mjs [--table]
-// --table prints the evidence table that RELEASES.md must show.
-
 import { execFile } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -37,7 +32,6 @@ function run(command, args) {
   });
 }
 
-// Returns the fingerprints of the keys that made a valid signature over the data.
 async function signers({ key, signature, data }) {
   const home = await mkdtemp(join(tmpdir(), "release-evidence-gpg-"));
   try {

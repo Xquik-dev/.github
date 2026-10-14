@@ -145,7 +145,7 @@ for (const [version, message] of [
   });
 }
 
-test("the analysis uses the security-extended queries and verifies the report", (t) => {
+test("the analysis uses the security-extended and comment queries and verifies the report", (t) => {
   const folder = workspace(t);
   writeFakes(folder, { codeql: '[ "$1" != version ] || echo 2.27.2', node: "" });
   const outcome = run(folder, ["/bin/bash", script]);
@@ -153,8 +153,9 @@ test("the analysis uses the security-extended queries and verifies the report", 
   const calls = outcome.calls.map((call) => call.replaceAll(/\/[^\s=]*xquik-profile-codeql\.[A-Za-z0-9]+/gu, "<report>"));
   assert.deepEqual(calls, [
     "codeql version --format=terse",
+    "codeql pack install codeql/no-code-comments",
     `codeql database create <report>/database --language=javascript-typescript --build-mode=none --source-root=${root.replace(/\/$/u, "")} --threads=2`,
-    "codeql database analyze --download <report>/database codeql/javascript-queries@2.4.7:codeql-suites/javascript-security-extended.qls --format=sarifv2.1.0 --output=<report>/report.sarif --threads=2",
+    "codeql database analyze --download <report>/database codeql/javascript-queries@2.4.7:codeql-suites/javascript-security-extended.qls codeql/no-code-comments --format=sarifv2.1.0 --output=<report>/report.sarif --threads=2",
     "node scripts/verify-codeql.mjs <report>/report.sarif codeql-exceptions.json",
   ]);
 });

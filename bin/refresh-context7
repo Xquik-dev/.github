@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 # Copyright the Xquik contributors.
 # SPDX-License-Identifier: MIT
-#
-# Asks Context7 to index this repository's docs again. Run it after a change to
-# README.md, SECURITY.md, SUPPORT.md, context7.json or profile/README.md lands
-# on main.
-# Usage: bin/refresh-context7 [--dry-run]
-# CONTEXT7_KEYCHAIN_SERVICE names the macOS Keychain item that holds the
-# Context7 API key. --dry-run sends nothing and never reads the Keychain.
 set -euo pipefail
 
 library="/xquik-dev/.github"
@@ -37,13 +30,11 @@ fi
 keychain_service="${CONTEXT7_KEYCHAIN_SERVICE:-}"
 [[ -n "$keychain_service" ]] ||
   fail "CONTEXT7_KEYCHAIN_SERVICE is unset. Set it to the Keychain item that holds the Context7 API key, then rerun."
-# Messages never name the item, because this output gets pasted in public.
 api_key="$(security find-generic-password -s "$keychain_service" -w 2>/dev/null)" && [[ -n "$api_key" ]] ||
   fail "The Keychain has no item named by CONTEXT7_KEYCHAIN_SERVICE. Add the Context7 API key under that name, then rerun."
 
 body_file="$(mktemp "${TMPDIR:-/tmp}/xquik-profile-context7.XXXXXX")"
 trap 'rm -f -- "${body_file:?}"' EXIT
-# The key travels on standard input, so no process listing shows it.
 status="$(printf 'Authorization: Bearer %s\n' "$api_key" |
   curl --connect-timeout 10 --max-time 30 --proto '=https' -sS --tlsv1.2 \
     -o "$body_file" -w '%{http_code}' -X POST "$endpoint" \

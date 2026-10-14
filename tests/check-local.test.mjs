@@ -9,7 +9,6 @@ import { root, run, workspace, writeFakes } from "./helpers.mjs";
 
 const sha = "0123456789abcdef0123456789abcdef01234567";
 const statusUrl = `repos/Xquik-dev/.github/statuses/${sha}`;
-// A stub check script records its call and fails when CASE names it.
 const stubCheck = `#!/bin/bash
 name="\${0##*/}"
 if [ "\${1:-}" = --version ]; then [ "$CASE" != no-codeql ] || exit 1; echo 2.27.2; exit; fi
