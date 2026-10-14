@@ -45,28 +45,31 @@ Search tweets, export followers, monitor X, and run approved account actions wit
 
 | Repository | Ecosystem |
 | --- | --- |
-| [x-twitter-scraper-typescript](https://github.com/Xquik-dev/x-twitter-scraper-typescript) | TypeScript |
-| [x-twitter-scraper-python](https://github.com/Xquik-dev/x-twitter-scraper-python) | Python |
-| [x-twitter-scraper-go](https://github.com/Xquik-dev/x-twitter-scraper-go) | Go |
-| [x-twitter-scraper-java](https://github.com/Xquik-dev/x-twitter-scraper-java) | Java |
-| [x-twitter-scraper-kotlin](https://github.com/Xquik-dev/x-twitter-scraper-kotlin) | Kotlin |
-| [x-twitter-scraper-csharp](https://github.com/Xquik-dev/x-twitter-scraper-csharp) | C# / .NET |
-| [x-twitter-scraper-php](https://github.com/Xquik-dev/x-twitter-scraper-php) | PHP |
-| [x-twitter-scraper-ruby](https://github.com/Xquik-dev/x-twitter-scraper-ruby) | Ruby |
-| [x-twitter-scraper-cli](https://github.com/Xquik-dev/x-twitter-scraper-cli) | CLI |
-| [terraform-provider-x-twitter-scraper](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper) | Terraform |
+| [Twitter API TypeScript SDK](https://github.com/Xquik-dev/x-twitter-scraper-typescript) | TypeScript & Node.js |
+| [Twitter API Python SDK](https://github.com/Xquik-dev/x-twitter-scraper-python) | Python |
+| [Twitter API Go SDK](https://github.com/Xquik-dev/x-twitter-scraper-go) | Go |
+| [Twitter API Java SDK](https://github.com/Xquik-dev/x-twitter-scraper-java) | Java |
+| [Twitter API Kotlin SDK](https://github.com/Xquik-dev/x-twitter-scraper-kotlin) | Kotlin |
+| [Twitter API C# SDK](https://github.com/Xquik-dev/x-twitter-scraper-csharp) | C# & .NET |
+| [Twitter API PHP SDK](https://github.com/Xquik-dev/x-twitter-scraper-php) | PHP |
+| [Twitter API Ruby SDK](https://github.com/Xquik-dev/x-twitter-scraper-ruby) | Ruby |
+| [Twitter CLI & X CLI](https://github.com/Xquik-dev/x-twitter-scraper-cli) | Terminal |
+| [Terraform provider for X API monitors](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper) | Terraform |
 
 ## Agent and workflow integrations
 
 | Repository | Integration |
 | --- | --- |
-| [x-twitter-scraper](https://github.com/Xquik-dev/x-twitter-scraper) | Agent Skill and plugin bundle |
-| [tweetclaw](https://github.com/Xquik-dev/tweetclaw) | OpenClaw |
-| [hermes-tweet](https://github.com/Xquik-dev/hermes-tweet) | Hermes Agent |
-| [n8n-nodes-xquik](https://github.com/Xquik-dev/n8n-nodes-xquik) | n8n |
-| [prefect-xquik](https://github.com/Xquik-dev/prefect-xquik) | Prefect |
-| [xquik-haystack](https://github.com/Xquik-dev/xquik-haystack) | Haystack |
-| [paperclip-plugin-xquik](https://github.com/Xquik-dev/paperclip-plugin-xquik) | Paperclip |
+| [X (Twitter) scraper API & Twitter MCP server](https://github.com/Xquik-dev/x-twitter-scraper) | Agent Skill and plugin bundle |
+| [TweetClaw, the OpenClaw Twitter plugin](https://github.com/Xquik-dev/tweetclaw) | OpenClaw |
+| [Hermes Tweet, the Hermes Agent Twitter plugin](https://github.com/Xquik-dev/hermes-tweet) | Hermes Agent |
+| [n8n community node for Twitter](https://github.com/Xquik-dev/n8n-nodes-xquik) | n8n |
+| [Prefect Twitter search tasks](https://github.com/Xquik-dev/prefect-xquik) | Prefect |
+| [Haystack Twitter search components](https://github.com/Xquik-dev/xquik-haystack) | Haystack |
+| [Paperclip AI plugin for Twitter](https://github.com/Xquik-dev/paperclip-plugin-xquik) | Paperclip |
+| [X API migration Skill](https://github.com/Xquik-dev/x-api) | Coding agents |
+| [Twitter advanced search operators](https://github.com/Xquik-dev/x-twitter-advanced-search) | Search reference |
+| [Twitter API documentation source](https://github.com/Xquik-dev/xquik-docs) | Docs at docs.xquik.com |
 
 ## Discovery
 
