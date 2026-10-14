@@ -54,7 +54,7 @@ Public advisories will credit every reporter unless they request anonymity.
 
 ## Shared security requirements
 
-Public projects must follow these requirements:
+Public projects must follow these requirements.
 
 - Use HTTPS and TLS 1.2 or newer for network communications.
 - Verify TLS certificates before sending credentials or private information.

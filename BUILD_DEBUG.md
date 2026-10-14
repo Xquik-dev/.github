@@ -42,7 +42,7 @@ Their release configurations previously passed `-s -w` to the Go linker.
 
 Those flags removed symbol and DWARF data.
 
-Each remediation now performs these checks:
+Each remediation now performs these checks.
 
 1. Build the release binary with GoReleaser.
 2. Select the Linux AMD64 binary from `dist/artifacts.json`.
@@ -56,7 +56,7 @@ The checks keep `-trimpath` for reproducibility.
 
 Java and Kotlin release JARs retain JVM debugging attributes.
 
-Rebuild either project and inspect a main class:
+Rebuild either project and inspect a main class.
 
 ```bash
 ./gradlew build

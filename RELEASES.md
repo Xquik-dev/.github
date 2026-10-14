@@ -24,7 +24,7 @@ Older releases came from workflows and still carry that provenance. Do not requi
 
 ## Evidence status
 
-Assessment date: October 13, 2026.
+The assessment date is October 13, 2026.
 
 | Project | Distribution | Evidence of every release |
 | --- | --- | --- |
@@ -298,7 +298,7 @@ Never replace or force-push a published tag.
 
 Follow GitHub's [tag signing guide](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-tags).
 
-Configure each isolated release worktree:
+Configure each isolated release worktree.
 
 ```sh
 git config gpg.format ssh
@@ -307,7 +307,7 @@ git config gpg.ssh.allowedSignersFile /secure/path/to/allowed-signers
 git config tag.gpgSign true
 ```
 
-Create and verify the tag before pushing:
+Create and verify the tag before pushing.
 
 ```sh
 git tag -s "$version" -m "Release $version"
@@ -320,7 +320,7 @@ Keep `version_tags_signed` Unmet until important public tags pass verification.
 
 ## Release requirements
 
-Before publishing:
+Meet these requirements before you publish.
 
 - Build from the protected default branch.
 - Match the release version and source tag.
@@ -330,7 +330,7 @@ Before publishing:
 - Keep signing authority outside the artifact distribution path.
 - Document verification with public commands.
 
-After publishing:
+Do these steps after you publish.
 
 - Verify one public artifact as a consumer.
 - Run `bin/check-local` in this repository, which verifies the new release.

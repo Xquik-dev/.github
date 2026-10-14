@@ -8,7 +8,7 @@ Repository evidence must still prove each project-specific claim.
 
 ## Project architecture
 
-Public projects use this common request flow:
+Public projects use this common request flow.
 
 1. A caller supplies task parameters and credentials.
 2. The project maps inputs into a documented Xquik request.
@@ -64,7 +64,7 @@ Callers must protect exported data and credentials.
 
 The shared [security policy](SECURITY.md) defines response and disclosure requirements.
 
-Each public project must preserve these claims:
+Each public project must preserve these claims.
 
 | Claim | Required property |
 | --- | --- |
@@ -81,7 +81,7 @@ Each public project must preserve these claims:
 
 GitHub requires 2FA for all organization members.
 
-On July 24, 2026, the sole maintainer verified these account settings:
+On July 24, 2026, the sole maintainer verified these account settings.
 
 - 2FA is enabled.
 - A passkey is configured and preferred.
@@ -126,7 +126,7 @@ Reverify them after any organization membership or authentication change.
 
 ## Secure design argument
 
-The projects apply these secure-design principles:
+The projects apply these secure-design principles.
 
 - Fail-safe defaults use HTTPS and maintained certificate verification.
 - Least privilege limits registry token scope and keeps tokens out of repositories.

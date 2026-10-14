@@ -17,11 +17,11 @@ The project lead maintains the organization roadmap and governance model.
 
 The lead appoints maintainers and resolves decisions without consensus.
 
-Current project lead: [@kriptoburak](https://github.com/kriptoburak).
+The current project lead is [@kriptoburak](https://github.com/kriptoburak).
 
 ### Maintainers
 
-Maintainers perform these duties:
+Maintainers perform these duties.
 
 - Triage issues and pull requests.
 - Review code, documentation, dependencies, and releases.
@@ -30,7 +30,7 @@ Maintainers perform these duties:
 - Publish releases through approved workflows.
 - Enforce this governance model and the Code of Conduct.
 
-Current maintainers: [@kriptoburak](https://github.com/kriptoburak).
+The current maintainer is [@kriptoburak](https://github.com/kriptoburak).
 
 ### Reviewers
 
@@ -60,7 +60,7 @@ Document the decision and its rationale in the relevant public thread.
 
 ## Appointments
 
-Maintainers evaluate candidates using these signals:
+Maintainers evaluate candidates using these signals.
 
 - Sustained, high-quality contributions.
 - Sound security and compatibility judgment.
