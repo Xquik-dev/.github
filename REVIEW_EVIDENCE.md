@@ -20,7 +20,7 @@ The review policy took effect on July 23, 2026.
 
 The audit includes every default-branch commit since `2026-07-23T00:00:00Z`.
 
-It uses these conservative rules:
+It uses these conservative rules.
 
 - Count every default-branch commit as one modification.
 - Count direct commits as unreviewed.
@@ -71,7 +71,7 @@ Future non-author reviews must restore the threshold before the next major relea
 
 ## Reproduce the audit
 
-Run the verifier with a GitHub token that can read public pull requests:
+Run the verifier with a GitHub token that can read public pull requests.
 
 ```sh
 GITHUB_TOKEN=... node scripts/check-review-evidence.mjs

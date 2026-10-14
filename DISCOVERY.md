@@ -26,7 +26,7 @@ Ranking or citation placement is never guaranteed.
 
 ## README structure
 
-Each public README must include:
+Each public README must include these parts.
 
 1. One precise top-level heading.
 2. A concise explanation of the repository's purpose.

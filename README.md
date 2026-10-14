@@ -8,21 +8,21 @@
 
 Public GitHub profile and community defaults for Xquik SDKs, docs, and agent integrations.
 
-- Org profile: [profile/README.md](profile/README.md)
-- Agent skill: [Xquik-dev/x-twitter-scraper](https://github.com/Xquik-dev/x-twitter-scraper)
-- Docs: [docs.xquik.com](https://docs.xquik.com)
-- Security reports: [SECURITY.md](SECURITY.md)
-- Support issues: [SUPPORT.md](SUPPORT.md)
-- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
-- Governance: [GOVERNANCE.md](GOVERNANCE.md)
-- Code review: [REVIEWING.md](REVIEWING.md)
-- Public roadmap: [ROADMAP.md](ROADMAP.md)
-- OpenSSF evidence: [OPENSSF.md](OPENSSF.md)
-- Debug-information evidence: [BUILD_DEBUG.md](BUILD_DEBUG.md)
-- Six-month regression evidence: [REGRESSION_TESTS.md](REGRESSION_TESTS.md)
-- Two-person review evidence: [REVIEW_EVIDENCE.md](REVIEW_EVIDENCE.md)
-- Discovery and README policy: [DISCOVERY.md](DISCOVERY.md)
-- Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- The org profile is [profile/README.md](profile/README.md).
+- The agent skill is [Xquik-dev/x-twitter-scraper](https://github.com/Xquik-dev/x-twitter-scraper).
+- The docs are at [docs.xquik.com](https://docs.xquik.com).
+- [SECURITY.md](SECURITY.md) says how to send security reports.
+- [SUPPORT.md](SUPPORT.md) says how to open support issues.
+- [CONTRIBUTING.md](CONTRIBUTING.md) says how to contribute.
+- [GOVERNANCE.md](GOVERNANCE.md) sets the governance.
+- [REVIEWING.md](REVIEWING.md) sets the code review policy.
+- [ROADMAP.md](ROADMAP.md) holds the public roadmap.
+- [OPENSSF.md](OPENSSF.md) holds the OpenSSF evidence.
+- [BUILD_DEBUG.md](BUILD_DEBUG.md) holds the debug-information evidence.
+- [REGRESSION_TESTS.md](REGRESSION_TESTS.md) holds the six-month regression evidence.
+- [REVIEW_EVIDENCE.md](REVIEW_EVIDENCE.md) holds the two-person review evidence.
+- [DISCOVERY.md](DISCOVERY.md) sets the discovery and README policy.
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) is the code of conduct.
 
 ## Find a Workflow
 

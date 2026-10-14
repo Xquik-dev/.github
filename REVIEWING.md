@@ -14,7 +14,7 @@ Direct pushes count as unreviewed modifications.
 
 ## Review checklist
 
-Reviewers must check these areas:
+Reviewers must check these areas.
 
 - The change solves a documented problem.
 - Public behavior matches documented contracts.
@@ -58,7 +58,7 @@ Never publish private implementation details to improve discoverability.
 
 ## Primary discoverability sources
 
-Review these sources before changing this policy:
+Review these sources before changing this policy.
 
 - [GitHub README guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes)
 - [GitHub topic guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/classifying-your-repository-with-topics)

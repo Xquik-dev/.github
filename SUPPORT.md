@@ -2,7 +2,7 @@
 
 Use the affected repository's issue tracker for public support.
 
-Include:
+Include these details.
 
 - Repository or package name
 - Version, language, and install command

@@ -14,7 +14,7 @@ See the official [criteria terminology](https://www.bestpractices.dev/en/criteri
 
 Xquik-dev has 17 standalone software projects with badge entries.
 
-Two repositories serve those projects without separate releases:
+Two repositories serve those projects without separate releases.
 
 - `.github` provides shared governance, policies, templates, and organization discovery.
 - `xquik-docs` provides shared API, SDK, integration, and security documentation.
@@ -74,7 +74,7 @@ Use each live entry for current status and submitted evidence.
 
 ## Shared evidence
 
-These documents support repository-specific badge evidence:
+These documents support repository-specific badge evidence.
 
 - [Contribution requirements and DCO](CONTRIBUTING.md)
 - [Governance and public roles](GOVERNANCE.md)
@@ -218,7 +218,7 @@ Each opening sentence contains 9 to 14 words.
 
 Each repository uses 14 to 20 accurate topics.
 
-The public contract check now preserves these discovery requirements:
+The public contract check now preserves these discovery requirements.
 
 - One clear README title and at least 3 descriptive sections.
 - A task-oriented section and copyable example for each project repository.
@@ -237,11 +237,11 @@ A second reviewer has repository write access.
 
 Public evidence still does not prove full release and legal continuity.
 
-The projects do not yet meet this required Silver prerequisite:
+The projects do not yet meet this required Silver prerequisite.
 
 - Continuity after the loss of any one project member.
 
-They do not yet meet these human Gold requirements:
+They do not yet meet these human Gold requirements.
 
 - A bus factor of 2 or more.
 - Two unassociated significant contributors per project.

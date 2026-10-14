@@ -49,12 +49,12 @@ Do not count pending pull-request evidence until merge.
 
 ### Hermes Tweet
 
-Count these 2 fixes:
+Count these 2 fixes.
 
 - [Restore the marketplace grade](https://github.com/Xquik-dev/hermes-tweet/pull/595).
 - [Align the agent-readable catalog](https://github.com/Xquik-dev/hermes-tweet/pull/608).
 
-These tests protect both fixes:
+These tests protect both fixes.
 
 - [Marketplace contract tests](https://github.com/Xquik-dev/hermes-tweet/blob/master/tests/test_metadata.py).
 - [Catalog behavior tests](https://github.com/Xquik-dev/hermes-tweet/blob/master/tests/test_catalog.py).
@@ -80,7 +80,7 @@ The ratio is `N/A`.
 
 Count the [default API host fix](https://github.com/Xquik-dev/prefect-xquik/commit/fa1b8db660f9c2530dc8c4c140618b34d16c6216).
 
-These tests preserve the public host:
+These tests preserve the public host.
 
 - [Client default-host test](https://github.com/Xquik-dev/prefect-xquik/blob/main/tests/test_client.py).
 - [Credentials default-host test](https://github.com/Xquik-dev/prefect-xquik/blob/main/tests/test_credentials.py).
@@ -89,12 +89,12 @@ The ratio is 1 of 1.
 
 ### Terraform provider
 
-Count these 2 fixes:
+Count these 2 fixes.
 
 - [Remove the stale integration](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/commit/8fe251402e2f2170a8b0f222bf19d44241dc1cc1).
 - [Make the JSON cache concurrency-safe](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/commit/7b3e09a8e87fe5a380a0809b8bf97e0495b6adfe).
 
-These tests protect both fixes:
+These tests protect both fixes.
 
 - [Registered provider tests](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/blob/main/internal/provider_coverage_test.go).
 - [JSON concurrency regression](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper/blob/main/internal/apijson/concurrency_test.go).
@@ -103,13 +103,13 @@ The ratio is 2 of 2.
 
 ### TweetClaw
 
-Count these 3 fixes:
+Count these 3 fixes.
 
 - [Eliminate package backup races](https://github.com/Xquik-dev/tweetclaw/pull/18).
 - [Fix public API contract drift](https://github.com/Xquik-dev/tweetclaw/pull/23).
 - [Patch the Hono Node server](https://github.com/Xquik-dev/tweetclaw/pull/24).
 
-These checks protect the first 2 fixes:
+These checks protect the first 2 fixes.
 
 - [Package artifact validator](https://github.com/Xquik-dev/tweetclaw/blob/master/scripts/check-package-artifact.mjs).
 - [API specification tests](https://github.com/Xquik-dev/tweetclaw/blob/master/tests/api-spec.test.ts).
@@ -120,7 +120,7 @@ The ratio is 2 of 3.
 
 ### Skill & plugin bundle
 
-Count 10 shipped package defects:
+Count 10 shipped package defects.
 
 - [Add package audit files](https://github.com/Xquik-dev/x-twitter-scraper/commit/56bad11881326fdcc7e593dbf2b263e16fb9607d).
 - [Add Skill audit files](https://github.com/Xquik-dev/x-twitter-scraper/commit/aba2900e83ab37e44c193465189d9b96920ac2af).
@@ -133,7 +133,7 @@ Count 10 shipped package defects:
 - [Public MCP contract](https://github.com/Xquik-dev/x-twitter-scraper/pull/16).
 - [MCP registry metadata](https://github.com/Xquik-dev/x-twitter-scraper/pull/17).
 
-These tests protect all 10 package contracts:
+These tests protect all 10 package contracts.
 
 - [Package guard integration test](https://github.com/Xquik-dev/x-twitter-scraper/blob/master/tests/package-guard.test.mjs).
 - [Frontmatter parser tests](https://github.com/Xquik-dev/x-twitter-scraper/blob/master/tests/frontmatter.test.mjs).
@@ -143,7 +143,7 @@ The ratio is 10 of 10.
 
 ### CLI
 
-Count 4 released formatting defects:
+Count 4 released formatting defects.
 
 - Empty explore results.
 - Raw JSON item iteration.
@@ -152,7 +152,7 @@ Count 4 released formatting defects:
 
 The [CLI changelog](https://github.com/Xquik-dev/x-twitter-scraper-cli/blob/main/CHANGELOG.md) records these fixes.
 
-Count 4 later correctness defects:
+Count 4 later correctness defects.
 
 - Custom exit handling.
 - Wrapped Unix connection closure.
@@ -161,7 +161,7 @@ Count 4 later correctness defects:
 
 [OpenSSF quality-gate PR #13](https://github.com/Xquik-dev/x-twitter-scraper-cli/pull/13) records these fixes.
 
-These tests protect all 8 defects:
+These tests protect all 8 defects.
 
 - [Explorer regressions](https://github.com/Xquik-dev/x-twitter-scraper-cli/blob/main/internal/jsonview/explorer_test.go).
 - [Output formatting regressions](https://github.com/Xquik-dev/x-twitter-scraper-cli/blob/main/pkg/cmd/cmdutil_test.go).
@@ -174,7 +174,7 @@ The ratio is 8 of 8.
 
 ### C# SDK
 
-Count these 3 runtime defects:
+Count these 3 runtime defects.
 
 - Response enumeration ignored cancellation.
 - The default `HttpClient` timeout conflicted with SDK timeouts.
@@ -182,7 +182,7 @@ Count these 3 runtime defects:
 
 The [C# changelog](https://github.com/Xquik-dev/x-twitter-scraper-csharp/blob/main/CHANGELOG.md) records these fixes.
 
-These tests protect all 3 defects:
+These tests protect all 3 defects.
 
 - [HTTP response cancellation tests](https://github.com/Xquik-dev/x-twitter-scraper-csharp/blob/main/src/XTwitterScraper.Tests/Core/HttpResponseTest.cs).
 - [Client timeout tests](https://github.com/Xquik-dev/x-twitter-scraper-csharp/blob/main/src/XTwitterScraper.Tests/Core/ClientOptionsTest.cs).
@@ -192,12 +192,12 @@ The ratio is 3 of 3.
 
 ### Go SDK
 
-Count these 2 fixes:
+Count these 2 fixes.
 
 - [Resolve the generated import cycle](https://github.com/Xquik-dev/x-twitter-scraper-go/commit/4188d03924c0b7c9072ec4095efe54bf9056d094).
 - [Make diagnostic dumps concurrency-safe](https://github.com/Xquik-dev/x-twitter-scraper-go/commit/6c35deb74fab127bcde9947c0a915e90dbad067b).
 
-These tests protect both fixes:
+These tests protect both fixes.
 
 - [Generated model contract tests](https://github.com/Xquik-dev/x-twitter-scraper-go/blob/main/model_json_test.go).
 - [Diagnostic concurrency tests](https://github.com/Xquik-dev/x-twitter-scraper-go/blob/main/internal/apierror/apierror_test.go).
@@ -214,12 +214,12 @@ The ratio is 1 of 1.
 
 ### Kotlin SDK
 
-Count these 2 fixes:
+Count these 2 fixes.
 
 - [Kotlin 26 shrinker compatibility](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/commit/62b77cbcf226a5940491daee18ed7f496609f2c4).
 - [Generated SDK buildability](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/commit/a2ff6517753db2724fbdbdd3b98a76171f222c39).
 
-These tests protect both fixes:
+These tests protect both fixes.
 
 - [ProGuard compatibility test](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/blob/main/x-twitter-scraper-kotlin-proguard-test/src/test/kotlin/com/x_twitter_scraper/api/proguard/ProGuardCompatibilityTest.kt).
 - [Compose request tests](https://github.com/Xquik-dev/x-twitter-scraper-kotlin/blob/main/x-twitter-scraper-kotlin-core/src/test/kotlin/com/x_twitter_scraper/api/models/compose/ComposeCreateParamsTest.kt).
@@ -229,7 +229,7 @@ The ratio is 2 of 2.
 
 ### PHP SDK
 
-Count 4 released runtime defects:
+Count 4 released runtime defects.
 
 - Guzzle streaming activation.
 - File parameter generation.
@@ -238,7 +238,7 @@ Count 4 released runtime defects:
 
 The [PHP changelog](https://github.com/Xquik-dev/x-twitter-scraper-php/blob/main/CHANGELOG.md) records these fixes.
 
-These tests protect all 4 defects:
+These tests protect all 4 defects.
 
 - [Streaming transport tests](https://github.com/Xquik-dev/x-twitter-scraper-php/blob/main/tests/Core/StreamingTransportTest.php).
 - [Streaming client tests](https://github.com/Xquik-dev/x-twitter-scraper-php/blob/main/tests/Core/StreamingHttpClientTest.php).
@@ -250,14 +250,14 @@ The ratio is 4 of 4.
 
 ### Python SDK
 
-Count 2 released runtime defects:
+Count 2 released runtime defects.
 
 - Preserve hardcoded query parameters.
 - Send file data once.
 
 The [Python changelog](https://github.com/Xquik-dev/x-twitter-scraper-python/blob/main/CHANGELOG.md) records these fixes.
 
-These tests protect both defects:
+These tests protect both defects.
 
 - [Query parameter regressions](https://github.com/Xquik-dev/x-twitter-scraper-python/blob/main/tests/test_client.py).
 - [File extraction regressions](https://github.com/Xquik-dev/x-twitter-scraper-python/blob/main/tests/test_extract_files.py).
@@ -266,7 +266,7 @@ The ratio is 2 of 2.
 
 ### Ruby SDK
 
-Count 5 released runtime or installation defects:
+Count 5 released runtime or installation defects.
 
 - RFC 3986 path encoding.
 - A runtime variable typo.
@@ -276,7 +276,7 @@ Count 5 released runtime or installation defects:
 
 The [Ruby changelog](https://github.com/Xquik-dev/x-twitter-scraper-ruby/blob/main/CHANGELOG.md) records these fixes.
 
-These checks protect 4 defects:
+These checks protect 4 defects.
 
 - [Client request regressions](https://github.com/Xquik-dev/x-twitter-scraper-ruby/blob/main/test/x_twitter_scraper/client_test.rb).
 - [Content-type regressions](https://github.com/Xquik-dev/x-twitter-scraper-ruby/blob/main/test/x_twitter_scraper/internal/util_test.rb).
@@ -288,7 +288,7 @@ The ratio is 4 of 5.
 
 ### TypeScript SDK
 
-Count 3 released package defects:
+Count 3 released package defects.
 
 - Guest wallet Bearer authentication.
 - Missing npm bug-tracker metadata.
