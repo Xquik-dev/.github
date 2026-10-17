@@ -17,7 +17,7 @@ The project lead maintains the organization roadmap and governance model.
 
 The lead appoints maintainers and resolves decisions without consensus.
 
-Current project lead: [@kriptoburak](https://github.com/kriptoburak).
+Current project lead: [@burak-bayir](https://github.com/burak-bayir).
 
 ### Maintainers
 
@@ -30,7 +30,7 @@ Maintainers perform these duties:
 - Publish releases through approved workflows.
 - Enforce this governance model and the Code of Conduct.
 
-Current maintainers: [@kriptoburak](https://github.com/kriptoburak).
+Current maintainers: [@burak-bayir](https://github.com/burak-bayir).
 
 ### Reviewers
 
