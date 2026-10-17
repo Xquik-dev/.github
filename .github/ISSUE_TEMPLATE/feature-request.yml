@@ -1,0 +1,35 @@
+# Copyright the Xquik contributors.
+# SPDX-License-Identifier: MIT
+
+name: Feature request
+description: Ask for a new SDK, docs, Skill, plugin, or package feature.
+type: Feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tell us what you want to do and what stops you today.
+        Never include credentials, cookies, or private data.
+  - type: input
+    id: surface
+    attributes:
+      label: Project
+      description: Name the repository, package, docs page, Skill, or plugin.
+      placeholder: Xquik-dev/x-twitter-scraper-python, docs.xquik.com/sdks/python, npm x-twitter-scraper
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: What you want to do
+      description: Describe the task or workflow you want to finish.
+      placeholder: I want to ... so that ...
+    validations:
+      required: true
+  - type: textarea
+    id: today
+    attributes:
+      label: What happens today
+      description: Say what you tried and where it falls short.
+    validations:
+      required: false
