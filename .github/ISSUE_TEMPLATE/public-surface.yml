@@ -4,6 +4,7 @@
 name: Public SDK, docs, or package issue
 description: Report a public SDK, docs, skill, plugin, package, or example issue.
 title: "[public-surface] "
+type: Bug
 body:
   - type: markdown
     attributes:
