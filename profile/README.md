@@ -39,6 +39,8 @@ Search tweets, export followers, monitor X, and run approved account actions wit
 | Receive signed monitor events | [Webhook Guide](https://docs.xquik.com/webhooks/overview) |
 | Post or reply from an account | [Create Tweet API](https://docs.xquik.com/api-reference/x-write/create-tweet) |
 | Compare Xquik with the X API | [X API Alternative Guide](https://docs.xquik.com/alternatives/x-api) |
+| Move app code off the X API | [x-api Skill](https://github.com/Xquik-dev/x-api) |
+| Find X advanced search operators | [Twitter advanced search operators](https://github.com/Xquik-dev/x-twitter-advanced-search) |
 | Connect an AI agent safely | [Xquik Agent Skill](https://github.com/Xquik-dev/x-twitter-scraper) |
 
 ## SDKs
