@@ -8,31 +8,76 @@
 // Usage: node scripts/verify-codeql.ts <report.sarif> <exceptions.json> [today]
 
 import { readFile } from "node:fs/promises";
+import { z } from "zod";
 
 const EXTRACTED_FILES = "js/diagnostics/successfully-extracted-files";
-const HARMLESS_LEVELS = new Set(["none", "note"]);
-const EXCEPTION_FIELDS = ["rule", "file", "message", "reason", "recheck"];
+const HARMLESS_LEVELS: ReadonlySet<string | undefined> = new Set(["none", "note"]);
 
-const [reportPath, exceptionsPath, today = new Date().toISOString().slice(0, 10)] =
-  process.argv.slice(2);
+const needs = (field: string) => ({ error: `Each entry in codeql-exceptions.json needs a ${field}.` });
+const text = (field: string) => z.string(needs(field)).min(1, needs(field));
+const Exceptions = z.array(
+  z.looseObject(
+    { rule: text("rule"), file: text("file"), message: text("message"), reason: text("reason"), recheck: text("recheck") },
+    needs("rule"),
+  ),
+  { error: "codeql-exceptions.json must hold a list." },
+);
+type Exception = z.infer<typeof Exceptions>[number];
 
-function list(value, name) {
-  if (!Array.isArray(value) || value.length === 0) {
-    throw new Error(`CodeQL report lacks ${name}.`);
-  }
-  return value;
+const lacks = (name: string) => ({ error: `CodeQL report lacks ${name}.` });
+const Result = z.looseObject({
+  ruleId: z.string().optional(),
+  message: z.looseObject({ text: z.string().optional() }).optional(),
+  locations: z
+    .array(
+      z.looseObject({
+        physicalLocation: z
+          .looseObject({
+            artifactLocation: z.looseObject({ uri: z.string().optional() }).optional(),
+            region: z.looseObject({ startLine: z.number().optional() }).optional(),
+          })
+          .optional(),
+      }),
+    )
+    .optional(),
+});
+type Result = z.infer<typeof Result>;
+const Notification = z.looseObject({
+  level: z.string().optional(),
+  message: z.looseObject({ text: z.string().optional() }).optional(),
+  descriptor: z.looseObject({ id: z.string().optional() }).optional(),
+});
+const Invocation = z.looseObject({
+  executionSuccessful: z.unknown(),
+  toolExecutionNotifications: z.array(Notification, lacks("diagnostics")).min(1, lacks("diagnostics")),
+});
+const Run = z.looseObject({
+  results: z.array(Result, lacks("results")),
+  invocations: z.array(Invocation, lacks("invocations")).min(1, lacks("invocations")),
+});
+const Report = z.looseObject({ runs: z.array(Run, lacks("runs")).min(1, lacks("runs")), version: z.unknown() });
+
+const [reportPath, exceptionsPath, today = new Date().toISOString().slice(0, 10)] = z
+  .tuple([z.string(), z.string()], z.string())
+  .parse(process.argv.slice(2));
+
+// A malformed document fails with the message of its first problem, in the
+// order of the fields above.
+function valid<T>(parsed: z.ZodSafeParseResult<T>): T {
+  if (!parsed.success) throw new Error(parsed.error.issues[0]?.message);
+  return parsed.data;
 }
 
-function fileOf(result) {
+function fileOf(result: Result) {
   return result.locations?.[0]?.physicalLocation?.artifactLocation?.uri ?? "unknown file";
 }
 
-function describe(result) {
+function describe(result: Result) {
   const line = result.locations?.[0]?.physicalLocation?.region?.startLine ?? 0;
   return `${result.ruleId} ${fileOf(result)}:${line} ${result.message?.text ?? ""}`.trim();
 }
 
-function matches(exception, result) {
+function matches(exception: Exception, result: Result) {
   return (
     exception.rule === result.ruleId &&
     exception.file === fileOf(result) &&
@@ -40,14 +85,8 @@ function matches(exception, result) {
   );
 }
 
-const exceptions = JSON.parse(await readFile(exceptionsPath, "utf8"));
-if (!Array.isArray(exceptions)) throw new Error("codeql-exceptions.json must hold a list.");
+const exceptions = valid(Exceptions.safeParse(JSON.parse(await readFile(exceptionsPath, "utf8"))));
 for (const exception of exceptions) {
-  for (const field of EXCEPTION_FIELDS) {
-    if (typeof exception?.[field] !== "string" || exception[field] === "") {
-      throw new Error(`Each entry in codeql-exceptions.json needs a ${field}.`);
-    }
-  }
   if (!/^\d{4}-\d{2}-\d{2}$/u.test(exception.recheck)) {
     throw new Error(`Write the recheck date of ${exception.rule} as YYYY-MM-DD.`);
   }
@@ -59,13 +98,11 @@ for (const exception of exceptions) {
   }
 }
 
-const report = JSON.parse(await readFile(reportPath, "utf8"));
-const runs = list(report.runs, "runs");
-if (report.version !== "2.1.0" || runs.length !== 1) {
+const report = valid(Report.safeParse(JSON.parse(await readFile(reportPath, "utf8"))));
+const [run, ...otherRuns] = report.runs;
+if (report.version !== "2.1.0" || run === undefined || otherRuns.length > 0) {
   throw new Error("Expected 1 SARIF 2.1.0 run.");
 }
-const [run] = runs;
-if (!Array.isArray(run.results)) throw new Error("CodeQL report lacks results.");
 const unreviewed = run.results.filter(
   (result) => !exceptions.some((exception) => matches(exception, result)),
 );
@@ -82,9 +119,9 @@ if (unused !== undefined) {
   );
 }
 let extracted = 0;
-for (const invocation of list(run.invocations, "invocations")) {
+for (const invocation of run.invocations) {
   if (invocation.executionSuccessful !== true) throw new Error("CodeQL invocation failed.");
-  for (const notification of list(invocation.toolExecutionNotifications, "diagnostics")) {
+  for (const notification of invocation.toolExecutionNotifications) {
     if (!HARMLESS_LEVELS.has(notification.level)) {
       throw new Error(`CodeQL diagnostic needs review. ${notification.message?.text ?? ""}`.trim());
     }

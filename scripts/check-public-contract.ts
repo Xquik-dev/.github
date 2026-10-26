@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { readFile } from "node:fs/promises";
+import { z } from "zod";
 import { GITHUB_ORG, OPENSSF_PROJECT_IDS } from "./public-projects.ts";
 
 const GITHUB_API = "https://api.github.com";
@@ -15,6 +16,69 @@ const SERVER_CARD_FIELDS = {
     "X Twitter scraper & Twitter API alternative. Search, monitor, publish & manage X accounts.",
   websiteUrl: "https://docs.xquik.com/mcp/overview",
 };
+const MCP_REMOTE = z.looseObject({ url: z.literal("https://xquik.com/mcp") });
+const PRODUCTION_REMOTE = z.looseObject({
+  type: z.literal("streamable-http"),
+  supportedProtocolVersions: z.array(z.unknown()).refine((versions) => versions.includes("2026-07-28")),
+});
+// The rules of the server card in the order they are checked, each with the
+// error its failure throws.
+const SERVER_CARD_RULES = [
+  ...Object.entries(SERVER_CARD_FIELDS).map(([field, expected]) => ({
+    error: `Server card has an invalid ${field}.`,
+    schema: z.looseObject({ [field]: z.literal(expected) }),
+  })),
+  {
+    error: "Server card needs a semantic version.",
+    schema: z.looseObject({ version: z.string().regex(/^\d+\.\d+\.\d+$/u) }),
+  },
+  {
+    error: "Server card has an invalid source repository.",
+    schema: z.looseObject({
+      repository: z.looseObject({
+        url: z.literal("https://github.com/Xquik-dev/x-twitter-scraper"),
+        source: z.literal("github"),
+      }),
+    }),
+  },
+  {
+    error: "Server card lacks the production MCP remote and protocol.",
+    schema: z.looseObject({
+      remotes: z.array(z.unknown()).refine(
+        (remotes) =>
+          PRODUCTION_REMOTE.safeParse(remotes.find((remote) => MCP_REMOTE.safeParse(remote).success)).success,
+      ),
+    }),
+  },
+];
+const OpenApiParameter = z.looseObject({
+  $ref: z.string().optional(),
+  in: z.string().optional(),
+  name: z.string().optional(),
+});
+const OpenApi = z.looseObject({
+  openapi: z.unknown(),
+  paths: z
+    .record(
+      z.string(),
+      z.looseObject({
+        parameters: z.array(OpenApiParameter).optional(),
+        get: z.looseObject({ parameters: z.array(OpenApiParameter).optional() }).optional(),
+      }),
+    )
+    .optional(),
+  components: z.looseObject({ parameters: z.record(z.string(), OpenApiParameter).optional() }).optional(),
+});
+type OpenApi = z.infer<typeof OpenApi>;
+const PublicRepository = z.looseObject({
+  name: z.string(),
+  default_branch: z.string(),
+  description: z.string().nullish(),
+  homepage: z.string().nullish(),
+  topics: z.array(z.string()).optional(),
+});
+type PublicRepository = z.infer<typeof PublicRepository>;
+const WorkflowListing = z.array(z.looseObject({ name: z.string() }));
 const INDEPENDENCE_NOTICE =
   'Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.';
 const REPOSITORY_DESCRIPTION_NOTICE = "Not affiliated with X Corp.";
@@ -183,119 +247,102 @@ const INTEGRATION_SURFACES = [
 ];
 
 // The token goes to the GitHub API only, never to another host.
-function requestHeaders(url, accept) {
-  const headers = { accept, "user-agent": "xquik-public-contract-check" };
+function requestHeaders(url: string, accept: string) {
+  const headers: Record<string, string> = { accept, "user-agent": "xquik-public-contract-check" };
   if (process.env.GITHUB_TOKEN && url.startsWith(`${GITHUB_API}/`)) {
     headers.authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
   }
   return headers;
 }
 
-async function fetchResource(url, accept) {
+async function fetchResource(url: string, accept: string) {
   const response = await fetch(url, { headers: requestHeaders(url, accept) });
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}.`);
   return response;
 }
 
-async function fetchJson(url) {
+async function fetchJson(url: string) {
   return (await fetchResource(url, "application/json")).json();
 }
 
-async function fetchText(url, accept = "text/plain") {
+async function fetchText(url: string, accept = "text/plain") {
   return (await fetchResource(url, accept)).text();
 }
 
-function checkServerCard(card) {
-  for (const [field, expected] of Object.entries(SERVER_CARD_FIELDS)) {
-    if (card[field] !== expected) throw new Error(`Server card has an invalid ${field}.`);
-  }
-  if (!/^\d+\.\d+\.\d+$/u.test(card.version ?? "")) {
-    throw new Error("Server card needs a semantic version.");
-  }
-  if (
-    card.repository?.url !== "https://github.com/Xquik-dev/x-twitter-scraper" ||
-    card.repository?.source !== "github"
-  ) {
-    throw new Error("Server card has an invalid source repository.");
-  }
-  const remote = card.remotes?.find((entry) => entry?.url === "https://xquik.com/mcp");
-  if (
-    remote?.type !== "streamable-http" ||
-    !remote.supportedProtocolVersions?.includes("2026-07-28")
-  ) {
-    throw new Error("Server card lacks the production MCP remote and protocol.");
-  }
+function checkServerCard(card: unknown) {
+  const broken = SERVER_CARD_RULES.find(({ schema }) => !schema.safeParse(card).success);
+  if (broken) throw new Error(broken.error);
 }
 
-async function loadServerCard() {
+async function loadServerCard(): Promise<unknown> {
   const localPath = process.argv[2];
   if (localPath === undefined) return fetchJson(SERVER_CARD_URL);
   return JSON.parse(await readFile(localPath, "utf8"));
 }
 
 async function listPublicRepos() {
-  const repos = [];
+  const repos: PublicRepository[] = [];
   for (let page = 1; ; page += 1) {
-    const batch = await fetchJson(
-      `${GITHUB_API}/orgs/${GITHUB_ORG}/repos?type=public&per_page=100&page=${page}`,
+    const batch = z.array(PublicRepository).parse(
+      await fetchJson(`${GITHUB_API}/orgs/${GITHUB_ORG}/repos?type=public&per_page=100&page=${page}`),
     );
     repos.push(...batch);
     if (batch.length < 100) return repos;
   }
 }
 
-function contentUrl(repo, path) {
+function contentUrl(repo: PublicRepository, path: string) {
   const encodedPath = path.split("/").map(encodeURIComponent).join("/");
   return `${GITHUB_API}/repos/${GITHUB_ORG}/${repo.name}/contents/${encodedPath}?ref=${encodeURIComponent(repo.default_branch)}`;
 }
 
-async function loadRepoFile(repo, path) {
+async function loadRepoFile(repo: PublicRepository, path: string) {
   if (repo.name === ".github") return readFile(path, "utf8");
   return fetchText(contentUrl(repo, path), "application/vnd.github.raw+json");
 }
 
-function visibleMarkdown(markdown) {
+function visibleMarkdown(markdown: string) {
   return markdown.replace(/[*_`>#]/gu, "").replace(/\s+/gu, " ").trim();
 }
 
-function markdownHeadings(markdown) {
-  const headings = [];
-  let fence = null;
+function markdownHeadings(markdown: string) {
+  const headings: { level: number; text: string }[] = [];
+  let fence: string | null = null;
   for (const line of markdown.split(/\r?\n/u)) {
-    const fenceMatch = /^ {0,3}(`{3,}|~{3,})/u.exec(line);
-    if (fenceMatch) {
-      const marker = fenceMatch[1][0];
+    const [, fenceMarks] = /^ {0,3}(`{3,}|~{3,})/u.exec(line) ?? [];
+    if (fenceMarks !== undefined) {
+      const marker = fenceMarks.charAt(0);
       if (fence === null) fence = marker;
       else if (fence === marker) fence = null;
       continue;
     }
     if (fence !== null) continue;
-    const heading = /^ {0,3}(#{1,6})[ \t]+(.+?)[ \t]*#*[ \t]*$/u.exec(line);
-    if (heading) headings.push({ level: heading[1].length, text: heading[2].trim() });
+    const [, marks, text] = /^ {0,3}(#{1,6})[ \t]+(.+?)[ \t]*#*[ \t]*$/u.exec(line) ?? [];
+    if (marks !== undefined && text !== undefined) headings.push({ level: marks.length, text: text.trim() });
   }
   return headings;
 }
 
-function resolveParameter(openApi, parameter) {
-  if (!parameter?.$ref) return parameter;
-  const name = parameter.$ref.split("/").at(-1);
-  return openApi.components?.parameters?.[name];
+function resolveParameter(openApi: OpenApi, parameter: z.infer<typeof OpenApiParameter>) {
+  const { $ref } = parameter;
+  if (!$ref) return parameter;
+  return openApi.components?.parameters?.[$ref.slice($ref.lastIndexOf("/") + 1)];
 }
 
-function operationQueryParameters(openApi, path, method) {
+function operationQueryParameters(openApi: OpenApi, path: string, method: "get") {
   const publicPath = openApi.paths?.[path] ? path : `/api/v1${path}`;
   const pathItem = openApi.paths?.[publicPath];
   const operation = pathItem?.[method];
-  if (!operation) throw new Error(`OpenAPI is missing ${method.toUpperCase()} ${path}.`);
+  if (!pathItem || !operation) throw new Error(`OpenAPI is missing ${method.toUpperCase()} ${path}.`);
   return new Set(
-    [...(pathItem.parameters ?? []), ...(operation.parameters ?? [])]
-      .map((parameter) => resolveParameter(openApi, parameter))
-      .filter((parameter) => parameter?.in === "query")
-      .map((parameter) => parameter.name),
+    [...(pathItem.parameters ?? []), ...(operation.parameters ?? [])].flatMap((parameter) => {
+      const resolved = resolveParameter(openApi, parameter);
+      return resolved?.in === "query" ? [resolved.name] : [];
+    }),
   );
 }
 
-async function checkRepoReadmes(repos) {
+async function checkRepoReadmes(repos: readonly PublicRepository[]) {
   await Promise.all(
     repos.map(async (repo) => {
       const path = repo.name === ".github" ? "profile/README.md" : "README.md";
@@ -304,10 +351,11 @@ async function checkRepoReadmes(repos) {
       const headings = markdownHeadings(readme);
       const titleHeadings = headings.filter(({ level }) => level === 1);
       const sectionHeadings = headings.filter(({ level }) => level === 2);
-      if (titleHeadings.length !== 1) {
+      const [titleHeading, ...otherTitles] = titleHeadings;
+      if (titleHeading === undefined || otherTitles.length > 0) {
         throw new Error(`${repo.name}/${path} must contain exactly one top-level heading.`);
       }
-      const title = titleHeadings[0].text;
+      const title = titleHeading.text;
       if (title.length < 10 || title.length > 110) {
         throw new Error(`${repo.name}/${path} has an unclear title length: ${title.length}.`);
       }
@@ -348,7 +396,7 @@ async function checkRepoReadmes(repos) {
   );
 }
 
-function checkRepoDiscovery(repos) {
+function checkRepoDiscovery(repos: readonly PublicRepository[]) {
   for (const repo of repos) {
     const description = repo.description?.trim() ?? "";
     const topics = repo.topics ?? [];
@@ -382,15 +430,15 @@ function checkRepoDiscovery(repos) {
 }
 
 // ASSURANCE.md says no project keeps a GitHub Actions workflow, so every public repository is checked.
-async function checkNoWorkflows(repos) {
+async function checkNoWorkflows(repos: readonly PublicRepository[]) {
   await Promise.all(
     repos.map(async (repo) => {
       const url = contentUrl(repo, ".github/workflows");
       const response = await fetch(url, { headers: requestHeaders(url, "application/json") });
       if (response.status === 404) return;
       if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}.`);
-      const entries = await response.json();
-      const workflows = Array.isArray(entries) ? entries.map(({ name }) => name) : [".github/workflows"];
+      const entries = WorkflowListing.safeParse(await response.json());
+      const workflows = entries.success ? entries.data.map(({ name }) => name) : [".github/workflows"];
       if (workflows.length > 0) {
         throw new Error(`${repo.name} keeps GitHub Actions workflow files ${workflows.join(", ")}.`);
       }
@@ -423,7 +471,7 @@ async function checkOpenSsfInventory() {
   }
 }
 
-async function checkIntegrationSurfaces(openApi, reposByName) {
+async function checkIntegrationSurfaces(openApi: OpenApi, reposByName: ReadonlyMap<string, PublicRepository>) {
   await Promise.all(
     INTEGRATION_SURFACES.map(async (surface) => {
       const repo = reposByName.get(surface.repo);
@@ -452,7 +500,7 @@ async function checkIntegrationSurfaces(openApi, reposByName) {
 }
 
 const [openApi, serverCard, profile, repos] = await Promise.all([
-  fetchJson(OPENAPI_URL),
+  fetchJson(OPENAPI_URL).then((spec) => OpenApi.parse(spec)),
   loadServerCard(),
   readFile("profile/README.md", "utf8"),
   listPublicRepos(),
