@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { TestContext } from "node:test";
@@ -52,4 +52,18 @@ export function run(
     stderr: result.stderr,
     stdout: result.stdout,
   };
+}
+
+// Makes folder a project that resolves this repository's packages, extends its
+// tsconfig.json and holds the given files.
+export function writeProbes(folder: string, files: Readonly<Record<string, string>>) {
+  symlinkSync(join(root, "node_modules"), join(folder, "node_modules"));
+  writeFileSync(join(folder, "package.json"), JSON.stringify({ type: "module" }));
+  writeFileSync(join(folder, "tsconfig.json"), JSON.stringify({ extends: join(root, "tsconfig.json"), include: ["**/*"] }));
+  for (const [file, code] of Object.entries(files)) writeFileSync(join(folder, file), code);
+}
+
+// Runs a tool from this repository's node_modules/.bin inside folder.
+export function runTool(folder: string, name: string, args: readonly string[]) {
+  return spawnSync(join(root, "node_modules/.bin", name), args, { cwd: folder, encoding: "utf8" });
 }
