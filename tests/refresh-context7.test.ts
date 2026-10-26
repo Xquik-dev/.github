@@ -3,7 +3,7 @@
 
 import assert from "node:assert/strict";
 import { join } from "node:path";
-import { test } from "node:test";
+import { type TestContext, test } from "node:test";
 import { root, run, workspace, writeFakes } from "./helpers.ts";
 
 const script = join(root, "bin/refresh-context7");
@@ -23,7 +23,7 @@ const request =
   "curl --connect-timeout 10 --max-time 30 --proto =https -sS --tlsv1.2 -o <body> -w %{http_code} -X POST " +
   'https://context7.com/api/v1/refresh -H Content-Type: application/json -H @- -d {"libraryName": "/xquik-dev/.github"}';
 
-function refresh(t, env = {}, args = []) {
+function refresh(t: TestContext, env: Readonly<Record<string, string>> = {}, args: readonly string[] = []) {
   const folder = workspace(t);
   writeFakes(folder, fakes);
   const result = run(folder, ["/bin/bash", script, ...args], {
@@ -63,7 +63,7 @@ for (const [status, body, exit, last] of [
   ["429", "", 0, "Context7 refresh is rate limited. Rerun after the next docs change."],
   ["500", "", 1, "refresh-context7: Context7 refresh returned HTTP 500."],
   ["", "", 1, "refresh-context7: Could not reach Context7. Check network access, then rerun."],
-]) {
+] as const) {
   test(`HTTP ${status || "failure"} with body "${body}" exits ${exit}`, (t) => {
     const result = refresh(t, { BODY: body, STATUS: status });
     assert.equal(result.status, exit);
@@ -75,7 +75,7 @@ for (const [name, env, message] of [
   ["an unset item name", { CONTEXT7_KEYCHAIN_SERVICE: "" }, "CONTEXT7_KEYCHAIN_SERVICE is unset. Set it to the Keychain item that holds the Context7 API key, then rerun."],
   ["a missing Keychain item", { CONTEXT7_KEYCHAIN_SERVICE: "other-item" }, "The Keychain has no item named by CONTEXT7_KEYCHAIN_SERVICE. Add the Context7 API key under that name, then rerun."],
   ["an empty key", { KEY: "" }, "The Keychain has no item named by CONTEXT7_KEYCHAIN_SERVICE. Add the Context7 API key under that name, then rerun."],
-]) {
+] as const) {
   test(`${name} stops before any request`, (t) => {
     const result = refresh(t, env);
     assert.equal(result.status, 1);

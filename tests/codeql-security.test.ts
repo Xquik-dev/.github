@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { test } from "node:test";
+import { type TestContext, test } from "node:test";
 import { root, run, workspace, writeFakes } from "./helpers.ts";
 
 const script = join(root, "scripts/codeql-security");
@@ -15,7 +15,7 @@ const extracted = {
   level: "none",
 };
 
-function report(change = {}) {
+function report(change: Readonly<Record<string, unknown>> = {}) {
   const run = {
     invocations: [{ executionSuccessful: true, toolExecutionNotifications: [extracted] }],
     results: [],
@@ -32,7 +32,7 @@ const exception = {
   rule: "js/example",
 };
 
-function verify(t, sarif, exceptions = [], today = "2026-10-13") {
+function verify(t: TestContext, sarif: unknown, exceptions: readonly unknown[] = [], today = "2026-10-13") {
   const folder = workspace(t);
   writeFileSync(join(folder, "report.sarif"), JSON.stringify(sarif));
   writeFileSync(join(folder, "exceptions.json"), JSON.stringify(exceptions));
@@ -43,7 +43,7 @@ function verify(t, sarif, exceptions = [], today = "2026-10-13") {
   );
 }
 
-function result(level, change = {}) {
+function result(level: string | undefined, change: Readonly<Record<string, unknown>> = {}) {
   return {
     level,
     locations: [{ physicalLocation: { artifactLocation: { uri: "scripts/a.mjs" }, region: { startLine: 7 } } }],
@@ -81,7 +81,7 @@ for (const [name, change] of [
   ["another rule", { ruleId: "js/other" }],
   ["another file", { locations: [{ physicalLocation: { artifactLocation: { uri: "scripts/b.mjs" } } }] }],
   ["another message", { message: { text: "Another unsafe value." } }],
-]) {
+] as const) {
   test(`an exception does not cover ${name}`, (t) => {
     const results = [result("warning"), result("warning", change)];
     const outcome = verify(t, report({ results }), [exception]);
@@ -95,7 +95,7 @@ for (const [name, exceptions, results, today, message] of [
   ["matches no result", [exception], [], "2026-10-13", "CodeQL no longer reports js/example in scripts/a.mjs. Remove it from codeql-exceptions.json."],
   ["lacks a reason", [{ ...exception, reason: "" }], [result("warning")], "2026-10-13", "Each entry in codeql-exceptions.json needs a reason."],
   ["has a malformed date", [{ ...exception, recheck: "soon" }], [result("warning")], "2026-10-13", "Write the recheck date of js/example as YYYY-MM-DD."],
-]) {
+] as const) {
   test(`an exception that ${name} fails`, (t) => {
     const outcome = verify(t, report({ results }), exceptions, today);
     assert.equal(outcome.status, 1);
@@ -110,7 +110,7 @@ for (const [name, sarif, message] of [
   ["a failed invocation", report({ invocations: [{ executionSuccessful: false, toolExecutionNotifications: [extracted] }] }), "CodeQL invocation failed."],
   ["an error diagnostic", report({ invocations: [{ executionSuccessful: true, toolExecutionNotifications: [extracted, { level: "error", message: { text: "Extraction failed." } }] }] }), "CodeQL diagnostic needs review. Extraction failed."],
   ["no extracted files", report({ invocations: [{ executionSuccessful: true, toolExecutionNotifications: [{ level: "note" }] }] }), "CodeQL did not confirm extracted JavaScript files."],
-]) {
+] as const) {
   test(`a report with ${name} fails`, (t) => {
     const outcome = verify(t, sarif);
     assert.equal(outcome.status, 1);
@@ -118,7 +118,7 @@ for (const [name, sarif, message] of [
   });
 }
 
-function checkVersion(t, version) {
+function checkVersion(t: TestContext, version: string | undefined) {
   const folder = workspace(t);
   writeFakes(folder, version === undefined ? {} : { codeql: `[ "$*" = "version --format=terse" ] || exit 99\necho ${version}` });
   return run(folder, ["/bin/bash", script, "--version"]);
@@ -136,7 +136,7 @@ for (const version of ["2.27.0", "2.27.2", "2.100.0", "3.0.0"]) {
 for (const [version, message] of [
   [undefined, "CodeQL CLI is missing. Install it with brew install --cask codeql, then rerun."],
   ["2.26.9", "CodeQL CLI 2.26.9 is older than 2.27.0. Run brew upgrade --cask codeql."],
-]) {
+] as const) {
   test(`CodeQL ${version ?? "missing"} fails with the next step`, (t) => {
     const outcome = checkVersion(t, version);
     assert.equal(outcome.status, 1);

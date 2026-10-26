@@ -4,7 +4,7 @@
 import assert from "node:assert/strict";
 import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { test } from "node:test";
+import { type TestContext, test } from "node:test";
 import { root, run, workspace, writeFakes } from "./helpers.ts";
 
 const sha = "0123456789abcdef0123456789abcdef01234567";
@@ -50,7 +50,12 @@ const pending = "state=pending Running script tests, contract, review & release 
 const passed =
   "script tests, public contract, review evidence, release evidence, CodeQL 2.27.2.";
 
-function runChecks(t, testCase, args = [], env = {}) {
+function runChecks(
+  t: TestContext,
+  testCase: string,
+  args: readonly string[] = [],
+  env: Readonly<Record<string, string>> = {},
+) {
   const folder = workspace(t);
   const project = join(folder, "project");
   for (const directory of ["bin", "scripts", "tests"]) {
@@ -105,7 +110,7 @@ for (const [testCase, ran, failed] of [
   ["scripts/verify-release-evidence.ts", 4, "Release evidence of the latest release of all 17 projects"],
   ["codeql-security", 5, "Static analysis with CodeQL 2.27.2 security-extended queries"],
   ["changed", 5, "Final tree check"],
-]) {
+] as const) {
   test(`a failure at ${failed} posts failure and stops`, (t) => {
     const result = runChecks(t, testCase);
     assert.notEqual(result.status, 0);
@@ -118,7 +123,7 @@ for (const [testCase, env, failed, message] of [
   ["ready", { NODE_VERSION: "v22.23.0" }, "Node.js version", "Node.js v22.23.0 is older than v22.23.1. Upgrade Node.js, then rerun."],
   ["signed-out", {}, "GitHub sign-in", "gh is signed out. Run gh auth login, then rerun."],
   ["no-codeql", {}, "CodeQL CLI", ""],
-]) {
+] as const) {
   test(`an unusable setup fails at ${failed} before any check`, (t) => {
     const result = runChecks(t, testCase, [], env);
     assert.equal(result.status, 1);
@@ -132,7 +137,7 @@ for (const [testCase, args, reason] of [
   ["ready", ["--no-status"], "--no-status was passed."],
   ["dirty", [], "the tree has uncommitted changes."],
   ["unpushed", [], "GitHub does not have HEAD, or gh is signed out. Push first."],
-]) {
+] as const) {
   test(`no status is posted when ${reason}`, (t) => {
     const result = runChecks(t, testCase, args);
     assert.equal(result.status, 0, result.stderr);

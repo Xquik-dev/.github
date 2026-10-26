@@ -5,12 +5,13 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import type { TestContext } from "node:test";
 import { fileURLToPath } from "node:url";
 
 export const root = fileURLToPath(new URL("..", import.meta.url));
 
 // Makes a temporary folder that the test removes when it ends.
-export function workspace(t) {
+export function workspace(t: TestContext) {
   const folder = mkdtempSync(join(tmpdir(), "xquik-profile-test-"));
   t.after(() => rmSync(folder, { force: true, recursive: true }));
   return folder;
@@ -18,7 +19,7 @@ export function workspace(t) {
 
 // Writes fake commands into <folder>/fakes. Each fake appends its call to
 // <folder>/calls.log, then runs its body.
-export function writeFakes(folder, fakes) {
+export function writeFakes(folder: string, fakes: Readonly<Record<string, string>>) {
   const directory = join(folder, "fakes");
   mkdirSync(directory);
   writeFileSync(join(folder, "calls.log"), "");
@@ -30,8 +31,12 @@ export function writeFakes(folder, fakes) {
 }
 
 // Runs a script with only the fakes and the system tools on PATH.
-export function run(folder, command, env = {}) {
-  const result = spawnSync(command[0], command.slice(1), {
+export function run(
+  folder: string,
+  [program, ...args]: readonly [string, ...string[]],
+  env: Readonly<Record<string, string>> = {},
+) {
+  const result = spawnSync(program, args, {
     encoding: "utf8",
     env: {
       FAKE_CALLS: join(folder, "calls.log"),

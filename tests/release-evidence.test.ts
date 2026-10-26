@@ -7,10 +7,13 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 import { crc32, deflateRawSync } from "node:zlib";
+import { z } from "zod";
 import {
   EVIDENCE,
   MAVEN_KEY,
   PROJECTS,
+  type Project,
+  type ReleaseIo,
   TERRAFORM_KEY,
   guideProblem,
   hasValidNpmSignature,
@@ -23,16 +26,23 @@ import { root } from "./helpers.ts";
 
 const API = "https://api.github.com/repos/Xquik-dev";
 const COMMIT = "1111111111111111111111111111111111111111";
-const digest = (content) => createHash("sha256").update(content).digest("hex");
-const project = (repo) => PROJECTS.find((candidate) => candidate.repo === repo);
-const asset = (name, content) => ({
+const digest = (content: string | Buffer) => createHash("sha256").update(content).digest("hex");
+function project(repo: string): Project {
+  const found = PROJECTS.find((candidate) => candidate.repo === repo);
+  assert.ok(found, `PROJECTS has no ${repo}`);
+  return found;
+}
+const asset = (name: string, content: string | Buffer) => ({
   browser_download_url: `https://downloads.test/${name}`,
   digest: `sha256:${digest(content)}`,
   name,
 });
 
 // The GitHub answers every project needs: its latest release, its default branch and the comparison.
-function github(repo, { tag = "v1.2.3", assets = [], status = "behind" } = {}) {
+function github(
+  repo: string,
+  { tag = "v1.2.3", assets = [], status = "behind" }: { tag?: string; assets?: readonly unknown[]; status?: string } = {},
+) {
   return {
     [`${API}/${repo}/releases/latest`]: { assets, tag_name: tag },
     [`${API}/${repo}`]: { default_branch: "main" },
@@ -43,41 +53,52 @@ function github(repo, { tag = "v1.2.3", assets = [], status = "behind" } = {}) {
 
 // A fake that answers only the listed addresses and records every command.
 // ghStatus is 1 exit status for every gh call, or a list with 1 status per call.
-function fakeIo(responses, { signers = [], ghStatus = 0 } = {}) {
-  const commands = [];
+function fakeIo(
+  responses: Readonly<Record<string, unknown>>,
+  { signers = [], ghStatus = 0 }: { signers?: readonly string[]; ghStatus?: number | readonly number[] } = {},
+): ReleaseIo & { readonly commands: string[] } {
+  const commands: string[] = [];
   const statuses = [ghStatus].flat();
-  const answer = (url) => {
+  const answer = (url: string) => {
     assert.ok(url in responses, `unexpected request ${url}`);
     return responses[url];
   };
   return {
-    bytes: async (url) => Buffer.from(answer(url)),
+    bytes: async (url) => {
+      const body = answer(url);
+      return Buffer.isBuffer(body) ? body : Buffer.from(z.string().parse(body));
+    },
     commands,
     json: async (url) => answer(url),
     readFile: async (path) => `public key in ${path}`,
     run: async (command, args) => {
       commands.push([command, ...args].join(" "));
       const status = statuses.length > 1 ? statuses.shift() : statuses[0];
+      assert.ok(status !== undefined, "ghStatus lists no exit status");
       return { status, stderr: status === 0 ? "" : "Error: could not reach the trust root\n", stdout: "" };
     },
     signers: async ({ key }) => {
       commands.push(`gpg verify with ${String(key).slice(0, 60)}`);
       return signers;
     },
-    text: async (url) => answer(url),
+    text: async (url) => z.string().parse(answer(url)),
     wait: async (milliseconds) => {
       commands.push(`wait ${milliseconds}`);
     },
   };
 }
 
-async function failure(repo, responses, options) {
-  const error = await verifyProject(project(repo), fakeIo(responses, options)).catch((caught) => caught);
+async function failure(
+  repo: string,
+  responses: Readonly<Record<string, unknown>>,
+  options?: Parameters<typeof fakeIo>[1],
+) {
+  const error = await verifyProject(project(repo), fakeIo(responses, options)).catch((caught: unknown) => caught);
   assert.ok(error instanceof Error, "the verification passed");
   return error.message;
 }
 
-const pypi = (version, files = {}) => ({
+const pypi = (version: string, files: Readonly<Record<string, string>> = {}) => ({
   info: { version },
   urls: Object.entries(files).map(([filename, content]) => ({ digests: { sha256: digest(content) }, filename })),
 });
@@ -110,8 +131,9 @@ test("a registry version that differs from the release tag fails", async () => {
 
 // An npm manifest signed the way the registry signs, with a key made for this test.
 const { privateKey, publicKey } = generateKeyPairSync("ec", { namedCurve: "P-256" });
-const registryKeys = [{ key: publicKey.export({ format: "der", type: "spki" }).toString("base64"), keyid: "SHA256:test" }];
-function manifest(name, version, change = {}) {
+const registryKey = { key: publicKey.export({ format: "der", type: "spki" }).toString("base64"), keyid: "SHA256:test" };
+const registryKeys = [registryKey];
+function manifest(name: string, version: string, change: Partial<Parameters<typeof hasValidNpmSignature>[0]> = {}) {
   const integrity = "sha512-fixture";
   const sig = sign("sha256", Buffer.from(`${name}@${version}:${integrity}`), privateKey).toString("base64");
   return {
@@ -129,15 +151,18 @@ test("an npm manifest signed by a registry key is valid", () => {
 for (const [name, tampered, keys] of [
   ["another version", manifest("x-developer", "1.2.3", { version: "1.2.4" }), registryKeys],
   ["another package", manifest("x-developer", "1.2.3", { name: "x-developers" }), registryKeys],
-  ["an unknown key", manifest("x-developer", "1.2.3"), [{ ...registryKeys[0], keyid: "SHA256:other" }]],
+  ["an unknown key", manifest("x-developer", "1.2.3"), [{ ...registryKey, keyid: "SHA256:other" }]],
   ["no signature", manifest("x-developer", "1.2.3", { dist: { integrity: "sha512-fixture" } }), registryKeys],
-]) {
+] as const) {
   test(`an npm signature over ${name} is not valid`, () => {
     assert.equal(hasValidNpmSignature(tampered, keys), false);
   });
 }
 
-function typescript({ tarball = "tarball", signed = manifest("x-twitter-scraper", "1.2.3") } = {}) {
+function typescript({
+  tarball = "tarball",
+  signed = manifest("x-twitter-scraper", "1.2.3"),
+}: { tarball?: string; signed?: unknown } = {}) {
   return {
     ...github("x-twitter-scraper-typescript", { assets: [asset("x-twitter-scraper-1.2.3.tgz", "tarball")] }),
     "https://registry.npmjs.org/-/npm/v1/keys": { keys: registryKeys },
@@ -178,13 +203,13 @@ for (const [name, responses, options, message] of [
   ["a tarball that differs from the release asset", typescript({ tarball: "other" }), {}, '"Release asset equals the npm tarball". x-twitter-scraper-1.2.3.tgz differs from the npm tarball.'],
   ["a manifest no registry key signed", typescript({ signed: manifest("x-twitter-scraper", "1.2.3", { dist: { integrity: "sha512-other", tarball: "https://registry.test/package.tgz" } }) }), {}, '"npm registry signature". no npm registry key signed the latest version.'],
   ["a release GitHub does not attest", typescript(), { ghStatus: 1 }, '"GitHub release attestation". gh release verify v1.2.3 failed 3 times. Error: could not reach the trust root.'],
-]) {
+] as const) {
   test(`${name} fails`, async () => {
     assert.equal(await failure("x-twitter-scraper-typescript", responses, options), `x-twitter-scraper-typescript v1.2.3 lacks ${message}`);
   });
 }
 
-function hermes(assets) {
+function hermes(assets: readonly unknown[]) {
   return {
     ...github("hermes-tweet", { assets }),
     "https://pypi.org/pypi/hermes-tweet/json": pypi("1.2.3", { "hermes_tweet-1.2.3.tar.gz": "sdist", "hermes_tweet-1.2.3-py3-none-any.whl": "wheel" }),
@@ -199,7 +224,7 @@ test("release assets with the digests of the PyPI files pass", async () => {
 for (const [name, assets, message] of [
   ["a release asset that differs from the PyPI file", [asset("hermes_tweet-1.2.3.tar.gz", "sdist"), asset("hermes_tweet-1.2.3-py3-none-any.whl", "other")], "hermes_tweet-1.2.3-py3-none-any.whl differs from the PyPI file."],
   ["a PyPI file with no release asset", [asset("hermes_tweet-1.2.3-py3-none-any.whl", "wheel")], "release v1.2.3 has no asset hermes_tweet-1.2.3.tar.gz."],
-]) {
+] as const) {
   test(`${name} fails`, async () => {
     assert.equal(await failure("hermes-tweet", hermes(assets)), `hermes-tweet v1.2.3 lacks "Release assets equal the PyPI files". ${message}`);
   });
@@ -228,7 +253,7 @@ test("a JAR signed by another key fails", async () => {
 
 const PROVIDER = "terraform-provider-x-twitter-scraper";
 const REGISTRY = "https://registry.terraform.io/v1/providers/Xquik-dev/x-twitter-scraper";
-function terraform(sums, extra = []) {
+function terraform(sums: string, extra: readonly unknown[] = []) {
   const assets = [
     asset(`${PROVIDER}_1.2.3_linux_amd64.zip`, "linux"),
     asset(`${PROVIDER}_1.2.3_darwin_arm64.zip`, "darwin"),
@@ -257,13 +282,13 @@ for (const [name, responses, signers, message] of [
   ["a checksum that differs from the archive", terraform(SUMS.replace(digest("linux"), digest("other"))), [TERRAFORM_KEY], `the checksum of ${PROVIDER}_1.2.3_linux_amd64.zip differs from the release asset.`],
   ["an archive the checksum file does not list", terraform(SUMS, [asset(`${PROVIDER}_1.2.3_windows_amd64.zip`, "windows")]), [TERRAFORM_KEY], `the checksum file does not list ${PROVIDER}_1.2.3_windows_amd64.zip.`],
   ["an empty checksum file", terraform("\n"), [TERRAFORM_KEY], "the checksum file is empty."],
-]) {
+] as const) {
   test(`${name} fails`, async () => {
     assert.equal(await failure(PROVIDER, responses, { signers }), `${PROVIDER} v1.2.3 lacks "Checksums signed by the Xquik Terraform key". ${message}`);
   });
 }
 
-function cli(sums) {
+function cli(sums: string) {
   const assets = [asset("x-twitter-scraper_1.2.3_linux_amd64.tar.gz", "archive"), asset("x-twitter-scraper_1.2.3_checksums.txt", sums)];
   return { ...github("x-twitter-scraper-cli", { assets }), "https://downloads.test/x-twitter-scraper_1.2.3_checksums.txt": sums };
 }
@@ -282,9 +307,9 @@ test("a checksum file that differs from a release asset fails", async () => {
 });
 
 // Builds a ZIP archive the way a packer does, stored or deflated.
-function zip(files, { deflate = false } = {}) {
-  const locals = [];
-  const directory = [];
+function zip(files: Readonly<Record<string, string>>, { deflate = false }: { deflate?: boolean } = {}) {
+  const locals: Buffer[] = [];
+  const directory: Buffer[] = [];
   let offset = 0;
   for (const [name, content] of Object.entries(files)) {
     const data = Buffer.from(content);
@@ -330,7 +355,7 @@ test("zipDigests refuses a file that is no ZIP archive", () => {
 });
 
 const NUGET = "https://api.nuget.org/v3-flatcontainer/xtwitterscraper";
-function csharp(published) {
+function csharp(published: Buffer) {
   const released = zip({ "lib/a.dll": "library", "XTwitterScraper.nuspec": "spec" }, { deflate: true });
   return {
     ...github("x-twitter-scraper-csharp", { assets: [asset("XTwitterScraper.1.2.3.nupkg", released)] }),
@@ -349,7 +374,7 @@ for (const [name, files] of [
   ["a changed file", { "lib/a.dll": "another library", "XTwitterScraper.nuspec": "spec", ".signature.p7s": "s" }],
   ["an added file", { "lib/a.dll": "library", "XTwitterScraper.nuspec": "spec", "lib/b.dll": "extra", ".signature.p7s": "s" }],
   ["a missing file", { "lib/a.dll": "library", ".signature.p7s": "s" }],
-]) {
+] as const) {
   test(`a NuGet package with ${name} fails`, async () => {
     assert.equal(
       await failure("x-twitter-scraper-csharp", csharp(zip(files))),
@@ -361,7 +386,7 @@ for (const [name, files] of [
 const MODULE = "github.com/Xquik-dev/x-twitter-scraper-go";
 const PROXY = "https://proxy.golang.org/github.com/!xquik-dev/x-twitter-scraper-go/@latest";
 const SUMDB = "https://sum.golang.org/lookup/github.com/!xquik-dev/x-twitter-scraper-go@v1.2.3";
-const go = (hash, record) => ({
+const go = (hash: string, record: string) => ({
   ...github("x-twitter-scraper-go"),
   [PROXY]: { Origin: { Hash: hash }, Version: "v1.2.3" },
   [SUMDB]: record,
@@ -375,13 +400,13 @@ test("a Go module built from the tag commit with a checksum database entry passe
 for (const [name, responses, message] of [
   ["a Go module built from another commit", go("2222222222222222222222222222222222222222", `${MODULE} v1.2.3 h1:abc=\n`), "the Go proxy built the module from another commit than the tag."],
   ["a Go module with no checksum database entry", go(COMMIT, `${MODULE} v1.2.2 h1:abc=\n`), "the Go checksum database has no entry for the latest version."],
-]) {
+] as const) {
   test(`${name} fails`, async () => {
     assert.equal(await failure("x-twitter-scraper-go", responses), `x-twitter-scraper-go v1.2.3 lacks "Go checksum database entry and source commit". ${message}`);
   });
 }
 
-const packagist = (reference) => ({
+const packagist = (reference: string) => ({
   ...github("x-twitter-scraper-php"),
   "https://repo.packagist.org/p2/xquik/x-twitter-scraper.json": {
     packages: { "xquik/x-twitter-scraper": [{ source: { reference }, version: "v1.2.3" }] },
@@ -420,7 +445,7 @@ for (const [command, pattern] of [
   ["uvx --from pypi-attestations pypi-attestations verify pypi WHEEL_URL", "pypi-attestations verify"],
   ["gem exec sigstore-cli:0.2.3 verify --bundle=b.json a.gem", "sigstore-cli"],
   ["cosign verify-blob --certificate-identity=https://github.com/Xquik-dev/a a.zip", "--certificate-identity"],
-]) {
+] as const) {
   test(`a guide that shows ${pattern} is refused`, () => {
     assert.equal(
       guideProblem(`${renderEvidenceTable()}\n\n${command}\n`),
@@ -435,7 +460,7 @@ for (const [url, sent] of [
   ["https://github.com/Xquik-dev/tweetclaw/releases/download/v1/a.tgz", false],
   ["https://registry.npmjs.org/x-developer/latest", false],
   ["https://pypi.org/pypi/hermes-tweet/json", false],
-]) {
+] as const) {
   test(`the GitHub token is ${sent ? "sent" : "not sent"} to ${new URL(url).host}`, () => {
     assert.equal("authorization" in requestHeaders(url, "secret-token"), sent);
     assert.equal("authorization" in requestHeaders(url, undefined), false);

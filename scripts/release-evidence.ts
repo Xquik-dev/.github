@@ -196,7 +196,7 @@ export function sha256(bytes: Buffer) {
 // True when an npm registry key signed this exact name, version and integrity.
 export function hasValidNpmSignature(
   manifest: { readonly name: string; readonly version: string; readonly dist: z.infer<typeof NpmDist> },
-  keys: z.infer<typeof NpmKeys>["keys"],
+  keys: readonly z.infer<typeof NpmKeys>["keys"][number][],
 ) {
   const message = Buffer.from(`${manifest.name}@${manifest.version}:${manifest.dist.integrity}`);
   return (manifest.dist.signatures ?? []).some(({ keyid, sig }) => {
