@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { readFile } from "node:fs/promises";
-import { GITHUB_ORG, OPENSSF_PROJECT_IDS } from "./public-projects.mjs";
+import { GITHUB_ORG, OPENSSF_PROJECT_IDS } from "./public-projects.ts";
 
 const GITHUB_API = "https://api.github.com";
 const OPENAPI_URL = "https://xquik.com/openapi.json";

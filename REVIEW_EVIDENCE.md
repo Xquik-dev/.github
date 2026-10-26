@@ -74,7 +74,7 @@ Future non-author reviews must restore the threshold before the next major relea
 Run the verifier with a GitHub token that can read public pull requests:
 
 ```sh
-GITHUB_TOKEN=... node scripts/check-review-evidence.mjs
+GITHUB_TOKEN=... node scripts/check-review-evidence.ts
 ```
 
 [`bin/check-local`](bin/check-local) runs it before every merge.

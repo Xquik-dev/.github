@@ -113,16 +113,16 @@ with_github_token() {
 }
 
 run_check "script tests" "Script tests" \
-  "Fix the failing tests above." node --test tests/*.test.mjs
+  "Fix the failing tests above." node --test tests/*.test.ts
 run_check "public contract" "Public contract with live discovery, OpenAPI and repository copy" \
-  "Fix the contract error above. scripts/check-public-contract.mjs holds each rule." \
-  with_github_token node scripts/check-public-contract.mjs
+  "Fix the contract error above. scripts/check-public-contract.ts holds each rule." \
+  with_github_token node scripts/check-public-contract.ts
 run_check "review evidence" "Review evidence for the public inventory and reviewed pull requests" \
   "Fix the evidence error above. REVIEW_EVIDENCE.md explains each rule." \
-  with_github_token node scripts/check-review-evidence.mjs
+  with_github_token node scripts/check-review-evidence.ts
 run_check "release evidence" "Release evidence of the latest release of all 17 projects" \
   "Follow RELEASES.md to inspect the release named above." \
-  with_github_token node scripts/verify-release-evidence.mjs
+  with_github_token node scripts/verify-release-evidence.ts
 run_check "CodeQL $codeql_version" "Static analysis with CodeQL $codeql_version security-extended queries" \
   "Fix the CodeQL results above, then rerun." bash scripts/codeql-security
 

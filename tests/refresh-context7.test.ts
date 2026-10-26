@@ -4,7 +4,7 @@
 import assert from "node:assert/strict";
 import { join } from "node:path";
 import { test } from "node:test";
-import { root, run, workspace, writeFakes } from "./helpers.mjs";
+import { root, run, workspace, writeFakes } from "./helpers.ts";
 
 const script = join(root, "bin/refresh-context7");
 const item = "test-item";

@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
-import { root, run, workspace, writeFakes } from "./helpers.mjs";
+import { root, run, workspace, writeFakes } from "./helpers.ts";
 
 const sha = "0123456789abcdef0123456789abcdef01234567";
 const statusUrl = `repos/Xquik-dev/.github/statuses/${sha}`;
@@ -37,13 +37,13 @@ esac`,
     ;;
 esac`,
 };
-const contract = "node scripts/check-public-contract.mjs";
-const review = "node scripts/check-review-evidence.mjs";
+const contract = "node scripts/check-public-contract.ts";
+const review = "node scripts/check-review-evidence.ts";
 const checks = [
-  "node --test tests/example.test.mjs",
+  "node --test tests/example.test.ts",
   contract,
   review,
-  "node scripts/verify-release-evidence.mjs",
+  "node scripts/verify-release-evidence.ts",
   "codeql-security token=none",
 ];
 const pending = "state=pending Running script tests, contract, review & release evidence & CodeQL.";
@@ -57,7 +57,7 @@ function runChecks(t, testCase, args = [], env = {}) {
     mkdirSync(join(project, directory), { recursive: true });
   }
   copyFileSync(join(root, "bin/check-local"), join(project, "bin/check-local"));
-  writeFileSync(join(project, "tests/example.test.mjs"), "");
+  writeFileSync(join(project, "tests/example.test.ts"), "");
   writeFileSync(join(project, "scripts/codeql-security"), stubCheck, { mode: 0o755 });
   writeFakes(folder, fakes);
   const result = run(folder, ["/bin/bash", join(project, "bin/check-local"), ...args], {
@@ -89,20 +89,20 @@ test("only the contract, review and release checks receive the GitHub token", (t
   assert.deepEqual(
     result.calls.filter((call) => /token[ =]/u.test(call)),
     [
-      "token tests/example.test.mjs none",
-      "token scripts/check-public-contract.mjs secret-token",
-      "token scripts/check-review-evidence.mjs secret-token",
-      "token scripts/verify-release-evidence.mjs secret-token",
+      "token tests/example.test.ts none",
+      "token scripts/check-public-contract.ts secret-token",
+      "token scripts/check-review-evidence.ts secret-token",
+      "token scripts/verify-release-evidence.ts secret-token",
       "codeql-security token=none",
     ],
   );
 });
 
 for (const [testCase, ran, failed] of [
-  ["tests/example.test.mjs", 1, "Script tests"],
-  ["scripts/check-public-contract.mjs", 2, "Public contract with live discovery, OpenAPI and repository copy"],
-  ["scripts/check-review-evidence.mjs", 3, "Review evidence for the public inventory and reviewed pull requests"],
-  ["scripts/verify-release-evidence.mjs", 4, "Release evidence of the latest release of all 17 projects"],
+  ["tests/example.test.ts", 1, "Script tests"],
+  ["scripts/check-public-contract.ts", 2, "Public contract with live discovery, OpenAPI and repository copy"],
+  ["scripts/check-review-evidence.ts", 3, "Review evidence for the public inventory and reviewed pull requests"],
+  ["scripts/verify-release-evidence.ts", 4, "Release evidence of the latest release of all 17 projects"],
   ["codeql-security", 5, "Static analysis with CodeQL 2.27.2 security-extended queries"],
   ["changed", 5, "Final tree check"],
 ]) {

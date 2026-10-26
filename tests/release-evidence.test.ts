@@ -18,8 +18,8 @@ import {
   requestHeaders,
   verifyProject,
   zipDigests,
-} from "../scripts/release-evidence.mjs";
-import { root } from "./helpers.mjs";
+} from "../scripts/release-evidence.ts";
+import { root } from "./helpers.ts";
 
 const API = "https://api.github.com/repos/Xquik-dev";
 const COMMIT = "1111111111111111111111111111111111111111";

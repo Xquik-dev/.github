@@ -48,7 +48,7 @@ Assessment date: October 13, 2026.
 
 Every row holds for the latest release of the project.
 
-[`bin/check-local`](bin/check-local) verifies every row on every run. It runs [`scripts/verify-release-evidence.mjs`](scripts/verify-release-evidence.mjs).
+[`bin/check-local`](bin/check-local) verifies every row on every run. It runs [`scripts/verify-release-evidence.ts`](scripts/verify-release-evidence.ts).
 
 What each kind of evidence means.
 

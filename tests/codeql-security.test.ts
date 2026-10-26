@@ -6,10 +6,10 @@ import { spawnSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
-import { root, run, workspace, writeFakes } from "./helpers.mjs";
+import { root, run, workspace, writeFakes } from "./helpers.ts";
 
 const script = join(root, "scripts/codeql-security");
-const verifier = join(root, "scripts/verify-codeql.mjs");
+const verifier = join(root, "scripts/verify-codeql.ts");
 const extracted = {
   descriptor: { id: "js/diagnostics/successfully-extracted-files" },
   level: "none",
@@ -155,6 +155,6 @@ test("the analysis uses the security-extended queries and verifies the report", 
     "codeql version --format=terse",
     `codeql database create <report>/database --language=javascript-typescript --build-mode=none --source-root=${root.replace(/\/$/u, "")} --threads=2`,
     "codeql database analyze --download <report>/database codeql/javascript-queries@2.4.7:codeql-suites/javascript-security-extended.qls --format=sarifv2.1.0 --output=<report>/report.sarif --threads=2",
-    "node scripts/verify-codeql.mjs <report>/report.sarif codeql-exceptions.json",
+    "node scripts/verify-codeql.ts <report>/report.sarif codeql-exceptions.json",
   ]);
 });

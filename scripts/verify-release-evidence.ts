@@ -3,7 +3,7 @@
 
 // Verifies that the latest release of every project provides the evidence
 // RELEASES.md promises. The GitHub token goes to the GitHub API only.
-// Usage: node scripts/verify-release-evidence.mjs [--table]
+// Usage: node scripts/verify-release-evidence.ts [--table]
 // --table prints the evidence table that RELEASES.md must show.
 
 import { execFile } from "node:child_process";
@@ -11,7 +11,7 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setTimeout as wait } from "node:timers/promises";
-import { PROJECTS, guideProblem, renderEvidenceTable, requestHeaders, verifyProject } from "./release-evidence.mjs";
+import { PROJECTS, guideProblem, renderEvidenceTable, requestHeaders, verifyProject } from "./release-evidence.ts";
 
 const ATTEMPTS = 3;
 const retryDelay = Number(process.env.XQUIK_RETRY_MS ?? 1500);

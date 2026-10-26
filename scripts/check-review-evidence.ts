@@ -6,7 +6,7 @@ import {
   OPENSSF_PROJECT_NAMES,
   REFERENCE_REPOSITORY_NAMES,
   SHARED_REPOSITORY_NAMES,
-} from "./public-projects.mjs";
+} from "./public-projects.ts";
 
 const GITHUB_GRAPHQL = "https://api.github.com/graphql";
 const GITHUB_REST = "https://api.github.com";

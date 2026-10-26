@@ -5,7 +5,7 @@
 // is a reviewed exception. An exception names the rule, the file and the exact
 // message, and it fails once its recheck date has passed or CodeQL stops
 // reporting it.
-// Usage: node scripts/verify-codeql.mjs <report.sarif> <exceptions.json> [today]
+// Usage: node scripts/verify-codeql.ts <report.sarif> <exceptions.json> [today]
 
 import { readFile } from "node:fs/promises";
 

@@ -31,4 +31,4 @@ trap 'rm -rf -- "${report:?}"' EXIT
   --source-root="$PWD" --threads=2
 "$codeql" database analyze --download "$report/database" "$queries" \
   --format=sarifv2.1.0 --output="$report/report.sarif" --threads=2
-node scripts/verify-codeql.mjs "$report/report.sarif" codeql-exceptions.json
+node scripts/verify-codeql.ts "$report/report.sarif" codeql-exceptions.json
