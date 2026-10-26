@@ -2,7 +2,7 @@
 # Copyright the Xquik contributors.
 # SPDX-License-Identifier: MIT
 #
-# Analyzes this repository's JavaScript with CodeQL's security-extended
+# Analyzes this repository's TypeScript with CodeQL's security-extended
 # queries and fails on any result that codeql-exceptions.json does not list.
 # Usage: scripts/codeql-security [--version]
 # --version checks the CodeQL CLI and prints its version without analyzing.

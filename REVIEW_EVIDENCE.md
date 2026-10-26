@@ -71,6 +71,8 @@ Future non-author reviews must restore the threshold before the next major relea
 
 ## Reproduce the audit
 
+Install the dependencies with `npm ci --ignore-scripts` first.
+
 Run the verifier with a GitHub token that can read public pull requests:
 
 ```sh
