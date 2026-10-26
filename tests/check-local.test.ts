@@ -4,8 +4,8 @@
 import assert from "node:assert/strict";
 import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { test } from "node:test";
-import { root, run, workspace, writeFakes } from "./helpers.mjs";
+import { type TestContext, test } from "node:test";
+import { root, run, workspace, writeFakes } from "./helpers.ts";
 
 const sha = "0123456789abcdef0123456789abcdef01234567";
 const statusUrl = `repos/Xquik-dev/.github/statuses/${sha}`;
@@ -29,6 +29,8 @@ esac`,
   "api --silent") [ "$CASE" != unpushed ] || [ "$3" != repos/Xquik-dev/.github/commits/${sha} ] ;;
   *) exit 99 ;;
 esac`,
+  npm: `printf 'token npm %s %s\\n' "$*" "\${GITHUB_TOKEN:-none}" >> "$FAKE_CALLS"
+[ "$CASE" != "$call" ]`,
   node: `case "$1" in
   --version) echo "\${NODE_VERSION:-v26.9.0}" ;;
   *)
@@ -37,27 +39,41 @@ esac`,
     ;;
 esac`,
 };
-const contract = "node scripts/check-public-contract.mjs";
-const review = "node scripts/check-review-evidence.mjs";
+const install = "npm ci --ignore-scripts --no-audit --no-fund";
+const types = "npm run --silent types";
+const coverage = "npm run --silent coverage:types";
+const lint = "npm run --silent lint";
+const contract = "node scripts/check-public-contract.ts";
+const review = "node scripts/check-review-evidence.ts";
 const checks = [
-  "node --test tests/example.test.mjs",
+  install,
+  types,
+  coverage,
+  lint,
+  "node --test tests/example.test.ts",
   contract,
   review,
-  "node scripts/verify-release-evidence.mjs",
+  "node scripts/verify-release-evidence.ts",
   "codeql-security token=none",
 ];
-const pending = "state=pending Running script tests, contract, review & release evidence & CodeQL.";
+const pending =
+  "state=pending Running install, types, type coverage, lint, script tests, contract, review & release evidence & CodeQL.";
 const passed =
-  "script tests, public contract, review evidence, release evidence, CodeQL 2.27.2.";
+  "install, types, type coverage, lint, script tests, public contract, review evidence, release evidence, CodeQL 2.27.2.";
 
-function runChecks(t, testCase, args = [], env = {}) {
+function runChecks(
+  t: TestContext,
+  testCase: string,
+  args: readonly string[] = [],
+  env: Readonly<Record<string, string>> = {},
+) {
   const folder = workspace(t);
   const project = join(folder, "project");
   for (const directory of ["bin", "scripts", "tests"]) {
     mkdirSync(join(project, directory), { recursive: true });
   }
   copyFileSync(join(root, "bin/check-local"), join(project, "bin/check-local"));
-  writeFileSync(join(project, "tests/example.test.mjs"), "");
+  writeFileSync(join(project, "tests/example.test.ts"), "");
   writeFileSync(join(project, "scripts/codeql-security"), stubCheck, { mode: 0o755 });
   writeFakes(folder, fakes);
   const result = run(folder, ["/bin/bash", join(project, "bin/check-local"), ...args], {
@@ -89,23 +105,31 @@ test("only the contract, review and release checks receive the GitHub token", (t
   assert.deepEqual(
     result.calls.filter((call) => /token[ =]/u.test(call)),
     [
-      "token tests/example.test.mjs none",
-      "token scripts/check-public-contract.mjs secret-token",
-      "token scripts/check-review-evidence.mjs secret-token",
-      "token scripts/verify-release-evidence.mjs secret-token",
+      `token ${install} none`,
+      `token ${types} none`,
+      `token ${coverage} none`,
+      `token ${lint} none`,
+      "token tests/example.test.ts none",
+      "token scripts/check-public-contract.ts secret-token",
+      "token scripts/check-review-evidence.ts secret-token",
+      "token scripts/verify-release-evidence.ts secret-token",
       "codeql-security token=none",
     ],
   );
 });
 
 for (const [testCase, ran, failed] of [
-  ["tests/example.test.mjs", 1, "Script tests"],
-  ["scripts/check-public-contract.mjs", 2, "Public contract with live discovery, OpenAPI and repository copy"],
-  ["scripts/check-review-evidence.mjs", 3, "Review evidence for the public inventory and reviewed pull requests"],
-  ["scripts/verify-release-evidence.mjs", 4, "Release evidence of the latest release of all 17 projects"],
-  ["codeql-security", 5, "Static analysis with CodeQL 2.27.2 security-extended queries"],
-  ["changed", 5, "Final tree check"],
-]) {
+  [install, 1, "Install of the pinned dev dependencies from package-lock.json"],
+  [types, 2, "Type check of every script and test with tsc"],
+  [coverage, 3, "Type coverage of 100% in strict mode"],
+  [lint, 4, "Lint with the ESLint type bans"],
+  ["tests/example.test.ts", 5, "Script tests"],
+  ["scripts/check-public-contract.ts", 6, "Public contract with live discovery, OpenAPI and repository copy"],
+  ["scripts/check-review-evidence.ts", 7, "Review evidence for the public inventory and reviewed pull requests"],
+  ["scripts/verify-release-evidence.ts", 8, "Release evidence of the latest release of all 17 projects"],
+  ["codeql-security", 9, "Static analysis with CodeQL 2.27.2 security-extended queries"],
+  ["changed", 9, "Final tree check"],
+] as const) {
   test(`a failure at ${failed} posts failure and stops`, (t) => {
     const result = runChecks(t, testCase);
     assert.notEqual(result.status, 0);
@@ -118,7 +142,7 @@ for (const [testCase, env, failed, message] of [
   ["ready", { NODE_VERSION: "v22.23.0" }, "Node.js version", "Node.js v22.23.0 is older than v22.23.1. Upgrade Node.js, then rerun."],
   ["signed-out", {}, "GitHub sign-in", "gh is signed out. Run gh auth login, then rerun."],
   ["no-codeql", {}, "CodeQL CLI", ""],
-]) {
+] as const) {
   test(`an unusable setup fails at ${failed} before any check`, (t) => {
     const result = runChecks(t, testCase, [], env);
     assert.equal(result.status, 1);
@@ -132,7 +156,7 @@ for (const [testCase, args, reason] of [
   ["ready", ["--no-status"], "--no-status was passed."],
   ["dirty", [], "the tree has uncommitted changes."],
   ["unpushed", [], "GitHub does not have HEAD, or gh is signed out. Push first."],
-]) {
+] as const) {
   test(`no status is posted when ${reason}`, (t) => {
     const result = runChecks(t, testCase, args);
     assert.equal(result.status, 0, result.stderr);

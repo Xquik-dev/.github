@@ -8,7 +8,7 @@ export const SHARED_REPOSITORY_NAMES = [".github", "xquik-docs"];
 // An agent skill and a search reference. Neither publishes standalone software releases.
 export const REFERENCE_REPOSITORY_NAMES = ["x-api", "x-twitter-advanced-search"];
 
-export const OPENSSF_PROJECTS = [
+export const OPENSSF_PROJECTS: readonly (readonly [string, number])[] = [
   ["hermes-tweet", 13725],
   ["n8n-nodes-xquik", 13726],
   ["paperclip-plugin-xquik", 13727],

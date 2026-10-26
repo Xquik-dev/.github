@@ -6,14 +6,14 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
-import { root, workspace } from "./helpers.mjs";
+import { root, workspace } from "./helpers.ts";
 
 test("the contract check sends the GitHub token to the GitHub API only", (t) => {
   const log = join(workspace(t), "fetch.log");
   writeFileSync(log, "");
   const result = spawnSync(
     process.execPath,
-    ["--import", join(root, "tests/record-fetch.mjs"), "scripts/check-public-contract.mjs"],
+    ["--import", join(root, "tests/record-fetch.ts"), "scripts/check-public-contract.ts"],
     { cwd: root, encoding: "utf8", env: { FETCH_LOG: log, GITHUB_TOKEN: "secret-token" } },
   );
   assert.equal(result.status, 1);

@@ -1,7 +1,7 @@
 [
   {
     "rule": "js/incomplete-url-substring-sanitization",
-    "file": "scripts/check-public-contract.mjs",
+    "file": "scripts/check-public-contract.ts",
     "message": "'[https://xquik.com/api/v1](1)' can be anywhere in the URL, and arbitrary hosts may come before or after it.",
     "reason": "The contract check reads SDK source text for the documented base URL. It never decides where a request goes. Code scanning alert 5 was dismissed as a false positive on 2026-08-01.",
     "recheck": "2027-01-13"

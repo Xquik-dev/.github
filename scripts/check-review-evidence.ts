@@ -6,7 +6,8 @@ import {
   OPENSSF_PROJECT_NAMES,
   REFERENCE_REPOSITORY_NAMES,
   SHARED_REPOSITORY_NAMES,
-} from "./public-projects.mjs";
+} from "./public-projects.ts";
+import { z } from "zod";
 
 const GITHUB_GRAPHQL = "https://api.github.com/graphql";
 const GITHUB_REST = "https://api.github.com";
@@ -63,6 +64,46 @@ const REVIEW_QUERY = `
   }
 `;
 
+const Author = z.looseObject({ __typename: z.string(), login: z.string() }).nullable();
+const CommitNode = z.looseObject({
+  associatedPullRequests: z.looseObject({
+    nodes: z.array(
+      z.looseObject({
+        author: Author,
+        headRefOid: z.string(),
+        mergedAt: z.string().nullable(),
+        reviews: z.looseObject({
+          nodes: z.array(
+            z.looseObject({
+              author: Author,
+              commit: z.looseObject({ oid: z.string() }).nullable(),
+              state: z.string(),
+              submittedAt: z.string().nullable(),
+            }),
+          ),
+        }),
+      }),
+    ),
+  }),
+});
+const History = z.looseObject({
+  nodes: z.array(CommitNode),
+  pageInfo: z.looseObject({ endCursor: z.string().nullable(), hasNextPage: z.boolean() }),
+});
+const ReviewResponse = z.looseObject({
+  data: z
+    .looseObject({
+      repository: z
+        .looseObject({
+          defaultBranchRef: z.looseObject({ target: z.looseObject({ history: History.optional() }).nullable() }).nullable(),
+        })
+        .nullable(),
+    })
+    .nullish(),
+  errors: z.array(z.looseObject({ message: z.string() })).optional(),
+});
+const RepositoryInventory = z.array(z.looseObject({ name: z.string() }));
+
 function githubToken() {
   const token = process.env.GITHUB_TOKEN;
   if (!token) throw new Error("GITHUB_TOKEN is required.");
@@ -77,7 +118,7 @@ function githubHeaders() {
   };
 }
 
-async function graphql(variables) {
+async function queryGitHub(variables: { owner: string; name: string; since: string; after: string | null }) {
   const response = await fetch(GITHUB_GRAPHQL, {
     method: "POST",
     headers: {
@@ -89,7 +130,7 @@ async function graphql(variables) {
   if (!response.ok) {
     throw new Error(`GitHub GraphQL returned HTTP ${response.status}.`);
   }
-  const payload = await response.json();
+  const payload = ReviewResponse.parse(await response.json());
   if (payload.errors?.length) {
     throw new Error(payload.errors.map(({ message }) => message).join("; "));
   }
@@ -97,7 +138,7 @@ async function graphql(variables) {
 }
 
 async function loadPublicRepoNames() {
-  const names = [];
+  const names: string[] = [];
   for (let page = 1; ; page += 1) {
     const response = await fetch(
       `${GITHUB_REST}/orgs/${GITHUB_ORG}/repos?type=public&per_page=100&page=${page}`,
@@ -106,12 +147,12 @@ async function loadPublicRepoNames() {
     if (!response.ok) {
       throw new Error(`GitHub REST returned HTTP ${response.status}.`);
     }
-    const repositories = await response.json();
-    if (!Array.isArray(repositories)) {
+    const repositories = RepositoryInventory.safeParse(await response.json());
+    if (!repositories.success) {
       throw new Error("GitHub REST returned an invalid repository inventory.");
     }
-    names.push(...repositories.map(({ name }) => name));
-    if (repositories.length < 100) return names;
+    names.push(...repositories.data.map(({ name }) => name));
+    if (repositories.data.length < 100) return names;
   }
 }
 
@@ -131,9 +172,10 @@ async function verifyPublicInventory() {
   );
 }
 
-function hasTwoPersonReview(commit) {
+function hasTwoPersonReview(commit: z.infer<typeof CommitNode>) {
   return commit.associatedPullRequests.nodes.some((pullRequest) => {
-    if (!pullRequest.mergedAt || !pullRequest.headRefOid) return false;
+    const { mergedAt } = pullRequest;
+    if (!mergedAt || !pullRequest.headRefOid) return false;
     const author = pullRequest.author?.login;
     if (!author) return false;
     return pullRequest.reviews.nodes.some(
@@ -142,22 +184,23 @@ function hasTwoPersonReview(commit) {
         review.author?.__typename === "User" &&
         review.author.login !== author &&
         review.commit?.oid === pullRequest.headRefOid &&
-        review.submittedAt <= pullRequest.mergedAt,
+        review.submittedAt !== null &&
+        review.submittedAt <= mergedAt,
     );
   });
 }
 
-async function loadCommits(project) {
-  const commits = [];
-  let after = null;
+async function loadCommits(project: string) {
+  const commits: z.infer<typeof CommitNode>[] = [];
+  let after: string | null = null;
   do {
-    const data = await graphql({
+    const data = await queryGitHub({
       owner: GITHUB_ORG,
       name: project,
       since: REVIEW_START,
       after,
     });
-    const history = data.repository?.defaultBranchRef?.target?.history;
+    const history = data?.repository?.defaultBranchRef?.target?.history;
     if (!history) throw new Error(`GitHub returned no default-branch history for ${project}.`);
     commits.push(...history.nodes);
     after = history.pageInfo.hasNextPage ? history.pageInfo.endCursor : null;
@@ -165,7 +208,7 @@ async function loadCommits(project) {
   return commits;
 }
 
-async function auditProject(project) {
+async function auditProject(project: string) {
   const commits = await loadCommits(project);
   if (commits.length === 0) {
     throw new Error(`${project} has no commits in the review window.`);
