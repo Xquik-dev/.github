@@ -207,6 +207,7 @@ Install the Xquik Skill with `npx skills add Xquik-dev/x-twitter-scraper`.
 | [xquik-convex](https://github.com/Xquik-dev/xquik-convex) | Convex | [Convex guide](https://docs.xquik.com/guides/convex) |
 | [xquik-vscode](https://github.com/Xquik-dev/xquik-vscode) | VS Code, VSCodium, Cursor & Windsurf | [Coding-agent MCP setup](https://docs.xquik.com/mcp/coding-agents) |
 | [xquik-raycast](https://github.com/Xquik-dev/xquik-raycast) | Raycast | [Xquik docs](https://docs.xquik.com) |
+| [strapi-plugin-xquik](https://github.com/Xquik-dev/strapi-plugin-xquik) | Strapi 5 | [API reference](https://docs.xquik.com/api-reference/overview) |
 
 Follow a guide for your agent framework or no-code tool.
 
