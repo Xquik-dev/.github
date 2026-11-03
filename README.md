@@ -31,7 +31,7 @@ Public GitHub profile and community defaults for Xquik SDKs, docs, and agent int
 | --- | --- |
 | Search tweets through an API | [Search Tweets API](https://docs.xquik.com/api-reference/x/search-tweets) |
 | Export followers | [Follower Export Guide](https://docs.xquik.com/guides/follower-export-crm) |
-| Choose an SDK | [SDK directory](profile/README.md#sdks) |
+| Choose an SDK | [SDK directory](profile/README.md#twitter-api-sdks) |
 | Connect an AI agent | [Agent integrations](profile/README.md#agent-and-workflow-integrations) |
 | Review OpenSSF evidence | [OpenSSF evidence register](OPENSSF.md) |
 
