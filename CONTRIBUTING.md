@@ -58,7 +58,7 @@ The sign-off certifies your right to submit the work.
 
 - Follow the affected repository's language and formatting rules.
 - Keep compiler, type, lint, and security warnings at zero.
-- Add tests for major functionality and corrected defects.
+- Prove each corrected defect and behavior change with a test that fails before the change and passes after it.
 - Keep statement coverage at 90% or higher.
 - Keep branch coverage at 80% or higher.
 - Update documentation when behavior or interfaces change.

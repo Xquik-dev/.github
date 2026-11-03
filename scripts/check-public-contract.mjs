@@ -53,8 +53,14 @@ const COMMUNITY_POLICY_REQUIREMENTS = new Map([
   ["CODE_OF_CONDUCT.md", ["## Enforcement", "support@xquik.com"]],
   [
     "CONTRIBUTING.md",
-    ["Developer Certificate of Origin", "git commit -s", "good first issue"],
+    [
+      "Developer Certificate of Origin",
+      "git commit -s",
+      "good first issue",
+      "fails before the change and passes after it",
+    ],
   ],
+  [".github/PULL_REQUEST_TEMPLATE.md", ["fails before this change and passes after it"]],
   [
     "DISCOVERY.md",
     [

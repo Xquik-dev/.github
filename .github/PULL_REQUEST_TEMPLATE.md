@@ -8,12 +8,14 @@ Link the issue, defect, or documented requirement.
 
 ## Verification
 
-List every command and manual check you ran.
+Name the test that fails before this change and passes after it, or the measurement that shows the change.
+
+List every other command and manual check you ran.
 
 ## Review checklist
 
 - [ ] I used the affected repository's documented checks.
-- [ ] I added tests for new behavior and fixed defects.
+- [ ] A test fails before this change and passes after it.
 - [ ] I checked invalid and untrusted inputs.
 - [ ] I preserved documented public contracts.
 - [ ] I excluded secrets and private implementation details.
