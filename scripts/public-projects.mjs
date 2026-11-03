@@ -9,7 +9,7 @@ export const SHARED_REPOSITORY_NAMES = [".github", "xquik-docs"];
 export const REFERENCE_REPOSITORY_NAMES = ["x-api", "x-twitter-advanced-search"];
 
 // Integrations without an OpenSSF Best Practices project yet.
-export const UNREGISTERED_PROJECT_NAMES = ["xquik-convex", "xquik-supabase"];
+export const UNREGISTERED_PROJECT_NAMES = ["xquik-convex", "xquik-mcp", "xquik-supabase"];
 
 export const OPENSSF_PROJECTS = [
   ["hermes-tweet", 13725],
