@@ -8,8 +8,7 @@ export const SHARED_REPOSITORY_NAMES = [".github", "xquik-docs"];
 // An agent skill and a search reference. Neither publishes standalone software releases.
 export const REFERENCE_REPOSITORY_NAMES = ["x-api", "x-twitter-advanced-search"];
 
-// Integrations without an OpenSSF Best Practices project yet.
-export const UNREGISTERED_PROJECT_NAMES = [
+export const NON_OPENSSF_PROJECT_NAMES = [
   "strapi-plugin-xquik",
   "xquik-convex",
   "xquik-mcp",

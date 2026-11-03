@@ -6,7 +6,7 @@ import {
   OPENSSF_PROJECT_NAMES,
   REFERENCE_REPOSITORY_NAMES,
   SHARED_REPOSITORY_NAMES,
-  UNREGISTERED_PROJECT_NAMES,
+  NON_OPENSSF_PROJECT_NAMES,
 } from "./public-projects.mjs";
 
 const GITHUB_GRAPHQL = "https://api.github.com/graphql";
@@ -121,7 +121,7 @@ async function verifyPublicInventory() {
     ...SHARED_REPOSITORY_NAMES,
     ...REFERENCE_REPOSITORY_NAMES,
     ...OPENSSF_PROJECT_NAMES,
-    ...UNREGISTERED_PROJECT_NAMES,
+    ...NON_OPENSSF_PROJECT_NAMES,
   ]);
   const actual = new Set(await loadPublicRepoNames());
   const unexpected = [...actual].filter((name) => !expected.has(name));
