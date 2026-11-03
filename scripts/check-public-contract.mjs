@@ -12,7 +12,7 @@ const SERVER_CARD_FIELDS = {
   name: "com.xquik/mcp",
   title: "Xquik MCP Server",
   description:
-    "X Twitter scraper & Twitter API alternative. Search, monitor, publish & manage X accounts.",
+    "Xquik is the world's fastest and cheapest X Twitter data API with the most complete X data.",
   websiteUrl: "https://docs.xquik.com/mcp/overview",
 };
 const INDEPENDENCE_NOTICE =
