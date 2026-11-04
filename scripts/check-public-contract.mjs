@@ -429,6 +429,14 @@ async function checkOpenSsfInventory() {
   }
 }
 
+function usesApiBase(source) {
+  return [...source.matchAll(/https:\/\/[^\s"'`)]+/gu)].some(([link]) => {
+    if (!URL.canParse(link)) return false;
+    const { origin, pathname } = new URL(link);
+    return origin === "https://xquik.com" && pathname.startsWith("/api/v1");
+  });
+}
+
 async function checkIntegrationSurfaces(openApi, reposByName) {
   await Promise.all(
     INTEGRATION_SURFACES.map(async (surface) => {
@@ -436,7 +444,7 @@ async function checkIntegrationSurfaces(openApi, reposByName) {
       if (!repo) throw new Error(`Public repository ${surface.repo} is missing.`);
       const source = await loadRepoFile(repo, surface.file);
       const baseSource = surface.baseFile ? await loadRepoFile(repo, surface.baseFile) : source;
-      if (!baseSource.includes("https://xquik.com/api/v1")) {
+      if (!usesApiBase(baseSource)) {
         throw new Error(`${surface.repo}/${surface.baseFile ?? surface.file} has the wrong API base URL.`);
       }
       for (const operation of surface.operations) {
