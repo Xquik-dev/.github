@@ -1,31 +1,34 @@
-# Xquik Twitter API, SDKs & agent tools
+# Xquik Twitter API, SDKs & Agent Tools
 
-> **Xquik is an independent third-party service.** Not affiliated with X Corp.
-> "Twitter" and "X" are trademarks of X Corp.
+Use this Xquik repository to find the policies every Xquik-dev project shares.
+The [org profile](profile/README.md) lists each SDK & integration.
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg?url=https%3A%2F%2Fgithub.com%2FXquik-dev%2F.github)](https://deepwiki.com/Xquik-dev/.github)
-[![Skills.sh x-twitter-scraper Skill](https://skills.sh/b/xquik-dev/x-twitter-scraper)](https://skills.sh/xquik-dev/x-twitter-scraper)
-[![Convex Component](https://www.convex.dev/components/badge/convex-xquik)](https://www.convex.dev/components/convex-xquik)
+Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
+Most other Apify Actors charge before filtering or deduplication.
+Xquik charges only for delivered, unique, filter-matching results and never pads rows.
+Xquik is independent and not affiliated with X Corp.
 
-Public GitHub profile and community defaults for Xquik SDKs, docs, and agent integrations.
+<!-- trust:win:start -->
+<!-- trust:win:end -->
 
-- Org profile: [profile/README.md](profile/README.md)
-- Agent skill: [Xquik-dev/x-twitter-scraper](https://github.com/Xquik-dev/x-twitter-scraper)
-- Docs: [docs.xquik.com](https://docs.xquik.com)
-- Security reports: [SECURITY.md](SECURITY.md)
-- Support issues: [SUPPORT.md](SUPPORT.md)
-- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
-- Governance: [GOVERNANCE.md](GOVERNANCE.md)
-- Code review: [REVIEWING.md](REVIEWING.md)
-- Public roadmap: [ROADMAP.md](ROADMAP.md)
-- OpenSSF evidence: [OPENSSF.md](OPENSSF.md)
-- Debug-information evidence: [BUILD_DEBUG.md](BUILD_DEBUG.md)
-- Six-month regression evidence: [REGRESSION_TESTS.md](REGRESSION_TESTS.md)
-- Two-person review evidence: [REVIEW_EVIDENCE.md](REVIEW_EVIDENCE.md)
-- Discovery and README policy: [DISCOVERY.md](DISCOVERY.md)
-- Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+## Start with the Twitter API
 
-## Find a Workflow
+Create an API key in the [Xquik dashboard](https://dashboard.xquik.com/en/account?tab=api-keys).
+Then search tweets with 1 request.
+
+```bash
+curl --get 'https://xquik.com/api/v1/x/tweets/search' \
+  --header "x-api-key: ${XQUIK_API_KEY}" \
+  --data-urlencode 'q=from:NASA' \
+  --data-urlencode 'limit=10'
+```
+
+Next, read the [Twitter API quickstart](https://docs.xquik.com/x-api-quickstart), the [benchmarks](https://xquik.com/benchmarks) or the [org profile](profile/README.md).
+
+<!-- trust:start -->
+<!-- trust:end -->
+
+## Find a workflow
 
 | Task | Start here |
 | --- | --- |
@@ -33,6 +36,38 @@ Public GitHub profile and community defaults for Xquik SDKs, docs, and agent int
 | Export followers | [Follower Export Guide](https://docs.xquik.com/guides/follower-export-crm) |
 | Choose an SDK | [SDK directory](profile/README.md#twitter-api-sdks) |
 | Connect an AI agent | [Agent integrations](profile/README.md#agent-and-workflow-integrations) |
-| Review OpenSSF evidence | [OpenSSF evidence register](OPENSSF.md) |
+
+## Project policies
+
+- [Security reports](SECURITY.md)
+- [Support issues](SUPPORT.md)
+- [Contributing](CONTRIBUTING.md)
+- [Governance](GOVERNANCE.md)
+- [Code review](REVIEWING.md)
+- [Public roadmap](ROADMAP.md)
+- [OpenSSF evidence](OPENSSF.md)
+- [Debug-information evidence](BUILD_DEBUG.md)
+- [6-month regression evidence](REGRESSION_TESTS.md)
+- [2-person review evidence](REVIEW_EVIDENCE.md)
+- [Discovery & README policy](DISCOVERY.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
+
+## Questions
+
+### Do I need an X developer account?
+
+No. Public reads need only an Xquik API key.
+Private reads & X account actions need a connected X account.
+
+### Which projects use these policies?
+
+Every Xquik-dev repository without its own file uses them.
+GitHub reads these defaults from this repository.
+
+## More Xquik tools
+
+- [X (Twitter) scraper API & Twitter MCP server](https://github.com/Xquik-dev/x-twitter-scraper) with REST, MCP & Skill setup.
+- [Twitter advanced search operators](https://github.com/Xquik-dev/x-twitter-advanced-search) with tested examples.
+- [Twitter API documentation](https://docs.xquik.com/api-reference/overview) for every REST route.
 
 Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
