@@ -479,7 +479,7 @@ checkServerCard(serverCard);
 if (openApi.openapi !== "3.1.0") throw new Error("Public OpenAPI must use version 3.1.0.");
 for (const expected of [
   "| REST API | Public operations in the OpenAPI 3.1 contract |",
-  "| MCP | 2 tools with a searchable operation catalog |",
+  "| MCP | 4 tools with a searchable operation catalog |",
   "| MCP responses | JSON or text results. Binary downloads use REST |",
 ]) {
   if (!profile.includes(expected)) {
