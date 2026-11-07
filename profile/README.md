@@ -1,9 +1,9 @@
 # Xquik Twitter API, X API & Twitter Scraper Tools
 
-Use the Xquik Twitter API to search tweets, export followers & monitor accounts.
+Use the Xquik Twitter API to search tweets & posts or export followers.
 Pick the REST API, MCP server, SDKs, CLI, webhooks or Apify Actors.
 
-Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
+Xquik is the world's fastest and cheapest X (Twitter) scraper service with the most complete X (Twitter) data.
 Most other Apify Actors charge before filtering or deduplication.
 Xquik charges only for delivered, unique, filter-matching results and never pads rows.
 Xquik is independent and not affiliated with X Corp.
@@ -15,7 +15,7 @@ The Xquik X Tweet Scraper read 170 tweets per second at $0.155 per 1,000 on 2026
 ## Start with the Twitter API
 
 Create an API key in the [Xquik dashboard](https://dashboard.xquik.com/en/account?tab=api-keys).
-Then search tweets with 1 request.
+Then search tweets & posts with 1 request.
 
 ```bash
 curl --get 'https://xquik.com/api/v1/x/tweets/search' \
@@ -55,10 +55,10 @@ Checked on 2026-11-06. See each number with its date & source on [xquik.com/benc
 | Monitor accounts or keywords | [Brand Monitoring Guide](https://docs.xquik.com/guides/brand-monitoring-workflow) |
 | Receive signed monitor events | [Webhook Guide](https://docs.xquik.com/webhooks/overview) |
 | Post or reply from an account | [Create Tweet API](https://docs.xquik.com/api-reference/x-write/create-tweet) |
-| Download X videos, GIFs & images | [X (Twitter) Video Downloader](https://xquik.com/en/twitter-video-downloader) |
-| Run X scrapers on Apify | [Xquik Apify Actors](https://apify.com/xquik) |
+| Download X (Twitter) videos, GIFs & images | [X (Twitter) Video Downloader](https://xquik.com/en/twitter-video-downloader) |
+| Run X (Twitter) scrapers on Apify | [Xquik Apify Actors](https://apify.com/xquik) |
 | Call the API from Postman | [Xquik REST API collection](https://documenter.getpostman.com/view/12709954/2sBY4TpxXK) |
-| Use X data in Claude, ChatGPT & Cursor | [Coding-agent MCP setup](https://docs.xquik.com/mcp/coding-agents) |
+| Use X (Twitter) data in Claude, ChatGPT & Cursor | [Coding-agent MCP setup](https://docs.xquik.com/mcp/coding-agents) |
 | Compare Xquik with the X API | [X API Alternative Guide](https://docs.xquik.com/alternatives/x-api) |
 | Move app code off the X API | [x-api Skill](https://github.com/Xquik-dev/x-api) |
 
@@ -113,10 +113,10 @@ Install the Xquik Skill with `npx skills add Xquik-dev/x-twitter-scraper`.
 
 ## Questions
 
-### Do I need an X developer account?
+### Do I need an X (Twitter) developer account?
 
 No. Public reads need only an Xquik API key.
-Private reads & X account actions need a connected X account.
+Private reads & X (Twitter) account actions need a connected account.
 
 ### Is Xquik the official X API?
 

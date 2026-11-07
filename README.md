@@ -3,7 +3,7 @@
 Use this Xquik repository to find the policies every Xquik-dev project shares.
 The [org profile](profile/README.md) lists each SDK & integration.
 
-Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
+Xquik is the world's fastest and cheapest X (Twitter) scraper service with the most complete X (Twitter) data.
 Most other Apify Actors charge before filtering or deduplication.
 Xquik charges only for delivered, unique, filter-matching results and never pads rows.
 Xquik is independent and not affiliated with X Corp.
@@ -54,10 +54,10 @@ Next, read the [Twitter API quickstart](https://docs.xquik.com/x-api-quickstart)
 
 ## Questions
 
-### Do I need an X developer account?
+### Do I need an X (Twitter) developer account?
 
 No. Public reads need only an Xquik API key.
-Private reads & X account actions need a connected X account.
+Private reads & X (Twitter) account actions need a connected account.
 
 ### Which projects use these policies?
 
