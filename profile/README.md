@@ -1,6 +1,6 @@
 # Xquik Twitter API, X API & Twitter Scraper Tools
 
-Use Xquik to search tweets, export followers, monitor accounts & run approved X actions.
+Use the Xquik Twitter API to search tweets, export followers & monitor accounts.
 Pick the REST API, MCP server, SDKs, CLI, webhooks or Apify Actors.
 
 Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
