@@ -1,6 +1,6 @@
-# Xquik Twitter API, X API & Twitter Scraper Tools
+# Xquik X (Twitter) API & Scraper Tools
 
-Use the Xquik Twitter API to search tweets & posts or export followers.
+Use the Xquik X (Twitter) API to search tweets & posts or export followers.
 Pick the REST API, MCP server, SDKs, CLI, webhooks or Apify Actors.
 
 Xquik is the world's fastest and cheapest X (Twitter) scraper service with the most complete X (Twitter) data.
@@ -12,7 +12,7 @@ Xquik is independent and not affiliated with X Corp.
 The Xquik X Tweet Scraper read 170 tweets per second at $0.155 per 1,000 on 2026-10-15. The fastest of 4 rival Actors read 12.5 per second. The cheapest cost $0.173 per 1,000. [Compare each run](https://xquik.com/benchmarks#benchmark-x-tweet-scraper).
 <!-- trust:win:end -->
 
-## Start with the Twitter API
+## Start with the X (Twitter) API
 
 Create an API key in the [Xquik dashboard](https://dashboard.xquik.com/en/account?tab=api-keys).
 Then search tweets & posts with 1 request.
@@ -24,7 +24,7 @@ curl --get 'https://xquik.com/api/v1/x/tweets/search' \
   --data-urlencode 'limit=10'
 ```
 
-Next, read the [Twitter API quickstart](https://docs.xquik.com/x-api-quickstart), [MCP guide](https://docs.xquik.com/mcp/overview) or [API reference](https://docs.xquik.com/api-reference/overview).
+Next, read the [X (Twitter) API quickstart](https://docs.xquik.com/x-api-quickstart), [MCP guide](https://docs.xquik.com/mcp/overview) or [API reference](https://docs.xquik.com/api-reference/overview).
 
 <!-- trust:start -->
 
@@ -33,12 +33,12 @@ Next, read the [Twitter API quickstart](https://docs.xquik.com/x-api-quickstart)
 [![Twitter scraper users on Apify](https://img.shields.io/endpoint?url=https%3A%2F%2Fxquik.com%2Fbadges%2Fapify-users.json)](https://apify.com/xquik)
 [![Twitter scraper runs on Apify](https://img.shields.io/endpoint?url=https%3A%2F%2Fxquik.com%2Fbadges%2Fapify-runs.json)](https://apify.com/xquik)
 [![Tweet scraper rating on Apify](https://img.shields.io/endpoint?url=https%3A%2F%2Fxquik.com%2Fbadges%2Fapify-rating.json)](https://apify.com/xquik/x-tweet-scraper/reviews)
-[![Twitter API package downloads](https://img.shields.io/endpoint?url=https%3A%2F%2Fxquik.com%2Fbadges%2Fdownloads.json)](https://xquik.com/benchmarks#downloads)
+[![X (Twitter) API package downloads](https://img.shields.io/endpoint?url=https%3A%2F%2Fxquik.com%2Fbadges%2Fdownloads.json)](https://xquik.com/benchmarks#downloads)
 
 - 11,000+ users of Xquik's Twitter scraper Actors on Apify ([source](https://apify.com/xquik)) <!-- trust:apify-users 11547 -->
 - 8,200,000+ runs of Xquik's Twitter scraper Actors on Apify ([source](https://apify.com/xquik)) <!-- trust:apify-runs 8250808 -->
 - 4.66 of 5 for the X Tweet Scraper from 16 Apify reviews ([source](https://apify.com/xquik/x-tweet-scraper/reviews)) <!-- trust:apify-rating 4.66 16 -->
-- 63,000+ downloads of Xquik's Twitter API packages on npm, PyPI, RubyGems, NuGet, Packagist & Terraform ([source](https://xquik.com/benchmarks#downloads)) <!-- trust:downloads 63178 -->
+- 63,000+ downloads of Xquik's X (Twitter) API packages across 6 registries ([source](https://xquik.com/benchmarks#downloads)) <!-- trust:downloads 63178 -->
 
 Checked on 2026-11-06. See each number with its date & source on [xquik.com/benchmarks](https://xquik.com/benchmarks) or as [JSON](https://xquik.com/trust.json).
 
@@ -50,7 +50,7 @@ Checked on 2026-11-06. See each number with its date & source on [xquik.com/benc
 | --- | --- |
 | Search tweets through an API | [Search Tweets API](https://docs.xquik.com/api-reference/x/search-tweets) |
 | Search tweets by date | [Search Tweets by Date Guide](https://docs.xquik.com/guides/search-tweets-by-date) |
-| Find X advanced search operators | [Twitter advanced search operators](https://github.com/Xquik-dev/x-twitter-advanced-search) |
+| Find X (Twitter) advanced search operators | [Twitter advanced search operators](https://github.com/Xquik-dev/x-twitter-advanced-search) |
 | Export public follower lists | [Follower Export Guide](https://docs.xquik.com/guides/follower-export-crm) |
 | Monitor accounts or keywords | [Brand Monitoring Guide](https://docs.xquik.com/guides/brand-monitoring-workflow) |
 | Receive signed monitor events | [Webhook Guide](https://docs.xquik.com/webhooks/overview) |
@@ -59,12 +59,12 @@ Checked on 2026-11-06. See each number with its date & source on [xquik.com/benc
 | Run X (Twitter) scrapers on Apify | [Xquik Apify Actors](https://apify.com/xquik) |
 | Call the API from Postman | [Xquik REST API collection](https://documenter.getpostman.com/view/12709954/2sBY4TpxXK) |
 | Use X (Twitter) data in Claude, ChatGPT & Cursor | [Coding-agent MCP setup](https://docs.xquik.com/mcp/coding-agents) |
-| Compare Xquik with the X API | [X API Alternative Guide](https://docs.xquik.com/alternatives/x-api) |
-| Move app code off the X API | [x-api Skill](https://github.com/Xquik-dev/x-api) |
+| Compare Xquik with the X API | [X (Twitter) API Alternative Guide](https://docs.xquik.com/alternatives/x-api) |
+| Move X (Twitter) API code to Xquik | [x-api Skill](https://github.com/Xquik-dev/x-api) |
 
-## Twitter API SDKs
+## X (Twitter) API SDKs
 
-Install a typed Twitter API client, the CLI or the Terraform provider.
+Install a typed X (Twitter) API client, the CLI or the Terraform provider.
 
 | SDK | Source | Package |
 | --- | --- | --- |
