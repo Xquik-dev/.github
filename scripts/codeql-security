@@ -2,7 +2,7 @@
 # Copyright the Xquik contributors.
 # SPDX-License-Identifier: MIT
 #
-# Analyzes this repository's JavaScript with CodeQL's security-extended
+# Analyzes this repository's TypeScript with CodeQL's security-extended
 # queries and fails on any result that codeql-exceptions.json does not list.
 # Usage: scripts/codeql-security [--version]
 # --version checks the CodeQL CLI and prints its version without analyzing.
@@ -31,4 +31,4 @@ trap 'rm -rf -- "${report:?}"' EXIT
   --source-root="$PWD" --threads=2
 "$codeql" database analyze --download "$report/database" "$queries" \
   --format=sarifv2.1.0 --output="$report/report.sarif" --threads=2
-node scripts/verify-codeql.mjs "$report/report.sarif" codeql-exceptions.json
+node scripts/verify-codeql.ts "$report/report.sarif" codeql-exceptions.json
