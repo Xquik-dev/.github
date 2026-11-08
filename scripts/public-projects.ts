@@ -17,7 +17,7 @@ export const NON_OPENSSF_PROJECT_NAMES = [
   "xquik-vscode",
 ];
 
-export const OPENSSF_PROJECTS = [
+export const OPENSSF_PROJECTS: readonly (readonly [string, number])[] = [
   ["hermes-tweet", 13725],
   ["n8n-nodes-xquik", 13726],
   ["paperclip-plugin-xquik", 13727],
