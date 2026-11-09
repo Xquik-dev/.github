@@ -1,5 +1,9 @@
 # Xquik X (Twitter) API & Scraper Tools
 
+[![Framer builds a tweet ticker with Xquik](https://img.youtube.com/vi/4UOSpoOoC3Y/maxresdefault.jpg)](https://youtu.be/4UOSpoOoC3Y?t=367)\
+[Watch Framer build a tweet ticker with Xquik, from 6:07](https://youtu.be/4UOSpoOoC3Y?t=367).
+Xquik-dev holds Xquik's SDKs, plugins & agent tools.
+
 Use the Xquik X (Twitter) API to search tweets & posts or export followers.
 Pick the REST API, MCP server, SDKs, CLI, webhooks or Apify Actors.
 

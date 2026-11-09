@@ -1,5 +1,9 @@
 # Xquik Twitter API, SDKs & Agent Tools
 
+[![Framer builds a tweet ticker with Xquik](https://img.youtube.com/vi/4UOSpoOoC3Y/maxresdefault.jpg)](https://youtu.be/4UOSpoOoC3Y?t=367)\
+[Watch Framer build a tweet ticker with Xquik, from 6:07](https://youtu.be/4UOSpoOoC3Y?t=367).
+Xquik-dev holds Xquik's SDKs, plugins & agent tools.
+
 Use this Xquik repository to find the policies every Xquik-dev project shares.
 The [org profile](profile/README.md) lists each SDK & integration.
 
