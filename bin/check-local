@@ -147,7 +147,7 @@ with_github_token() {
 release_evidence() {
   if [[ -z "${XQUIK_RELEASE_ATTESTATIONS-}" ]]; then
     XQUIK_RELEASE_ATTESTATIONS_SINCE="$(date +%s)"
-    attestations_file="$(mktemp)"
+    attestations_file="$(mktemp "${TMPDIR:-/tmp}/xquik-attestations.XXXXXX")"
     XQUIK_RELEASE_ATTESTATIONS="$attestations_file"
     node scripts/attest-releases.ts >"$attestations_file" || return
   fi

@@ -27,7 +27,7 @@ if [ "$repo" = "Xquik-dev/$CASE" ] && [ "$(wc -l < "$FAKE_CALLS.$CASE" 2>/dev/nu
   echo "Error: could not reach the trust root" >&2
   exit 1
 fi
-printf '%s\\tv1.2.3\\t%s\\n' "$repo" "\${SHA:-aaaa}"`,
+printf '%s\\tv1.2.3\\t%s\\n' "$repo" "\${SHA-aaaa}"`,
   });
   const result = run(folder, [process.execPath, join(root, "scripts/attest-releases.ts")], {
     XQUIK_RETRY_MS: "0",
@@ -49,8 +49,11 @@ test("the evidence names HEAD, the time and the signed release of every attested
     verifiedAt: evidence.verifiedAt,
     releases: attested.map((repo) => ({ repo: `Xquik-dev/${repo}`, tag: "v1.2.3", sha: "aaaa" })),
   });
-  assert.equal(result.verifies.length, 5);
-  assert.match(result.verifies[0] ?? "", /^gh release verify --repo Xquik-dev\/terraform-provider-x-twitter-scraper --format json --jq /u);
+  assert.deepEqual(
+    result.verifies.map((call) => call.split(" ")[4]).sort(),
+    attested.map((repo) => `Xquik-dev/${repo}`).sort(),
+  );
+  for (const call of result.verifies) assert.match(call, /^gh release verify --repo \S+ --format json --jq /u);
 });
 
 test("a verification that fails twice passes on the third try", (t) => {
