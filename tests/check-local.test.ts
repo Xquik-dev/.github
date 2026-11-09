@@ -61,11 +61,28 @@ const pending =
 const passed =
   "install, types, type coverage, lint, script tests, public contract, review evidence, release evidence, CodeQL 2.27.2.";
 
+// Each check with the token it saw, which only the 3 verifiers may get.
+function seenTokens(token: string) {
+  return [
+    `token ${install} none`,
+    `token ${types} none`,
+    `token ${coverage} none`,
+    `token ${lint} none`,
+    "token tests/example.test.ts none",
+    `token scripts/check-public-contract.ts ${token}`,
+    `token scripts/check-review-evidence.ts ${token}`,
+    `token scripts/verify-release-evidence.ts ${token}`,
+    "codeql-security token=none",
+  ];
+}
+const withoutGh = Object.fromEntries(Object.entries(fakes).filter(([name]) => name !== "gh"));
+
 function runChecks(
   t: TestContext,
   testCase: string,
   args: readonly string[] = [],
   env: Readonly<Record<string, string>> = {},
+  tools: Readonly<Record<string, string>> = fakes,
 ) {
   const folder = workspace(t);
   const project = join(folder, "project");
@@ -75,7 +92,7 @@ function runChecks(
   copyFileSync(join(root, "bin/check-local"), join(project, "bin/check-local"));
   writeFileSync(join(project, "tests/example.test.ts"), "");
   writeFileSync(join(project, "scripts/codeql-security"), stubCheck, { mode: 0o755 });
-  writeFakes(folder, fakes);
+  writeFakes(folder, tools);
   const result = run(folder, ["/bin/bash", join(project, "bin/check-local"), ...args], {
     CASE: testCase,
     DIRTY: join(folder, "dirty"),
@@ -88,7 +105,8 @@ function runChecks(
   const ran = result.calls.filter(
     (call) => !/^(git |gh |node --version|token )/u.test(call),
   );
-  return { ...result, ran, statuses };
+  const tokens = result.calls.filter((call) => /token[ =]/u.test(call));
+  return { ...result, ran, statuses, tokens };
 }
 
 test("success posts the checks that passed to the exact head", (t) => {
@@ -102,19 +120,34 @@ test("success posts the checks that passed to the exact head", (t) => {
 test("only the contract, review and release checks receive the GitHub token", (t) => {
   const result = runChecks(t, "ready", ["--no-status"]);
   assert.equal(result.status, 0, result.stderr);
-  assert.deepEqual(
-    result.calls.filter((call) => /token[ =]/u.test(call)),
-    [
-      `token ${install} none`,
-      `token ${types} none`,
-      `token ${coverage} none`,
-      `token ${lint} none`,
-      "token tests/example.test.ts none",
-      "token scripts/check-public-contract.ts secret-token",
-      "token scripts/check-review-evidence.ts secret-token",
-      "token scripts/verify-release-evidence.ts secret-token",
-      "codeql-security token=none",
-    ],
+  assert.deepEqual(result.tokens, seenTokens("secret-token"));
+});
+
+test("with no gh, the token in GITHUB_TOKEN reaches only the 3 verifiers", (t) => {
+  const result = runChecks(t, "ready", [], { GITHUB_TOKEN: "passed-token" }, withoutGh);
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(result.ran, checks);
+  assert.deepEqual(result.tokens, seenTokens("passed-token"));
+  assert.deepEqual(result.statuses, []);
+  assert.equal(result.stdout.split("\n")[0], "==> Commit status not posted because the GitHub CLI is not installed.");
+});
+
+test("the token in GH_TOKEN replaces the gh login and still posts the status", (t) => {
+  const result = runChecks(t, "ready", [], { GH_TOKEN: "passed-token" });
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(result.tokens, seenTokens("passed-token"));
+  assert.equal(result.calls.includes("gh auth token"), false);
+  assert.deepEqual(result.statuses, [pending, `state=success Passed ${passed}`]);
+});
+
+test("with no gh and no token, the run fails at GitHub sign-in before any check", (t) => {
+  const result = runChecks(t, "ready", [], {}, withoutGh);
+  assert.equal(result.status, 1);
+  assert.deepEqual(result.ran, []);
+  assert.deepEqual(result.statuses, []);
+  assert.equal(
+    result.stderr,
+    "check-local: gh is missing and GITHUB_TOKEN is unset. Install gh, or pass the token in GITHUB_TOKEN, then rerun.\n",
   );
 });
 
