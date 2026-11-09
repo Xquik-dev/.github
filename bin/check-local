@@ -5,9 +5,11 @@
 # Runs every check a change to this repository must pass, in order, and stops
 # at the first failure.
 # Usage: bin/check-local [--no-status]
-# The contract, review and release checks read the GitHub API through the gh
-# login of whoever runs this script. CodeQL and gpg are mandatory, so install
-# them with brew install --cask codeql and brew install gnupg.
+# The contract, review and release checks read the GitHub API with the token in
+# GH_TOKEN or GITHUB_TOKEN, as gh does, else with the gh login of whoever runs
+# this script. A runner with no gh login passes the token in either variable.
+# CodeQL and gpg are mandatory, so install them with brew install --cask codeql
+# and brew install gnupg.
 # When the tree is clean and GitHub has HEAD, the result is posted to HEAD as
 # the xquik-local-checks commit status. The status text lists only the checks
 # that passed in this run. --no-status skips posting.
@@ -29,20 +31,32 @@ for argument in "$@"; do
   esac
 done
 
-for tool in git gh node npm gpg; do
+for tool in git node npm gpg; do
   command -v "$tool" >/dev/null || {
     echo "check-local: $tool is missing. Install it, then rerun." >&2
     exit 1
   }
 done
 
+# The token leaves the environment here, so only the 3 verifiers below get it.
+github_token="${GH_TOKEN:-${GITHUB_TOKEN-}}"
+passed_token="$github_token"
+unset GH_TOKEN GITHUB_TOKEN
+
+# Runs gh with the token this script was given, else with the gh login.
+github() {
+  if [[ -n "$passed_token" ]]; then GH_TOKEN="$passed_token" gh "$@"; else gh "$@"; fi
+}
+
 head_commit="$(git rev-parse HEAD)"
 status_commit=""
 if ! $post_commit_status; then
   echo "==> Commit status not posted because --no-status was passed."
+elif ! command -v gh >/dev/null; then
+  echo "==> Commit status not posted because the GitHub CLI is not installed."
 elif [[ -n "$(git status --porcelain)" ]]; then
   echo "==> Commit status not posted because the tree has uncommitted changes."
-elif ! gh api --silent "repos/$repository/commits/$head_commit" >/dev/null 2>&1; then
+elif ! github api --silent "repos/$repository/commits/$head_commit" >/dev/null 2>&1; then
   echo "==> Commit status not posted because GitHub does not have HEAD, or gh is signed out. Push first."
 else
   status_commit="$head_commit"
@@ -51,7 +65,7 @@ fi
 # Posts the commit status. A failed post prints a warning and keeps the check result.
 post_status() {
   local state="$1" description="${2:0:139}"
-  gh api --silent "repos/$repository/statuses/$status_commit" \
+  github api --silent "repos/$repository/statuses/$status_commit" \
     -f state="$state" -f context="$status_context" -f description="$description" >/dev/null 2>&1 ||
     echo "check-local: could not post the $state $status_context status. Run gh auth status." >&2
 }
@@ -85,10 +99,16 @@ node_version="$(node --version)"
   exit 1
 }
 current_check="GitHub sign-in"
-github_token="$(gh auth token 2>/dev/null)" && [[ -n "$github_token" ]] || {
-  echo "check-local: gh is signed out. Run gh auth login, then rerun." >&2
-  exit 1
-}
+if [[ -z "$github_token" ]]; then
+  command -v gh >/dev/null || {
+    echo "check-local: gh is missing and GITHUB_TOKEN is unset. Install gh, or pass the token in GITHUB_TOKEN, then rerun." >&2
+    exit 1
+  }
+  github_token="$(gh auth token 2>/dev/null)" && [[ -n "$github_token" ]] || {
+    echo "check-local: gh is signed out. Run gh auth login, then rerun." >&2
+    exit 1
+  }
+fi
 current_check="CodeQL CLI"
 codeql_version="$(bash scripts/codeql-security --version)"
 
