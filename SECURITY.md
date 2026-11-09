@@ -4,7 +4,7 @@
 
 Report vulnerabilities through the affected repository's private reporting option.
 
-Use [security@xquik.com](mailto:security@xquik.com) when private reporting is unavailable.
+Email [support@xquik.com](mailto:support@xquik.com) with the subject `Security report` when private reporting is unavailable.
 
 Never post exploit details through public channels.
 
@@ -32,6 +32,8 @@ Do not include real credentials, tokens, cookies, or personal data.
 
 This policy covers public Xquik-dev repositories, SDKs, skills, docs, plugins, examples, and package metadata.
 
+The [bug bounty and vulnerability disclosure policy](https://xquik.com/en/vulnerability-disclosure) covers xquik.com and the hosted Xquik services.
+
 Use normal GitHub issues for public, non-security defects.
 
 ## Response process
@@ -47,6 +49,10 @@ Critical vulnerabilities receive immediate priority.
 Maintainers will coordinate disclosure timing with the reporter.
 
 Maintainers will publish advisories and fixed versions when appropriate.
+
+## Rewards
+
+Rewards can be monetary and depend on the bug's impact. Xquik decides each reward, and not every report earns one.
 
 ## Reporter credit
 
