@@ -8,8 +8,10 @@
 import { createHash, createPublicKey, verify as verifySignature } from "node:crypto";
 import { inflateRawSync } from "node:zlib";
 import { z } from "zod";
+import { EVIDENCE, ORG, PROJECTS, type EvidenceKind, type Project, type Registry } from "./release-projects.ts";
 
-export const ORG = "Xquik-dev";
+export { EVIDENCE, ORG, PROJECTS, type EvidenceKind, type Project, type Registry };
+
 export const GITHUB_API = "https://api.github.com";
 export const MAVEN_KEY = "6965E561C0ACEE32060AB961D2037E4157E62A59";
 export const MAVEN_KEY_FILE = "keys/xquik-maven-central.asc";
@@ -17,79 +19,6 @@ export const TERRAFORM_KEY = "0DC478C17474B9645C25B46C4900C25E85324F28";
 const MAVEN = "https://repo1.maven.org/maven2/com/xquik/api";
 const NUGET = "https://api.nuget.org/v3-flatcontainer";
 const NUGET_SIGNATURE = ".signature.p7s";
-const ATTESTATION_ATTEMPTS = 3;
-const ATTESTATION_RETRY_MS = 2000;
-
-export const EVIDENCE = {
-  tag: "Release tag on the default branch",
-  version: "Registry version equals the tag",
-  npmSignature: "npm registry signature",
-  npmAsset: "Release asset equals the npm tarball",
-  pypiAssets: "Release assets equal the PyPI files",
-  mavenSignature: "OpenPGP signature from the Xquik Maven key",
-  terraformChecksums: "Checksums signed by the Xquik Terraform key",
-  checksums: "Checksum file matches the release assets",
-  nugetContent: "NuGet package holds the files of the release asset",
-  goSource: "Go checksum database entry and source commit",
-  packagistSource: "Packagist source commit equals the tag",
-  attestation: "GitHub release attestation",
-};
-
-export type EvidenceKind = keyof typeof EVIDENCE;
-
-type ProjectOf<R extends string> = {
-  readonly repo: string;
-  readonly registry: R;
-  readonly name: string;
-  readonly evidence: readonly EvidenceKind[];
-};
-
-const npm = (repo: string, name: string, ...more: EvidenceKind[]): ProjectOf<"npm"> => ({
-  repo, registry: "npm", name, evidence: ["tag", "version", "npmSignature", ...more],
-});
-const pypi = (repo: string, name: string, ...more: EvidenceKind[]): ProjectOf<"PyPI"> => ({
-  repo, registry: "PyPI", name, evidence: ["tag", "version", ...more],
-});
-const maven = (repo: string): ProjectOf<"Maven Central"> => ({
-  repo, registry: "Maven Central", name: `com.xquik.api:${repo}`,
-  evidence: ["tag", "version", "mavenSignature"],
-});
-
-export const PROJECTS = [
-  pypi("hermes-tweet", "hermes-tweet", "pypiAssets"),
-  npm("n8n-nodes-xquik", "n8n-nodes-xquik"),
-  npm("paperclip-plugin-xquik", "@xquik/paperclip-plugin-xquik"),
-  pypi("prefect-xquik", "prefect-xquik"),
-  {
-    repo: "terraform-provider-x-twitter-scraper", registry: "Terraform Registry",
-    name: "Xquik-dev/x-twitter-scraper",
-    evidence: ["tag", "version", "terraformChecksums", "attestation"],
-  },
-  npm("tweetclaw", "@xquik/tweetclaw"),
-  npm("x-twitter-scraper", "x-developer"),
-  { repo: "x-twitter-scraper-cli", registry: "GitHub Releases", name: "x-twitter-scraper", evidence: ["tag", "checksums"] },
-  {
-    repo: "x-twitter-scraper-csharp", registry: "NuGet", name: "XTwitterScraper",
-    evidence: ["tag", "version", "nugetContent", "attestation"],
-  },
-  {
-    repo: "x-twitter-scraper-go", registry: "Go modules",
-    name: "github.com/Xquik-dev/x-twitter-scraper-go", evidence: ["tag", "version", "goSource"],
-  },
-  maven("x-twitter-scraper-java"),
-  maven("x-twitter-scraper-kotlin"),
-  {
-    repo: "x-twitter-scraper-php", registry: "Packagist", name: "xquik/x-twitter-scraper",
-    evidence: ["tag", "version", "packagistSource"],
-  },
-  pypi("x-twitter-scraper-python", "x-twitter-scraper", "attestation"),
-  { repo: "x-twitter-scraper-ruby", registry: "RubyGems", name: "x-twitter-scraper", evidence: ["tag", "version", "attestation"] },
-  npm("x-twitter-scraper-typescript", "x-twitter-scraper", "npmAsset", "attestation"),
-  pypi("xquik-haystack", "xquik-haystack"),
-] as const satisfies readonly ProjectOf<string>[];
-
-export type Registry = (typeof PROJECTS)[number]["registry"];
-export type Project = ProjectOf<Registry>;
 
 // What verifyProject reads the network, the disk and gpg with.
 // scripts/verify-release-evidence.ts implements it, and the tests fake it.
@@ -97,10 +26,6 @@ export type ReleaseIo = {
   readonly bytes: (url: string) => Promise<Buffer>;
   readonly json: (url: string) => Promise<unknown>;
   readonly readFile: (path: string) => Promise<string | Buffer>;
-  readonly run: (
-    command: string,
-    args: readonly string[],
-  ) => Promise<{ readonly status: number; readonly stderr: string; readonly stdout: string }>;
   // The fingerprints of the keys that made a valid signature over the data.
   readonly signers: (files: {
     readonly key: string | Buffer;
@@ -108,7 +33,8 @@ export type ReleaseIo = {
     readonly data: Buffer;
   }) => Promise<readonly string[]>;
   readonly text: (url: string) => Promise<string>;
-  readonly wait: (milliseconds: number) => Promise<void>;
+  // The releases that gh release verify passed for in this run, read with attestedReleases.
+  readonly attested: () => Promise<readonly AttestedRelease[]>;
 };
 
 // The parts of the GitHub and registry documents that the checks read.
@@ -119,6 +45,7 @@ const Release = z.looseObject({
 const Repository = z.looseObject({ default_branch: z.string() });
 const Comparison = z.looseObject({ status: z.string() });
 const Commit = z.looseObject({ sha: z.string() });
+const TagRef = z.looseObject({ object: z.looseObject({ sha: z.string() }) });
 const Version = z.looseObject({ version: z.string() });
 const NpmKeys = z.looseObject({ keys: z.array(z.looseObject({ keyid: z.string(), key: z.string() })) });
 const NpmDist = z.looseObject({
@@ -180,6 +107,31 @@ export function guideProblem(guide: string, projects: readonly Project[] = PROJE
   }
   const promised = WORKFLOW_PROVENANCE.find((pattern) => pattern.test(guide));
   return promised ? `RELEASES.md shows a command that needs workflow provenance, ${promised.source}. Remove it.` : undefined;
+}
+
+// What scripts/attest-releases.ts writes on a machine with gh, for a runner without it.
+const Attestations = z.strictObject({
+  commit: z.string(),
+  verifiedAt: z.iso.datetime(),
+  releases: z.array(z.strictObject({ repo: z.string(), tag: z.string(), sha: z.string() })),
+});
+export type AttestedRelease = z.infer<typeof Attestations>["releases"][number];
+
+// The releases in the evidence file, which must be written for this commit after this run began.
+// since is that start in milliseconds since the epoch.
+export function attestedReleases(text: string | undefined, run: { readonly commit: string; readonly since: number }) {
+  if (text === undefined) {
+    throw new Error("the attestation evidence file is missing. Run bin/check-local, which writes it with scripts/attest-releases.ts");
+  }
+  if (!Number.isFinite(run.since)) throw new Error("XQUIK_RELEASE_ATTESTATIONS_SINCE gives no start time for this run");
+  const evidence = Attestations.parse(JSON.parse(text));
+  if (evidence.commit !== run.commit) {
+    throw new Error(`the attestation evidence is for commit ${evidence.commit}, and HEAD is ${run.commit}`);
+  }
+  if (Date.parse(evidence.verifiedAt) < run.since) {
+    throw new Error(`the attestation evidence from ${evidence.verifiedAt} is stale, since this run began at ${new Date(run.since).toISOString()}`);
+  }
+  return evidence.releases;
 }
 
 // The token goes to the GitHub API only, never to a registry or a download host.
@@ -375,17 +327,18 @@ const CHECKS: Record<EvidenceKind, (context: Context) => Promise<void>> = {
       throw new Error("Packagist serves another commit than the tag");
     }
   },
-  // GitHub's attestation service fails now and then, so 1 failure is tried again.
+  // gh release verify ran before this check, so it compares the release GitHub attested with the latest release.
   async attestation(context) {
-    const args = ["release", "verify", context.tag, "--repo", `${ORG}/${context.project.repo}`];
-    let reason = "";
-    for (let attempt = 1; attempt <= ATTESTATION_ATTEMPTS; attempt += 1) {
-      if (attempt > 1) await context.io.wait(ATTESTATION_RETRY_MS);
-      const result = await context.io.run("gh", args);
-      if (result.status === 0) return;
-      reason = result.stderr.trim().split("\n").at(-1) ?? "";
+    const repo = `${ORG}/${context.project.repo}`;
+    const attested = (await context.io.attested()).find((release) => release.repo === repo);
+    if (!attested) throw new Error(`gh release verify passed for no release of ${repo} in this run`);
+    if (attested.tag !== context.tag) {
+      throw new Error(`gh release verify passed for ${attested.tag}, and the latest release tag is ${context.tag}`);
     }
-    throw new Error(`gh release verify ${context.tag} failed ${ATTESTATION_ATTEMPTS} times. ${reason}`.trim().replace(/\.$/u, ""));
+    const { object } = TagRef.parse(await context.io.json(`${context.api}/git/ref/tags/${context.tag}`));
+    if (object.sha !== attested.sha) {
+      throw new Error(`GitHub attested tag ${context.tag} at ${attested.sha}, and the tag now points to ${object.sha}`);
+    }
   },
 };
 

@@ -14,6 +14,7 @@ import { setTimeout as wait } from "node:timers/promises";
 import {
   PROJECTS,
   type ReleaseIo,
+  attestedReleases,
   guideProblem,
   renderEvidenceTable,
   requestHeaders,
@@ -36,8 +37,10 @@ async function request(url: string) {
   }
 }
 
-const run: ReleaseIo["run"] = (command, args) =>
-  new Promise((resolve) => {
+type Result = { readonly status: number; readonly stderr: string; readonly stdout: string };
+
+const run = (command: string, args: readonly string[]) =>
+  new Promise<Result>((resolve) => {
     execFile(command, args, { encoding: "utf8" }, (error, stdout, stderr) => {
       resolve({ status: error ? (typeof error.code === "number" ? error.code : 1) : 0, stdout, stderr });
     });
@@ -65,14 +68,26 @@ const signers: ReleaseIo["signers"] = async ({ key, signature, data }) => {
   }
 };
 
+// The evidence file that bin/check-local or the machine that started this run wrote with scripts/attest-releases.ts.
+async function readAttestations() {
+  const path = process.env.XQUIK_RELEASE_ATTESTATIONS;
+  const text = path ? await readFile(path, "utf8").catch(() => undefined) : undefined;
+  const head = await run("git", ["rev-parse", "HEAD"]);
+  if (head.status !== 0) throw new Error(`git rev-parse HEAD failed. ${head.stderr.trim()}`);
+  return attestedReleases(text, {
+    commit: head.stdout.trim(),
+    since: Number(process.env.XQUIK_RELEASE_ATTESTATIONS_SINCE) * 1000,
+  });
+}
+let attested: ReturnType<typeof readAttestations> | undefined;
+
 const io: ReleaseIo = {
+  attested: async () => (attested ??= readAttestations()),
   bytes: request,
   json: async (url): Promise<unknown> => JSON.parse((await request(url)).toString()),
   readFile,
-  run,
   signers,
   text: async (url) => (await request(url)).toString(),
-  wait,
 };
 
 if (process.argv.includes("--table")) {

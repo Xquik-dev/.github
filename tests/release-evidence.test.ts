@@ -19,6 +19,7 @@ import {
   hasValidNpmSignature,
   renderEvidenceTable,
   requestHeaders,
+  attestedReleases,
   verifyProject,
   zipDigests,
 } from "../scripts/release-evidence.ts";
@@ -26,6 +27,7 @@ import { root } from "./helpers.ts";
 
 const API = "https://api.github.com/repos/Xquik-dev";
 const COMMIT = "1111111111111111111111111111111111111111";
+const TAG_SHA = "2222222222222222222222222222222222222222";
 const digest = (content: string | Buffer) => createHash("sha256").update(content).digest("hex");
 function project(repo: string): Project {
   const found = PROJECTS.find((candidate) => candidate.repo === repo);
@@ -48,22 +50,26 @@ function github(
     [`${API}/${repo}`]: { default_branch: "main" },
     [`${API}/${repo}/compare/main...${tag}`]: { status },
     [`${API}/${repo}/commits/${tag}`]: { sha: COMMIT },
+    [`${API}/${repo}/git/ref/tags/${tag}`]: { object: { sha: TAG_SHA } },
   };
 }
 
 // A fake that answers only the listed addresses and records every command.
-// ghStatus is 1 exit status for every gh call, or a list with 1 status per call.
+// attested lists the releases gh release verify passed for in this run.
 function fakeIo(
   responses: Readonly<Record<string, unknown>>,
-  { signers = [], ghStatus = 0 }: { signers?: readonly string[]; ghStatus?: number | readonly number[] } = {},
+  {
+    signers = [],
+    attested = PROJECTS.map(({ repo }) => ({ repo: `Xquik-dev/${repo}`, sha: TAG_SHA, tag: "v1.2.3" })),
+  }: { signers?: readonly string[]; attested?: readonly { repo: string; sha: string; tag: string }[] } = {},
 ): ReleaseIo & { readonly commands: string[] } {
   const commands: string[] = [];
-  const statuses = [ghStatus].flat();
   const answer = (url: string) => {
     assert.ok(url in responses, `unexpected request ${url}`);
     return responses[url];
   };
   return {
+    attested: async () => attested,
     bytes: async (url) => {
       const body = answer(url);
       return Buffer.isBuffer(body) ? body : Buffer.from(z.string().parse(body));
@@ -71,20 +77,11 @@ function fakeIo(
     commands,
     json: async (url) => answer(url),
     readFile: async (path) => `public key in ${path}`,
-    run: async (command, args) => {
-      commands.push([command, ...args].join(" "));
-      const status = statuses.length > 1 ? statuses.shift() : statuses[0];
-      assert.ok(status !== undefined, "ghStatus lists no exit status");
-      return { status, stderr: status === 0 ? "" : "Error: could not reach the trust root\n", stdout: "" };
-    },
     signers: async ({ key }) => {
       commands.push(`gpg verify with ${String(key).slice(0, 60)}`);
       return signers;
     },
     text: async (url) => z.string().parse(answer(url)),
-    wait: async (milliseconds) => {
-      commands.push(`wait ${milliseconds}`);
-    },
   };
 }
 
@@ -177,17 +174,7 @@ test("an npm project with a release asset and an attestation passes all 5 checks
     await verifyProject(project("x-twitter-scraper-typescript"), io),
     "x-twitter-scraper-typescript v1.2.3 has 5 kinds of evidence.",
   );
-  assert.deepEqual(io.commands, ["gh release verify v1.2.3 --repo Xquik-dev/x-twitter-scraper-typescript"]);
-});
-
-test("a release attestation that fails once passes on the next try", async () => {
-  const io = fakeIo(typescript(), { ghStatus: [1, 0] });
-  assert.match(await verifyProject(project("x-twitter-scraper-typescript"), io), /has 5 kinds of evidence/u);
-  assert.deepEqual(io.commands, [
-    "gh release verify v1.2.3 --repo Xquik-dev/x-twitter-scraper-typescript",
-    "wait 2000",
-    "gh release verify v1.2.3 --repo Xquik-dev/x-twitter-scraper-typescript",
-  ]);
+  assert.deepEqual(io.commands, []);
 });
 
 test("a scoped npm package is read by its encoded name", async () => {
@@ -202,7 +189,9 @@ test("a scoped npm package is read by its encoded name", async () => {
 for (const [name, responses, options, message] of [
   ["a tarball that differs from the release asset", typescript({ tarball: "other" }), {}, '"Release asset equals the npm tarball". x-twitter-scraper-1.2.3.tgz differs from the npm tarball.'],
   ["a manifest no registry key signed", typescript({ signed: manifest("x-twitter-scraper", "1.2.3", { dist: { integrity: "sha512-other", tarball: "https://registry.test/package.tgz" } }) }), {}, '"npm registry signature". no npm registry key signed the latest version.'],
-  ["a release GitHub does not attest", typescript(), { ghStatus: 1 }, '"GitHub release attestation". gh release verify v1.2.3 failed 3 times. Error: could not reach the trust root.'],
+  ["a release gh release verify did not pass for", typescript(), { attested: [] }, '"GitHub release attestation". gh release verify passed for no release of Xquik-dev/x-twitter-scraper-typescript in this run.'],
+  ["an attestation of an older release", typescript(), { attested: [{ repo: "Xquik-dev/x-twitter-scraper-typescript", sha: TAG_SHA, tag: "v1.2.2" }] }, '"GitHub release attestation". gh release verify passed for v1.2.2, and the latest release tag is v1.2.3.'],
+  ["a tag moved after GitHub attested it", typescript(), { attested: [{ repo: "Xquik-dev/x-twitter-scraper-typescript", sha: COMMIT, tag: "v1.2.3" }] }, `"GitHub release attestation". GitHub attested tag v1.2.3 at ${COMMIT}, and the tag now points to ${TAG_SHA}.`],
 ] as const) {
   test(`${name} fails`, async () => {
     assert.equal(await failure("x-twitter-scraper-typescript", responses, options), `x-twitter-scraper-typescript v1.2.3 lacks ${message}`);
@@ -274,7 +263,7 @@ const SUMS = `${digest("linux")}  ${PROVIDER}_1.2.3_linux_amd64.zip\n${digest("d
 test("checksums signed by the pinned Terraform key that match every archive pass", async () => {
   const io = fakeIo(terraform(SUMS), { signers: [TERRAFORM_KEY] });
   assert.match(await verifyProject(project(PROVIDER), io), /has 4 kinds of evidence/u);
-  assert.deepEqual(io.commands, ["gpg verify with registry key", `gh release verify v1.2.3 --repo Xquik-dev/${PROVIDER}`]);
+  assert.deepEqual(io.commands, ["gpg verify with registry key"]);
 });
 
 for (const [name, responses, signers, message] of [
@@ -466,3 +455,34 @@ for (const [url, sent] of [
     assert.equal("authorization" in requestHeaders(url, undefined), false);
   });
 }
+
+// An evidence file as scripts/attest-releases.ts writes it, for HEAD at COMMIT.
+const SINCE = Date.parse("2026-11-09T06:00:00.000Z");
+const attestations = (change: Readonly<Record<string, unknown>> = {}) =>
+  JSON.stringify({
+    commit: COMMIT,
+    verifiedAt: "2026-11-09T06:00:05.000Z",
+    releases: [{ repo: "Xquik-dev/x-twitter-scraper-ruby", sha: TAG_SHA, tag: "v1.2.3" }],
+    ...change,
+  });
+
+test("an evidence file written for HEAD after the run began gives its releases", () => {
+  assert.deepEqual(attestedReleases(attestations(), { commit: COMMIT, since: SINCE }), [
+    { repo: "Xquik-dev/x-twitter-scraper-ruby", sha: TAG_SHA, tag: "v1.2.3" },
+  ]);
+});
+
+for (const [name, text, since, message] of [
+  ["a missing", undefined, SINCE, "the attestation evidence file is missing. Run bin/check-local, which writes it with scripts/attest-releases.ts"],
+  ["a stale", attestations({ verifiedAt: "2026-11-09T05:59:59.999Z" }), SINCE, "the attestation evidence from 2026-11-09T05:59:59.999Z is stale, since this run began at 2026-11-09T06:00:00.000Z"],
+  ["a mismatched", attestations({ commit: TAG_SHA }), SINCE, `the attestation evidence is for commit ${TAG_SHA}, and HEAD is ${COMMIT}`],
+  ["an undated", attestations(), Number.NaN, "XQUIK_RELEASE_ATTESTATIONS_SINCE gives no start time for this run"],
+] as const) {
+  test(`${name} evidence file fails`, () => {
+    assert.throws(() => attestedReleases(text, { commit: COMMIT, since }), { message });
+  });
+}
+
+test("an evidence file with an unknown field fails", () => {
+  assert.throws(() => attestedReleases(attestations({ verified: true }), { commit: COMMIT, since: SINCE }), z.ZodError);
+});
