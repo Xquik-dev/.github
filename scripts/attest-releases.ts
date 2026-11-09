@@ -47,12 +47,19 @@ async function attest({ repo: name }: Project) {
 const head = await run("git", ["rev-parse", "HEAD"]);
 if (head.status !== 0) throw new Error(`git rev-parse HEAD failed. ${head.stderr.trim()}`);
 const projects: readonly Project[] = PROJECTS;
-const results = await Promise.allSettled(projects.filter(({ evidence }) => evidence.includes("attestation")).map(attest));
-const releases = results.flatMap((result) => (result.status === "fulfilled" ? [result.value] : []));
-for (const result of results) {
-  if (result.status === "rejected") {
-    process.stderr.write(`${result.reason instanceof Error ? result.reason.message : String(result.reason)}\n`);
-  }
+const results = await Promise.all(
+  projects
+    .filter(({ evidence }) => evidence.includes("attestation"))
+    .map((project) =>
+      attest(project).then(
+        (release) => ({ release, failure: "" }),
+        (error: unknown) => ({ release: undefined, failure: error instanceof Error ? error.message : String(error) }),
+      ),
+    ),
+);
+const releases = results.flatMap(({ release }) => (release === undefined ? [] : [release]));
+for (const { failure } of results) {
+  if (failure !== "") process.stderr.write(`${failure}\n`);
 }
 if (releases.length === results.length) {
   const evidence = { commit: head.stdout.trim(), verifiedAt: new Date().toISOString(), releases };
