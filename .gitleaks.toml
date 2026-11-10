@@ -1,0 +1,11 @@
+# gitleaks runs every default rule. Each allowlist below is a verified false
+# positive. Fix or rotate a new finding instead.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "release-evidence.mjs held the OpenPGP fingerprints of the public Maven and Terraform release signing keys. A fingerprint names a public key and grants no access."
+condition = "AND"
+paths = ['''^scripts/release-evidence\.mjs$''']
+regexTarget = "match"
+regexes = ['''^(?:MAVEN|TERRAFORM)_KEY = "[0-9A-F]{40}"$''']
