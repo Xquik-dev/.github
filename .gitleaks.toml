@@ -1,11 +1,12 @@
-# gitleaks runs every default rule. Each allowlist below is a verified false
-# positive. Fix or rotate a new finding instead.
+title = "Xquik Gitleaks configuration"
+
 [extend]
 useDefault = true
 
 [[allowlists]]
-description = "release-evidence.mjs held the OpenPGP fingerprints of the public Maven and Terraform release signing keys. A fingerprint names a public key and grants no access."
-condition = "AND"
-paths = ['''^scripts/release-evidence\.mjs$''']
+description = "Fingerprints of the public OpenPGP keys that sign Maven Central and Terraform releases. keys/ publishes the Maven Central key and the Terraform Registry publishes the Terraform key, and a fingerprint unlocks nothing."
 regexTarget = "match"
-regexes = ['''^(?:MAVEN|TERRAFORM)_KEY = "[0-9A-F]{40}"$''']
+regexes = [
+  '''\b6965E561C0ACEE32060AB961D2037E4157E62A59\b''',
+  '''\b0DC478C17474B9645C25B46C4900C25E85324F28\b''',
+]
