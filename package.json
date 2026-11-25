@@ -14,6 +14,7 @@
     "@typescript-eslint/type-utils": "8.72.0",
     "@typescript-eslint/utils": "8.72.0",
     "eslint": "10.13.0",
+    "fast-check": "4.11.0",
     "type-coverage": "2.30.4",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "typescript-eslint": "8.72.0",

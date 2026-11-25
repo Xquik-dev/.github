@@ -7,8 +7,10 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 import { crc32, deflateRawSync } from "node:zlib";
+import fc from "fast-check";
 import { z } from "zod";
 import {
+  type AttestedRelease,
   EVIDENCE,
   MAVEN_KEY,
   PROJECTS,
@@ -485,4 +487,42 @@ for (const [name, text, since, message] of [
 
 test("an evidence file with an unknown field fails", () => {
   assert.throws(() => attestedReleases(attestations({ verified: true }), { commit: COMMIT, since: SINCE }), z.ZodError);
+});
+
+const anySha = fc.stringMatching(/^[0-9a-f]{40}$/u);
+const anyStart = fc.integer({ min: Date.parse("2000-01-01T00:00:00.000Z"), max: Date.parse("2100-01-01T00:00:00.000Z") });
+const anyDay = fc.integer({ min: 0, max: 86_400_000 });
+const anyReleases = fc.array(
+  fc.record({ repo: fc.string(), tag: fc.string(), sha: anySha }, { noNullPrototype: true }),
+);
+const evidence = (commit: string, verifiedAt: number, releases: readonly AttestedRelease[]) =>
+  JSON.stringify({ commit, verifiedAt: new Date(verifiedAt).toISOString(), releases });
+
+test("any evidence file written for HEAD at or after the run began gives its releases in order", () => {
+  fc.assert(
+    fc.property(anySha, anyStart, anyDay, anyReleases, (commit, since, delay, releases) => {
+      assert.deepEqual(attestedReleases(evidence(commit, since + delay, releases), { commit, since }), releases);
+    }),
+  );
+});
+
+test("any evidence file written before the run began fails as stale", () => {
+  fc.assert(
+    fc.property(anySha, anyStart, anyDay, anyReleases, (commit, since, early, releases) => {
+      assert.throws(() => attestedReleases(evidence(commit, since - early - 1, releases), { commit, since }), {
+        message: /is stale, since this run began/u,
+      });
+    }),
+  );
+});
+
+test("any evidence file written for another commit fails", () => {
+  fc.assert(
+    fc.property(anySha, anySha, anyStart, anyReleases, (commit, head, since, releases) => {
+      fc.pre(commit !== head);
+      assert.throws(() => attestedReleases(evidence(commit, since, releases), { commit: head, since }), {
+        message: `the attestation evidence is for commit ${commit}, and HEAD is ${head}`,
+      });
+    }),
+  );
 });
